@@ -1,5 +1,14 @@
 import { Args, CombatStrategy, Engine, getTasks, OutfitSpec, Quest, Task } from "grimoire-kolmafia";
-import { cliExecute, myAdventures, visitUrl, runChoice, isDarkMode, print, myTurncount } from "kolmafia";
+import {
+  adv1,
+  cliExecute,
+  myAdventures,
+  visitUrl,
+  runChoice,
+  isDarkMode,
+  print,
+  myTurncount,
+} from "kolmafia";
 import {
   $effect,
   $familiar,
@@ -13,6 +22,7 @@ import {
   have,
   Macro,
   Session,
+  getKramcoWandererChance,
 } from "libram";
 
 const args = Args.create("chroner-collector", "A script for farming chroner", {
@@ -49,14 +59,54 @@ export function main(command?: string) {
     famequip,
   };
 
+  const globeTheater = $location`Globe Theatre Main Stage`;
   const ttt: Quest<Task> = {
     name: "TimeTwitchingTower",
     tasks: [
+      {
+        name: "Kgnee",
+        completed: () =>
+          !have($familiar`Reagnimated Gnome`) || have($item`gnomish housemaid's kgnee`),
+        do: (): void => {
+          visitUrl("arena.php");
+          runChoice(4);
+        },
+        outfit: { familiar: $familiar`Reagnimated Gnome` },
+      },
       {
         name: "Autumn-Aton",
         completed: () => completed() && AutumnAton.currentlyIn() !== null,
         do: () => AutumnAton.sendTo($locations`Globe Theatre Main Stage, The Dire Warren`),
         ready: () => AutumnAton.available(),
+      },
+      {
+        name: "Proton Ghost",
+        ready: () =>
+          have($item`protonic accelerator pack`) &&
+          get("questPAGhost") !== "unstarted" &&
+          !!get("ghostLocation"),
+        do: (): void => {
+          const location = get("ghostLocation");
+          if (location) {
+            adv1(location, 0, "");
+          } else {
+            throw "Could not determine Proton Ghost location!";
+          }
+        },
+        outfit: () => {
+          return {
+            ...outfitSpec,
+            back: $item`protonic accelerator pack`,
+          };
+        },
+        completed: () => get("questPAGhost") === "unstarted",
+        combat: new CombatStrategy().macro(
+          Macro.trySkill($skill`Sing Along`)
+            .trySkill($skill`Shoot Ghost`)
+            .trySkill($skill`Shoot Ghost`)
+            .trySkill($skill`Shoot Ghost`)
+            .trySkill($skill`Trap Ghost`)
+        ),
       },
       {
         name: "Spit Jurassic Acid",
@@ -69,24 +119,20 @@ export function main(command?: string) {
           };
         },
         prepare: () => cliExecute("parka dilophosaur"),
-        do: $location`Globe Theatre Main Stage`,
+        do: globeTheater,
         combat: new CombatStrategy().macro(Macro.skill($skill`Spit jurassic acid`).abort()),
-      },
-      {
-        name: "Kgnee",
-        completed: () =>
-          !have($familiar`Reagnimated Gnome`) || have($item`gnomish housemaid's kgnee`),
-        do: (): void => {
-          visitUrl("arena.php");
-          runChoice(4);
-        },
-        outfit: { familiar: $familiar`Reagnimated Gnome` },
       },
       {
         name: "Chroner",
         completed,
-        do: $location`Globe Theatre Main Stage`,
+        do: globeTheater,
         outfit: () => {
+          if (have($item`Kramco Sausage-o-Matic™`) && getKramcoWandererChance() >= 1) {
+            return {
+              ...outfitSpec,
+              offhand: $item`Kramco Sausage-o-Matic™`,
+            };
+          }
           return outfitSpec;
         },
         combat: new CombatStrategy().macro(
