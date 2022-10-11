@@ -1,2 +1,4 @@
-dist/
-node_modules/
+.DS_Store
+.vscode
+KoLmafia/scripts/*
+node_modules

@@ -15,7 +15,7 @@ build({
   target: "rhino1.7.14",
   external: ["kolmafia"],
   plugins: [babel()],
-  outdir: "dist/scripts/chroner-collector",
+  outdir: "KoLmafia/scripts/chroner-collector",
   watch,
   loader: { ".json": "text" },
   inject: ["./kolmafia-polyfill.js"],
