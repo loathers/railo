@@ -7,10 +7,12 @@
   "scripts": {
     "build": "node build.mjs",
     "format": "prettier --write src/**/*.ts *.{mjs,js,json}",
+    "lint": "eslint src --ext .ts && prettier --check src/**/*.ts",
     "watch": "node build.mjs --watch",
     "install-mafia": "create-kolmafia-script --install"
   },
   "dependencies": {
+    "eslint-config-prettier": "^8.5.0",
     "grimoire-kolmafia": "^0.3.7",
     "kolmafia": "^5.26833.0",
     "libram": "^0.7.2"
