@@ -8,6 +8,7 @@ import {
   isDarkMode,
   print,
   myTurncount,
+  Familiar,
 } from "kolmafia";
 import {
   $effect,
@@ -24,6 +25,8 @@ import {
   Session,
   getKramcoWandererChance,
 } from "libram";
+
+import { freeFightFamiliar } from "./familiar";
 
 const args = Args.create("chroner-collector", "A script for farming chroner", {
   turns: Args.number({
@@ -45,18 +48,26 @@ export function main(command?: string) {
     args.turns > 0
       ? () => myTurncount() - turncount >= args.turns || myAdventures() === 0
       : () => myAdventures() === -args.turns;
-  const familiar = $familiars`Reagnimated Gnome, Temporal Riftlet, none`.find((f) => have(f));
-  const famequip =
-    familiar === $familiar`Reagnimated Gnome` ? $item`nomish housemaid's kgnee` : $item`stillsuit`;
+  const chooseFamiliar = () =>
+    $familiars`Reagnimated Gnome, Temporal Riftlet`.find((f) => have(f)) ?? freeFightFamiliar();
+  const chooseFamEquip = (fam: Familiar) =>
+    fam === $familiar`Reagnimated Gnome` ? $item`nomish housemaid's kgnee` : $item`stillsuit`;
 
-  const outfitSpec: OutfitSpec = {
-    weapon: $item`June cleaver`,
-    offhand: $item`carnivorous potted plant`,
-    acc1: $item`mafia thumb ring`,
-    acc2: $item`time-twitching toolbelt`,
-    acc3: $item`lucky gold ring`,
-    familiar,
-    famequip,
+  const outfitSpec = (): OutfitSpec => {
+    const familiar = chooseFamiliar();
+    const famequip = chooseFamEquip(familiar);
+    return {
+      weapon: $item`June cleaver`,
+      offhand: $item`carnivorous potted plant`,
+      acc1: $item`mafia thumb ring`,
+      acc2: $item`time-twitching toolbelt`,
+      acc3: $item`lucky gold ring`,
+      familiar,
+      famequip,
+      modifier: $familiars`Reagnimated Gnome, Temporal Riftlet`.includes(familiar)
+        ? "Familiar Weight"
+        : "Item Drop",
+    };
   };
 
   const globeTheater = $location`Globe Theatre Main Stage`;
@@ -129,11 +140,11 @@ export function main(command?: string) {
         outfit: () => {
           if (have($item`Kramco Sausage-o-Matic™`) && getKramcoWandererChance() >= 1) {
             return {
-              ...outfitSpec,
+              ...outfitSpec(),
               offhand: $item`Kramco Sausage-o-Matic™`,
             };
           }
-          return outfitSpec;
+          return outfitSpec();
         },
         combat: new CombatStrategy().macro(
           Macro.externalIf(
