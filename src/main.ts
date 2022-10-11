@@ -19,6 +19,7 @@ import {
 } from "kolmafia";
 import {
   $effect,
+  $effects,
   $familiar,
   $familiars,
   $item,
@@ -33,6 +34,7 @@ import {
   JuneCleaver,
   Macro,
   Session,
+  set,
   sinceKolmafiaRevision,
   uneffect,
   withProperty,
@@ -68,6 +70,13 @@ class ChronerEngine extends Engine<never, ChronerTask> {
       (sober() && task.sobriety === "sober") ||
       (!sober() && task.sobriety === "drunk");
     return sobriety && super.available(task);
+  }
+
+  print() {
+    printh(`Task List:`)
+    for(const task of this.tasks) {
+      printh(`${task.name}: available:${this.available(task)}`)
+    }
   }
 }
 
@@ -107,6 +116,7 @@ export function main(command?: string) {
 
   const globeTheater = $location`Globe Theatre Main Stage`;
   const yrTarget = $location`The Cave Before Time`;
+  const poisons = $effects`Hardly Poisoned at All, A Little Bit Poisoned, Somewhat Poisoned, Really Quite Poisoned, Majorly Poisoned`
 
   const ttt: Quest<ChronerTask> = {
     name: "TimeTwitchingTower",
@@ -127,6 +137,12 @@ export function main(command?: string) {
         do: () => {
           useSkill($skill`Cannelloni Cocoon`);
         },
+        sobriety: "either"
+      },
+      {
+        name: "Antidote",
+        completed: () => poisons.every((e) => !have(e)),
+        do: () => poisons.forEach((e) => uneffect(e)),
         sobriety: "either"
       },
       {
@@ -157,12 +173,12 @@ export function main(command?: string) {
               uneffect($effect`Beaten Up`);
             }
           }),
-        choices: Object.fromEntries(
-          JuneCleaver.choices.map((choice) => [
-            choice,
-            () => (shouldSkip(choice) ? bestJuneCleaverOption(choice) : 4),
-          ])
-        ),
+          prepare: () => {
+            for(const choice of JuneCleaver.choices)
+            {
+              set(`choiceAdventure${choice}`, shouldSkip(choice) ? 4 : bestJuneCleaverOption(choice))
+            }
+          },
         sobriety: "either",
         ready: () => JuneCleaver.have() && !get("_juneCleaverFightsLeft"),
         outfit: { weapon: $item`June cleaver` },
