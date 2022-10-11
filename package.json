@@ -7,6 +7,7 @@
   "scripts": {
     "build": "node build.mjs",
     "format": "prettier --write src/**/*.ts *.{mjs,js,json}",
+    "lint": "eslint src --ext .ts && prettier --check src/**/*.ts",
     "watch": "node build.mjs --watch",
     "install-mafia": "create-kolmafia-script --install"
   },
@@ -31,6 +32,7 @@
     "esbuild": "^0.14.51",
     "esbuild-plugin-babel": "^0.2.3",
     "eslint": "^8.21.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-libram": "^0.2.13",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.7.1",
