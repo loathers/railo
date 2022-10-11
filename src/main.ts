@@ -1,10 +1,11 @@
-import { Args, CombatStrategy, Engine, getTasks, OutfitSpec, Quest, Task } from "grimoire-kolmafia";
+import { Args, CombatStrategy, Engine, getTasks, OutfitSlot, OutfitSpec, Quest, Task } from "grimoire-kolmafia";
 import {
   adv1,
   cliExecute,
   Familiar,
   inebrietyLimit,
   isDarkMode,
+  Item,
   myAdventures,
   myFamiliar,
   myInebriety,
@@ -78,14 +79,17 @@ export function main(command?: string) {
   const outfitSpec = (): OutfitSpec => {
     const familiar = chooseFamiliar();
     const famequip = chooseFamEquip(familiar);
+
+    const ifHave = (slot: OutfitSlot, item: Item ): OutfitSpec => have(item) ? Object.fromEntries([[slot, item]]) : {}
+
     return {
-      weapon: $item`June cleaver`,
-      offhand: $item`carnivorous potted plant`,
-      acc1: $item`mafia thumb ring`,
-      acc2: $item`time-twitching toolbelt`,
-      acc3: $item`lucky gold ring`,
+      ...ifHave("weapon", $item`June cleaver`),
+      ...ifHave("offhand",$item`carnivorous potted plant`),
+      ...ifHave("acc1", $item`mafia thumb ring`),
+      ...ifHave("acc2", $item`time-twitching toolbelt`),
+      ...ifHave("acc3", $item`lucky gold ring`),
+      ...ifHave("famequip", famequip),
       familiar,
-      famequip,
       modifier: $familiars`Reagnimated Gnome, Temporal Riftlet`.includes(familiar)
         ? "Familiar Weight"
         : "Item Drop",
@@ -112,7 +116,7 @@ export function main(command?: string) {
       {
         name: "Autumn-Aton",
         completed: () => completed() && AutumnAton.currentlyIn() !== null,
-        do: () => AutumnAton.sendTo($locations`Globe Theatre Main Stage, The Dire Warren`),
+        do: () => AutumnAton.sendTo($locations`Moonshiners' Woods, The Dire Warren`),
         ready: () => AutumnAton.available(),
         sobriety: "either",
       },
