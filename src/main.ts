@@ -1,5 +1,5 @@
 import { Args, CombatStrategy, Engine, getTasks, Quest, Task } from "grimoire-kolmafia";
-import { cliExecute, myAdventures, visitUrl, runChoice } from "kolmafia";
+import { cliExecute, myAdventures, visitUrl, runChoice, myTurncount } from "kolmafia";
 import {
   $effect,
   $familiar,
@@ -24,7 +24,8 @@ const args = Args.create("chroner-collector", "A script for farming chroner", {
 export function main(command?: string) {
   Args.fill(args, command);
 
-  const completed = args.turns < 0 ? () => false : () => myAdventures() === -args.turns;
+  const turncount = myTurncount();
+  const completed = args.turns < 0 ? () => myTurncount() - turncount >= args.turns : () => myAdventures() === -args.turns;
   const familiar = $familiars`Reagnimated Gnome, Temporal Riftlet, none`.find((f) => have(f));
 
   const ttt: Quest<Task> = {
