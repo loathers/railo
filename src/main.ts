@@ -27,11 +27,14 @@ import {
   get,
   getKramcoWandererChance,
   have,
+  JuneCleaver,
   Macro,
   Session,
+  sinceKolmafiaRevision,
 } from "libram";
 
 import { freeFightFamiliar } from "./familiar";
+import { bestJuneCleaverOption, shouldSkip } from "./juneCleaver";
 
 const args = Args.create("chroner-collector", "A script for farming chroner", {
   turns: Args.number({
@@ -66,6 +69,7 @@ class ChronerEngine extends Engine<never, ChronerTask> {
 export function main(command?: string) {
   Args.fill(args, command);
 
+  sinceKolmafiaRevision(26834);
   const turncount = myTurncount();
   const completed =
     args.turns > 0
@@ -119,6 +123,20 @@ export function main(command?: string) {
         do: () => AutumnAton.sendTo($locations`Moonshiners' Woods, The Dire Warren`),
         ready: () => AutumnAton.available(),
         sobriety: "either",
+      },
+      {
+        name: "June Cleaver",
+        completed: () => !!get("_juneCleaverFightsLeft"),
+        do: $location`Noob Cave`,
+        choices: Object.fromEntries(
+          JuneCleaver.choices.map((choice) => [
+            choice,
+            () => (shouldSkip(choice) ? bestJuneCleaverOption(choice) : 4),
+          ])
+        ),
+        sobriety: "either",
+        ready: () => JuneCleaver.have() && !get("_juneCleaverFightsLeft"),
+        outfit: { weapon: $item`June cleaver` },
       },
       {
         name: "Proton Ghost",
