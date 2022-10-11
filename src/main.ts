@@ -12,6 +12,7 @@ import {
   myHp,
   myInebriety,
   myMaxhp,
+  myPath,
   myTurncount,
   print,
   runChoice,
@@ -26,6 +27,7 @@ import {
   $item,
   $location,
   $locations,
+  $path,
   $skill,
   AsdonMartin,
   AutumnAton,
@@ -151,7 +153,7 @@ export function main(command?: string) {
       },
       {
         name: "Recover",
-        completed: () => myHp() / myMaxhp() >= 0.5,
+        completed: () => myPath() === $path`Grey You` || myHp() / myMaxhp() >= 0.5,
         do: () => {
           useSkill($skill`Cannelloni Cocoon`);
         },
