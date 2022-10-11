@@ -11,6 +11,7 @@ import {
   Familiar,
 } from "kolmafia";
 import {
+  AsdonMartin,
   $effect,
   $familiar,
   $familiars,
@@ -71,6 +72,8 @@ export function main(command?: string) {
   };
 
   const globeTheater = $location`Globe Theatre Main Stage`;
+  const yrTarget = $location`The Cave Before Time`;
+
   const ttt: Quest<Task> = {
     name: "TimeTwitchingTower",
     tasks: [
@@ -120,6 +123,14 @@ export function main(command?: string) {
         ),
       },
       {
+        name: "Asdon Missle",
+        ready: () => AsdonMartin.installed(),
+        completed: () => get("_missileLauncherUsed") || have($effect`Everything Looks Yellow`),
+        combat: new CombatStrategy().macro(Macro.skill($skill`Asdon Martin: Missile Launcher`)),
+        prepare: () => AsdonMartin.fillTo(100),
+        do: yrTarget,
+      },
+      {
         name: "Spit Jurassic Acid",
         completed: () => have($effect`Everything Looks Yellow`),
         ready: () => have($item`Jurassic Parka`) && have($skill`Torso Awareness`),
@@ -130,7 +141,7 @@ export function main(command?: string) {
           };
         },
         prepare: () => cliExecute("parka dilophosaur"),
-        do: globeTheater,
+        do: yrTarget,
         combat: new CombatStrategy().macro(Macro.skill($skill`Spit jurassic acid`).abort()),
       },
       {
