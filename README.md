@@ -4,7 +4,9 @@
 
 To install, run the following command on an up-to-date [KolMafia](https://github.com/kolmafia/kolmafia) version:
 
-> `git checkout loathers/chrono-collector release`
+```
+git checkout loathers/chrono-collector release
+```
 
 To update, run `git update` or check the "Update installed Git projects on login" box within Mafia preferences.
 
@@ -12,8 +14,8 @@ To update, run `git update` or check the "Update installed Git projects on login
 
 To run chrono, run the following command in the mafia GCLI:
 
-> `chrono`
+`chrono`
 
 You can specify the number of turns to run (use negative numbers for the number of turns remaining) with the turns argument. The following example will use 10 turns.
 
-> `chrono turns=10`
+`chrono turns=10`
