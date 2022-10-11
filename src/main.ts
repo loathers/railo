@@ -155,7 +155,7 @@ export function main(command?: string) {
   const globeTheater = $location`Globe Theatre Main Stage`;
   const yrTarget = $location`The Cave Before Time`;
   const poisons = $effects`Hardly Poisoned at All, A Little Bit Poisoned, Somewhat Poisoned, Really Quite Poisoned, Majorly Poisoned`;
-  
+
   let digitizes = -1;
   const ttt: Quest<ChronerTask> = {
     name: "TimeTwitchingTower",
