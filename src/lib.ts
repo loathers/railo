@@ -1,3 +1,6 @@
+import { myAdventures } from "kolmafia";
+import { SourceTerminal } from "libram";
+
 /**
  * Find the best element of an array, where "best" is defined by some given criteria.
  * @param array The array to traverse and find the best element of.
@@ -28,4 +31,17 @@ export function maxBy<S extends string | number | symbol, T extends { [x in S]: 
   } else {
     return array.reduce((a, b) => (a[optimizer] > b[optimizer] !== reverse ? a : b));
   }
+}
+
+export function shouldRedigitize(): boolean {
+  const digitizesLeft = SourceTerminal.getDigitizeUsesRemaining();
+  const monsterCount = SourceTerminal.getDigitizeMonsterCount() + 1;
+  // triangular number * 10 - 3
+  const digitizeAdventuresUsed = monsterCount * (monsterCount + 1) * 5 - 3;
+  // Redigitize if fewer adventures than this digitize usage.
+  return (
+    SourceTerminal.have() &&
+    SourceTerminal.canDigitize() &&
+    myAdventures() / 0.96 < digitizesLeft * digitizeAdventuresUsed
+  );
 }

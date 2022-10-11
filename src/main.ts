@@ -21,6 +21,7 @@ import {
   myHp,
   myInebriety,
   myMaxhp,
+  myPath,
   myTurncount,
   print,
   runChoice,
@@ -35,10 +36,12 @@ import {
   $item,
   $location,
   $locations,
+  $path,
   $phylum,
   $skill,
   AsdonMartin,
   AutumnAton,
+  Counter,
   get,
   getKramcoWandererChance,
   have,
@@ -54,6 +57,7 @@ import {
 
 import { freeFightFamiliar } from "./familiar";
 import { bestJuneCleaverOption, shouldSkip } from "./juneCleaver";
+import { shouldRedigitize } from "./lib";
 
 const args = Args.create("chroner-collector", "A script for farming chroner", {
   turns: Args.number({
@@ -151,7 +155,8 @@ export function main(command?: string) {
   const globeTheater = $location`Globe Theatre Main Stage`;
   const yrTarget = $location`The Cave Before Time`;
   const poisons = $effects`Hardly Poisoned at All, A Little Bit Poisoned, Somewhat Poisoned, Really Quite Poisoned, Majorly Poisoned`;
-
+  
+  let digitizes = -1;
   const ttt: Quest<ChronerTask> = {
     name: "TimeTwitchingTower",
     tasks: [
@@ -170,7 +175,7 @@ export function main(command?: string) {
       },
       {
         name: "Recover",
-        completed: () => myHp() / myMaxhp() >= 0.5,
+        completed: () => myPath() === $path`Grey You` || myHp() / myMaxhp() >= 0.5,
         do: () => {
           useSkill($skill`Cannelloni Cocoon`);
         },
@@ -236,6 +241,28 @@ export function main(command?: string) {
             .trySkill($skill`Trap Ghost`)
         ),
         sobriety: "sober",
+      },
+      {
+        name: "Digitize Wanderer",
+        ready: () => Counter.get("Digitize") <= 0,
+        outfit: outfitSpec,
+        completed: () => get("_sourceTerminalDigitizeMonsterCount") !== digitizes,
+        do: () => {
+          adv1(globeTheater, -1, "");
+          digitizes = get("_sourceTerminalDigitizeMonsterCount");
+        },
+        combat: new CombatStrategy().macro(
+          Macro.externalIf(shouldRedigitize(), Macro.skill($skill`Digitize`))
+            .externalIf(
+              get("cosmicBowlingBallReturnCombats") < 1,
+              Macro.trySkill($skill`Bowl Straight Up`)
+            )
+            .trySkill($skill`Sing Along`)
+            .trySkill($skill`Extract`)
+            .attack()
+            .repeat()
+        ),
+        sobriety: "either",
       },
       {
         name: "Asdon Missle",
