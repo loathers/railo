@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "node build.mjs",
-    "format": "prettier --write src/**/*.ts *.{mjs,js,json}",
+    "format": "eslint src --fix --ext .ts && prettier --write src/**/*.ts",
     "lint": "eslint src --ext .ts && prettier --check src/**/*.ts",
     "watch": "node build.mjs --watch",
     "install-mafia": "create-kolmafia-script --install"
