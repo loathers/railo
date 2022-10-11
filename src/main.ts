@@ -1,7 +1,8 @@
 import { Args, CombatStrategy, Engine, getTasks, Quest, Task } from "grimoire-kolmafia";
-import { cliExecute, myAdventures } from "kolmafia";
+import { cliExecute, myAdventures, visitUrl, runChoice } from "kolmafia";
 import {
   $effect,
+  $familiar,
   $familiars,
   $item,
   $location,
@@ -52,6 +53,16 @@ export function main(command?: string) {
         prepare: () => cliExecute("parka dilophosaur"),
         do: $location`Globe Theatre Main Stage`,
         combat: new CombatStrategy().macro(Macro.skill($skill`Spit jurassic acid`).abort()),
+      },
+      {
+        name: "Kgnee",
+        completed: () =>
+          !have($familiar`Reagnimated Gnome`) || have($item`gnomish housemaid's kgnee`),
+        do: (): void => {
+          visitUrl("arena.php");
+          runChoice(4);
+        },
+        outfit: { familiar: $familiar`Reagnimated Gnome` },
       },
       {
         name: "Chroner",
