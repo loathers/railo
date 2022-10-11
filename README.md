@@ -4,7 +4,7 @@
 
 To install, run the following command on an up-to-date [KolMafia](https://github.com/kolmafia/kolmafia) version:
 
-> `git checkout loathers/chrono-collector Release`
+> `git checkout loathers/chrono-collector release`
 
 To update, run `git update` or check the "Update installed Git projects on login" box within Mafia preferences.
 
