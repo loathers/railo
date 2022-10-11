@@ -9,6 +9,9 @@ import {
   print,
   myTurncount,
   Familiar,
+  myInebriety,
+  inebrietyLimit,
+  myFamiliar,
 } from "kolmafia";
 import {
   AsdonMartin,
@@ -39,6 +42,24 @@ const args = Args.create("chroner-collector", "A script for farming chroner", {
 const HIGHLIGHT = isDarkMode() ? "yellow" : "blue";
 function printh(message: string) {
   print(message, HIGHLIGHT);
+}
+
+export function sober() {
+  return myInebriety() <= inebrietyLimit() + (myFamiliar() === $familiar`Stooper` ? -1 : 0);
+}
+
+type ChronerTask = Task & {
+  sobriety: "sober" | "drunk" | "either";
+};
+
+class ChronerEngine extends Engine<never, ChronerTask> {
+  available(task: ChronerTask): boolean {
+    const sobriety =
+      task.sobriety === "either" ||
+      (sober() && task.sobriety === "sober") ||
+      (!sober() && task.sobriety === "drunk");
+    return sobriety && super.available(task);
+  }
 }
 
 export function main(command?: string) {
@@ -74,7 +95,7 @@ export function main(command?: string) {
   const globeTheater = $location`Globe Theatre Main Stage`;
   const yrTarget = $location`The Cave Before Time`;
 
-  const ttt: Quest<Task> = {
+  const ttt: Quest<ChronerTask> = {
     name: "TimeTwitchingTower",
     tasks: [
       {
@@ -86,12 +107,14 @@ export function main(command?: string) {
           runChoice(4);
         },
         outfit: { familiar: $familiar`Reagnimated Gnome` },
+        sobriety: "sober",
       },
       {
         name: "Autumn-Aton",
         completed: () => completed() && AutumnAton.currentlyIn() !== null,
         do: () => AutumnAton.sendTo($locations`Globe Theatre Main Stage, The Dire Warren`),
         ready: () => AutumnAton.available(),
+        sobriety: "either",
       },
       {
         name: "Proton Ghost",
@@ -121,6 +144,7 @@ export function main(command?: string) {
             .trySkill($skill`Shoot Ghost`)
             .trySkill($skill`Trap Ghost`)
         ),
+        sobriety: "sober",
       },
       {
         name: "Asdon Missle",
@@ -129,6 +153,7 @@ export function main(command?: string) {
         combat: new CombatStrategy().macro(Macro.skill($skill`Asdon Martin: Missile Launcher`)),
         prepare: () => AsdonMartin.fillTo(100),
         do: yrTarget,
+        sobriety: "sober",
       },
       {
         name: "Spit Jurassic Acid",
@@ -143,12 +168,19 @@ export function main(command?: string) {
         prepare: () => cliExecute("parka dilophosaur"),
         do: yrTarget,
         combat: new CombatStrategy().macro(Macro.skill($skill`Spit jurassic acid`).abort()),
+        sobriety: "sober",
       },
       {
         name: "Chroner",
         completed,
         do: globeTheater,
         outfit: () => {
+          if (!sober()) {
+            return {
+              ...outfitSpec(),
+              offhand: $item`Drunkula's wineglass`,
+            };
+          }
           if (have($item`Kramco Sausage-o-Matic™`) && getKramcoWandererChance() >= 1) {
             return {
               ...outfitSpec(),
@@ -167,11 +199,12 @@ export function main(command?: string) {
             .attack()
             .repeat()
         ),
+        sobriety: "either",
       },
     ],
   };
 
-  const engine = new Engine(getTasks([ttt]));
+  const engine = new ChronerEngine(getTasks([ttt]));
   const sessionStart = Session.current();
 
   try {
