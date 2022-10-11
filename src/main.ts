@@ -1,4 +1,4 @@
-import { Args, CombatStrategy, Engine, getTasks, Quest, Task } from "grimoire-kolmafia";
+import { Args, CombatStrategy, Engine, getTasks, OutfitSpec, Quest, Task } from "grimoire-kolmafia";
 import { cliExecute, myAdventures, visitUrl, runChoice, isDarkMode, print, myTurncount } from "kolmafia";
 import {
   $effect,
@@ -24,7 +24,7 @@ const args = Args.create("chroner-collector", "A script for farming chroner", {
 
 const HIGHLIGHT = isDarkMode() ? "yellow" : "blue";
 function printh(message: string) {
-  print(message, HIGHLIGHT)
+  print(message, HIGHLIGHT);
 }
 
 export function main(command?: string) {
@@ -36,6 +36,18 @@ export function main(command?: string) {
       ? () => myTurncount() - turncount >= args.turns || myAdventures() === 0
       : () => myAdventures() === -args.turns;
   const familiar = $familiars`Reagnimated Gnome, Temporal Riftlet, none`.find((f) => have(f));
+  const famequip =
+    familiar === $familiar`Reagnimated Gnome` ? $item`nomish housemaid's kgnee` : $item`stillsuit`;
+
+  const outfitSpec: OutfitSpec = {
+    weapon: $item`June cleaver`,
+    offhand: $item`carnivorous potted plant`,
+    acc1: $item`mafia thumb ring`,
+    acc2: $item`time-twitching toolbelt`,
+    acc3: $item`lucky gold ring`,
+    familiar,
+    famequip,
+  };
 
   const ttt: Quest<Task> = {
     name: "TimeTwitchingTower",
@@ -52,12 +64,8 @@ export function main(command?: string) {
         ready: () => have($item`Jurassic Parka`) && have($skill`Torso Awareness`),
         outfit: () => {
           return {
-            weapon: $item`June cleaver`,
-            offhand: $item`carnivorous potted plant`,
+            ...outfitSpec,
             shirt: $item`Jurassic Parka`,
-            acc2: $item`time-twitching toolbelt`,
-            acc3: $item`lucky gold ring`,
-            familiar,
           };
         },
         prepare: () => cliExecute("parka dilophosaur"),
@@ -79,14 +87,7 @@ export function main(command?: string) {
         completed,
         do: $location`Globe Theatre Main Stage`,
         outfit: () => {
-          return {
-            weapon: $item`June cleaver`,
-            offhand: $item`carnivorous potted plant`,
-            acc1: $item`mafia thumb ring`,
-            acc2: $item`time-twitching toolbelt`,
-            acc3: $item`lucky gold ring`,
-            familiar,
-          };
+          return outfitSpec;
         },
         combat: new CombatStrategy().macro(
           Macro.externalIf(
