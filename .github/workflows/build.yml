@@ -9,7 +9,7 @@ on:
 
 env:
   node-version: "18"
-  path: "KoLmafia" # The directory where your assets are generated, should match webpack.config.js
+  path: "KoLmafia" # The directory where your assets are generated, should match build.mjs
 
 jobs:
   test:
