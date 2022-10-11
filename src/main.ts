@@ -159,7 +159,7 @@ export function main(command?: string) {
       {
         name: "Autumn-Aton",
         completed: () => completed() && AutumnAton.currentlyIn() !== null,
-        do: () => AutumnAton.sendTo($locations`Moonshiners' Woods, The Dire Warren`),
+        do: () => AutumnAton.sendTo($locations`Moonshiners' Woods, The Sleazy Back Alley`),
         ready: () => AutumnAton.available(),
         sobriety: "either",
       },
