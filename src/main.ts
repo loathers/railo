@@ -32,7 +32,7 @@ export function main(command?: string) {
 
   const turncount = myTurncount();
   const completed =
-    args.turns < 0
+    args.turns > 0
       ? () => myTurncount() - turncount >= args.turns || myAdventures() === 0
       : () => myAdventures() === -args.turns;
   const familiar = $familiars`Reagnimated Gnome, Temporal Riftlet, none`.find((f) => have(f));
