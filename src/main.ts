@@ -51,7 +51,7 @@ export function main(command?: string) {
         },
         prepare: () => cliExecute("parka dilophosaur"),
         do: $location`Globe Theatre Main Stage`,
-        combat: new CombatStrategy().macro(Macro.skill($skill`Spit jurassic acid`)),
+        combat: new CombatStrategy().macro(Macro.skill($skill`Spit jurassic acid`).abort()),
       },
       {
         name: "Chroner",
