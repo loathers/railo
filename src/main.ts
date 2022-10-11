@@ -29,6 +29,7 @@ import {
   JuneCleaver,
   Macro,
   Session,
+  sinceKolmafiaRevision,
 } from "libram";
 
 import { freeFightFamiliar } from "./familiar";
@@ -67,6 +68,7 @@ class ChronerEngine extends Engine<never, ChronerTask> {
 export function main(command?: string) {
   Args.fill(args, command);
 
+  sinceKolmafiaRevision(26834);
   const turncount = myTurncount();
   const completed =
     args.turns > 0
