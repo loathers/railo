@@ -2,14 +2,14 @@ import { Args, CombatStrategy, Engine, getTasks, OutfitSpec, Quest, Task } from 
 import {
   adv1,
   cliExecute,
+  Familiar,
   inebrietyLimit,
   isDarkMode,
-  Familiar,
-  print,
   myAdventures,
   myFamiliar,
   myInebriety,
   myTurncount,
+  print,
   runChoice,
   visitUrl,
 } from "kolmafia";
@@ -24,10 +24,10 @@ import {
   AsdonMartin,
   AutumnAton,
   get,
+  getKramcoWandererChance,
   have,
   Macro,
   Session,
-  getKramcoWandererChance,
 } from "libram";
 
 import { freeFightFamiliar } from "./familiar";
