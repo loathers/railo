@@ -34,11 +34,17 @@ export function menu(options: MenuOptions = {}): GeneralFamiliar[] {
     ...DEFAULT_MENU_OPTIONS,
     ...options,
   };
-  const familiarMenu = [
+  const familiarMenu: GeneralFamiliar[] = [
     ...getConstantValueFamiliars(),
     ...getDropFamiliars(),
     ...(includeExperienceFamiliars ? getExperienceFamiliars() : []),
     ...extraFamiliars,
+    {
+      familiar: $familiar.none,
+      expectedValue: 0,
+      leprechaunMultiplier: 0,
+      limit: "none",
+    },
   ];
 
   if (canChooseMacro && myInebriety() <= inebrietyLimit()) {
