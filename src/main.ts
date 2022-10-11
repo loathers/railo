@@ -2,19 +2,18 @@ import { Args, CombatStrategy, Engine, getTasks, OutfitSpec, Quest, Task } from 
 import {
   adv1,
   cliExecute,
-  myAdventures,
-  visitUrl,
-  runChoice,
-  isDarkMode,
-  print,
-  myTurncount,
-  Familiar,
-  myInebriety,
   inebrietyLimit,
+  isDarkMode,
+  Familiar,
+  print,
+  myAdventures,
   myFamiliar,
+  myInebriety,
+  myTurncount,
+  runChoice,
+  visitUrl,
 } from "kolmafia";
 import {
-  AsdonMartin,
   $effect,
   $familiar,
   $familiars,
@@ -22,6 +21,7 @@ import {
   $location,
   $locations,
   $skill,
+  AsdonMartin,
   AutumnAton,
   get,
   have,
@@ -73,7 +73,7 @@ export function main(command?: string) {
   const chooseFamiliar = () =>
     $familiars`Reagnimated Gnome, Temporal Riftlet`.find((f) => have(f)) ?? freeFightFamiliar();
   const chooseFamEquip = (fam: Familiar) =>
-    fam === $familiar`Reagnimated Gnome` ? $item`nomish housemaid's kgnee` : $item`stillsuit`;
+    fam === $familiar`Reagnimated Gnome` ? $item`gnomish housemaid's kgnee` : $item`tiny stillsuit`;
 
   const outfitSpec = (): OutfitSpec => {
     const familiar = chooseFamiliar();
