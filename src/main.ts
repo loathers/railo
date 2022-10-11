@@ -1,4 +1,13 @@
-import { Args, CombatStrategy, Engine, getTasks, OutfitSlot, OutfitSpec, Quest, Task } from "grimoire-kolmafia";
+import {
+  Args,
+  CombatStrategy,
+  Engine,
+  getTasks,
+  OutfitSlot,
+  OutfitSpec,
+  Quest,
+  Task,
+} from "grimoire-kolmafia";
 import {
   adv1,
   cliExecute,
@@ -16,7 +25,7 @@ import {
   print,
   runChoice,
   useSkill,
-  visitUrl
+  visitUrl,
 } from "kolmafia";
 import {
   $effect,
@@ -26,6 +35,7 @@ import {
   $item,
   $location,
   $locations,
+  $phylum,
   $skill,
   AsdonMartin,
   AutumnAton,
@@ -37,8 +47,9 @@ import {
   PropertiesManager,
   Session,
   sinceKolmafiaRevision,
+  Snapper,
   uneffect,
-  withProperty
+  withProperty,
 } from "libram";
 
 import { freeFightFamiliar } from "./familiar";
@@ -75,22 +86,29 @@ class ChronerEngine extends Engine<never, ChronerTask> {
 
   setChoices(task: ChronerTask, manager: PropertiesManager): void {
     super.setChoices(task, manager);
-    if(equippedAmount($item`June cleaver`) > 0) {
-      this.propertyManager.setChoices(Object.fromEntries(JuneCleaver.choices.map((choice) => [choice, shouldSkip(choice) ? 4 : bestJuneCleaverOption(choice)])))
+    if (equippedAmount($item`June cleaver`) > 0) {
+      this.propertyManager.setChoices(
+        Object.fromEntries(
+          JuneCleaver.choices.map((choice) => [
+            choice,
+            shouldSkip(choice) ? 4 : bestJuneCleaverOption(choice),
+          ])
+        )
+      );
     }
   }
 
   shouldRepeatAdv(task: ChronerTask): boolean {
-    if(["Poetic Justice", "Lost and Found"].includes(get("lastEncounter"))) {
-      return false
+    if (["Poetic Justice", "Lost and Found"].includes(get("lastEncounter"))) {
+      return false;
     }
     return super.shouldRepeatAdv(task);
   }
 
   print() {
-    printh(`Task List:`)
-    for(const task of this.tasks) {
-      printh(`${task.name}: available:${this.available(task)}`)
+    printh(`Task List:`);
+    for (const task of this.tasks) {
+      printh(`${task.name}: available:${this.available(task)}`);
     }
   }
 }
@@ -113,11 +131,12 @@ export function main(command?: string) {
     const familiar = chooseFamiliar();
     const famequip = chooseFamEquip(familiar);
 
-    const ifHave = (slot: OutfitSlot, item: Item ): OutfitSpec => have(item) ? Object.fromEntries([[slot, item]]) : {}
+    const ifHave = (slot: OutfitSlot, item: Item): OutfitSpec =>
+      have(item) ? Object.fromEntries([[slot, item]]) : {};
 
     return {
       ...ifHave("weapon", $item`June cleaver`),
-      ...ifHave("offhand",$item`carnivorous potted plant`),
+      ...ifHave("offhand", $item`carnivorous potted plant`),
       ...ifHave("acc1", $item`mafia thumb ring`),
       ...ifHave("acc2", $item`time-twitching toolbelt`),
       ...ifHave("acc3", $item`lucky gold ring`),
@@ -131,7 +150,7 @@ export function main(command?: string) {
 
   const globeTheater = $location`Globe Theatre Main Stage`;
   const yrTarget = $location`The Cave Before Time`;
-  const poisons = $effects`Hardly Poisoned at All, A Little Bit Poisoned, Somewhat Poisoned, Really Quite Poisoned, Majorly Poisoned`
+  const poisons = $effects`Hardly Poisoned at All, A Little Bit Poisoned, Somewhat Poisoned, Really Quite Poisoned, Majorly Poisoned`;
 
   const ttt: Quest<ChronerTask> = {
     name: "TimeTwitchingTower",
@@ -140,14 +159,14 @@ export function main(command?: string) {
         name: "Beaten Up",
         completed: () => !have($effect`Beaten Up`),
         do: () => {
-          if(["Poetic Justice", "Lost and Found"].includes(get("lastEncounter"))) {
+          if (["Poetic Justice", "Lost and Found"].includes(get("lastEncounter"))) {
             uneffect($effect`Beaten Up`);
           }
-          if(have($effect`Beaten Up`)) {
-            throw "Got beaten up for no discernable reason!"
+          if (have($effect`Beaten Up`)) {
+            throw "Got beaten up for no discernable reason!";
           }
         },
-        sobriety: "either"
+        sobriety: "either",
       },
       {
         name: "Recover",
@@ -155,13 +174,13 @@ export function main(command?: string) {
         do: () => {
           useSkill($skill`Cannelloni Cocoon`);
         },
-        sobriety: "either"
+        sobriety: "either",
       },
       {
         name: "Antidote",
         completed: () => poisons.every((e) => !have(e)),
         do: () => poisons.forEach((e) => uneffect(e)),
-        sobriety: "either"
+        sobriety: "either",
       },
       {
         name: "Kgnee",
@@ -173,6 +192,13 @@ export function main(command?: string) {
         },
         outfit: { familiar: $familiar`Reagnimated Gnome` },
         sobriety: "sober",
+      },
+      {
+        name: "Snapper",
+        completed: () => Snapper.getTrackedPhylum() === $phylum`dude`,
+        do: () => Snapper.trackPhylum($phylum`dude`),
+        ready: () => Snapper.have(),
+        sobriety: "either",
       },
       {
         name: "Autumn-Aton",
@@ -273,12 +299,12 @@ export function main(command?: string) {
   const sessionStart = Session.current();
 
   withProperty("recoveryScript", "", () => {
-  try {
-    engine.run();
-  } finally {
-    engine.destruct();
-  }
-});
+    try {
+      engine.run();
+    } finally {
+      engine.destruct();
+    }
+  });
 
   const sessionResults = Session.current().diff(sessionStart);
 
