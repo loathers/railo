@@ -2,13 +2,16 @@ import { Args, CombatStrategy, Engine, getTasks, OutfitSpec, Quest, Task } from 
 import {
   adv1,
   cliExecute,
-  myAdventures,
-  visitUrl,
-  runChoice,
+  inebrietyLimit,
   isDarkMode,
-  print,
-  myTurncount,
   Familiar,
+  print,
+  myAdventures,
+  myFamiliar,
+  myInebriety,
+  myTurncount,
+  runChoice,
+  visitUrl,
 } from "kolmafia";
 import {
   $effect,
@@ -18,6 +21,7 @@ import {
   $location,
   $locations,
   $skill,
+  AsdonMartin,
   AutumnAton,
   get,
   have,
@@ -40,6 +44,24 @@ function printh(message: string) {
   print(message, HIGHLIGHT);
 }
 
+export function sober() {
+  return myInebriety() <= inebrietyLimit() + (myFamiliar() === $familiar`Stooper` ? -1 : 0);
+}
+
+type ChronerTask = Task & {
+  sobriety: "sober" | "drunk" | "either";
+};
+
+class ChronerEngine extends Engine<never, ChronerTask> {
+  available(task: ChronerTask): boolean {
+    const sobriety =
+      task.sobriety === "either" ||
+      (sober() && task.sobriety === "sober") ||
+      (!sober() && task.sobriety === "drunk");
+    return sobriety && super.available(task);
+  }
+}
+
 export function main(command?: string) {
   Args.fill(args, command);
 
@@ -51,7 +73,7 @@ export function main(command?: string) {
   const chooseFamiliar = () =>
     $familiars`Reagnimated Gnome, Temporal Riftlet`.find((f) => have(f)) ?? freeFightFamiliar();
   const chooseFamEquip = (fam: Familiar) =>
-    fam === $familiar`Reagnimated Gnome` ? $item`nomish housemaid's kgnee` : $item`stillsuit`;
+    fam === $familiar`Reagnimated Gnome` ? $item`gnomish housemaid's kgnee` : $item`tiny stillsuit`;
 
   const outfitSpec = (): OutfitSpec => {
     const familiar = chooseFamiliar();
@@ -71,7 +93,9 @@ export function main(command?: string) {
   };
 
   const globeTheater = $location`Globe Theatre Main Stage`;
-  const ttt: Quest<Task> = {
+  const yrTarget = $location`The Cave Before Time`;
+
+  const ttt: Quest<ChronerTask> = {
     name: "TimeTwitchingTower",
     tasks: [
       {
@@ -83,12 +107,14 @@ export function main(command?: string) {
           runChoice(4);
         },
         outfit: { familiar: $familiar`Reagnimated Gnome` },
+        sobriety: "sober",
       },
       {
         name: "Autumn-Aton",
         completed: () => completed() && AutumnAton.currentlyIn() !== null,
         do: () => AutumnAton.sendTo($locations`Globe Theatre Main Stage, The Dire Warren`),
         ready: () => AutumnAton.available(),
+        sobriety: "either",
       },
       {
         name: "Proton Ghost",
@@ -118,6 +144,16 @@ export function main(command?: string) {
             .trySkill($skill`Shoot Ghost`)
             .trySkill($skill`Trap Ghost`)
         ),
+        sobriety: "sober",
+      },
+      {
+        name: "Asdon Missle",
+        ready: () => AsdonMartin.installed(),
+        completed: () => get("_missileLauncherUsed") || have($effect`Everything Looks Yellow`),
+        combat: new CombatStrategy().macro(Macro.skill($skill`Asdon Martin: Missile Launcher`)),
+        prepare: () => AsdonMartin.fillTo(100),
+        do: yrTarget,
+        sobriety: "sober",
       },
       {
         name: "Spit Jurassic Acid",
@@ -130,14 +166,21 @@ export function main(command?: string) {
           };
         },
         prepare: () => cliExecute("parka dilophosaur"),
-        do: globeTheater,
+        do: yrTarget,
         combat: new CombatStrategy().macro(Macro.skill($skill`Spit jurassic acid`).abort()),
+        sobriety: "sober",
       },
       {
         name: "Chroner",
         completed,
         do: globeTheater,
         outfit: () => {
+          if (!sober()) {
+            return {
+              ...outfitSpec(),
+              offhand: $item`Drunkula's wineglass`,
+            };
+          }
           if (have($item`Kramco Sausage-o-Matic™`) && getKramcoWandererChance() >= 1) {
             return {
               ...outfitSpec(),
@@ -156,11 +199,12 @@ export function main(command?: string) {
             .attack()
             .repeat()
         ),
+        sobriety: "either",
       },
     ],
   };
 
-  const engine = new Engine(getTasks([ttt]));
+  const engine = new ChronerEngine(getTasks([ttt]));
   const sessionStart = Session.current();
 
   try {
