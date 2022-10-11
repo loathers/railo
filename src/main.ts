@@ -1,4 +1,13 @@
-import { Args, CombatStrategy, Engine, getTasks, OutfitSlot, OutfitSpec, Quest, Task } from "grimoire-kolmafia";
+import {
+  Args,
+  CombatStrategy,
+  Engine,
+  getTasks,
+  OutfitSlot,
+  OutfitSpec,
+  Quest,
+  Task,
+} from "grimoire-kolmafia";
 import {
   adv1,
   cliExecute,
@@ -16,7 +25,7 @@ import {
   print,
   runChoice,
   useSkill,
-  visitUrl
+  visitUrl,
 } from "kolmafia";
 import {
   $effect,
@@ -29,6 +38,7 @@ import {
   $skill,
   AsdonMartin,
   AutumnAton,
+  Counter,
   get,
   getKramcoWandererChance,
   have,
@@ -38,11 +48,12 @@ import {
   Session,
   sinceKolmafiaRevision,
   uneffect,
-  withProperty
+  withProperty,
 } from "libram";
 
 import { freeFightFamiliar } from "./familiar";
 import { bestJuneCleaverOption, shouldSkip } from "./juneCleaver";
+import { shouldRedigitize } from "./lib";
 
 const args = Args.create("chroner-collector", "A script for farming chroner", {
   turns: Args.number({
@@ -75,15 +86,22 @@ class ChronerEngine extends Engine<never, ChronerTask> {
 
   setChoices(task: ChronerTask, manager: PropertiesManager): void {
     super.setChoices(task, manager);
-    if(equippedAmount($item`June cleaver`) > 0) {
-      this.propertyManager.setChoices(Object.fromEntries(JuneCleaver.choices.map((choice) => [choice, shouldSkip(choice) ? 4 : bestJuneCleaverOption(choice)])))
+    if (equippedAmount($item`June cleaver`) > 0) {
+      this.propertyManager.setChoices(
+        Object.fromEntries(
+          JuneCleaver.choices.map((choice) => [
+            choice,
+            shouldSkip(choice) ? 4 : bestJuneCleaverOption(choice),
+          ])
+        )
+      );
     }
   }
 
   print() {
-    printh(`Task List:`)
-    for(const task of this.tasks) {
-      printh(`${task.name}: available:${this.available(task)}`)
+    printh(`Task List:`);
+    for (const task of this.tasks) {
+      printh(`${task.name}: available:${this.available(task)}`);
     }
   }
 }
@@ -106,11 +124,12 @@ export function main(command?: string) {
     const familiar = chooseFamiliar();
     const famequip = chooseFamEquip(familiar);
 
-    const ifHave = (slot: OutfitSlot, item: Item ): OutfitSpec => have(item) ? Object.fromEntries([[slot, item]]) : {}
+    const ifHave = (slot: OutfitSlot, item: Item): OutfitSpec =>
+      have(item) ? Object.fromEntries([[slot, item]]) : {};
 
     return {
       ...ifHave("weapon", $item`June cleaver`),
-      ...ifHave("offhand",$item`carnivorous potted plant`),
+      ...ifHave("offhand", $item`carnivorous potted plant`),
       ...ifHave("acc1", $item`mafia thumb ring`),
       ...ifHave("acc2", $item`time-twitching toolbelt`),
       ...ifHave("acc3", $item`lucky gold ring`),
@@ -124,8 +143,8 @@ export function main(command?: string) {
 
   const globeTheater = $location`Globe Theatre Main Stage`;
   const yrTarget = $location`The Cave Before Time`;
-  const poisons = $effects`Hardly Poisoned at All, A Little Bit Poisoned, Somewhat Poisoned, Really Quite Poisoned, Majorly Poisoned`
-
+  const poisons = $effects`Hardly Poisoned at All, A Little Bit Poisoned, Somewhat Poisoned, Really Quite Poisoned, Majorly Poisoned`;
+  let digitizes = -1;
   const ttt: Quest<ChronerTask> = {
     name: "TimeTwitchingTower",
     tasks: [
@@ -133,14 +152,14 @@ export function main(command?: string) {
         name: "Beaten Up",
         completed: () => !have($effect`Beaten Up`),
         do: () => {
-          if(["Poetic Justice", "Lost and Found"].includes(get("lastEncounter"))) {
+          if (["Poetic Justice", "Lost and Found"].includes(get("lastEncounter"))) {
             uneffect($effect`Beaten Up`);
           }
-          if(have($effect`Beaten Up`)) {
-            throw "Got beaten up for no discernable reason!"
+          if (have($effect`Beaten Up`)) {
+            throw "Got beaten up for no discernable reason!";
           }
         },
-        sobriety: "either"
+        sobriety: "either",
       },
       {
         name: "Recover",
@@ -148,13 +167,13 @@ export function main(command?: string) {
         do: () => {
           useSkill($skill`Cannelloni Cocoon`);
         },
-        sobriety: "either"
+        sobriety: "either",
       },
       {
         name: "Antidote",
         completed: () => poisons.every((e) => !have(e)),
         do: () => poisons.forEach((e) => uneffect(e)),
-        sobriety: "either"
+        sobriety: "either",
       },
       {
         name: "Kgnee",
@@ -203,6 +222,28 @@ export function main(command?: string) {
             .trySkill($skill`Trap Ghost`)
         ),
         sobriety: "sober",
+      },
+      {
+        name: "Digitize Wanderer",
+        ready: () => Counter.get("Digitize") <= 0,
+        outfit: outfitSpec,
+        completed: () => get("_sourceTerminalDigitizeMonsterCount") !== digitizes,
+        do: () => {
+          adv1(globeTheater, -1, "");
+          digitizes = get("_sourceTerminalDigitizeMonsterCount");
+        },
+        combat: new CombatStrategy().macro(
+          Macro.externalIf(shouldRedigitize(), Macro.skill($skill`Digitize`))
+            .externalIf(
+              get("cosmicBowlingBallReturnCombats") < 1,
+              Macro.trySkill($skill`Bowl Straight Up`)
+            )
+            .trySkill($skill`Sing Along`)
+            .trySkill($skill`Extract`)
+            .attack()
+            .repeat()
+        ),
+        sobriety: "either",
       },
       {
         name: "Asdon Missle",
@@ -266,12 +307,12 @@ export function main(command?: string) {
   const sessionStart = Session.current();
 
   withProperty("recoveryScript", "", () => {
-  try {
-    engine.run();
-  } finally {
-    engine.destruct();
-  }
-});
+    try {
+      engine.run();
+    } finally {
+      engine.destruct();
+    }
+  });
 
   const sessionResults = Session.current().diff(sessionStart);
 
