@@ -1,5 +1,5 @@
 import { Args, CombatStrategy, Engine, getTasks, Quest, Task } from "grimoire-kolmafia";
-import { cliExecute, myAdventures, visitUrl, runChoice, myTurncount } from "kolmafia";
+import { cliExecute, myAdventures, visitUrl, runChoice, isDarkMode, print, myTurncount } from "kolmafia";
 import {
   $effect,
   $familiar,
@@ -12,6 +12,7 @@ import {
   get,
   have,
   Macro,
+  Session,
 } from "libram";
 
 const args = Args.create("chroner-collector", "A script for farming chroner", {
@@ -20,6 +21,11 @@ const args = Args.create("chroner-collector", "A script for farming chroner", {
     default: Infinity,
   }),
 });
+
+const HIGHLIGHT = isDarkMode() ? "yellow" : "blue";
+function printh(message: string) {
+  print(message, HIGHLIGHT)
+}
 
 export function main(command?: string) {
   Args.fill(args, command);
@@ -97,9 +103,18 @@ export function main(command?: string) {
   };
 
   const engine = new Engine(getTasks([ttt]));
+  const sessionStart = Session.current();
+
   try {
     engine.run();
   } finally {
     engine.destruct();
+  }
+
+  const sessionResults = Session.current().diff(sessionStart);
+
+  printh(`SESSION RESULTS:`);
+  for (const [item, count] of sessionResults.items.entries()) {
+    printh(`ITEM ${item} QTY ${count}`);
   }
 }
