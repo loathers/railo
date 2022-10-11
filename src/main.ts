@@ -34,6 +34,8 @@ import {
   Macro,
   Session,
   sinceKolmafiaRevision,
+  uneffect,
+  withProperty,
 } from "libram";
 
 import { freeFightFamiliar } from "./familiar";
@@ -148,7 +150,13 @@ export function main(command?: string) {
       {
         name: "June Cleaver",
         completed: () => !!get("_juneCleaverFightsLeft"),
-        do: $location`Noob Cave`,
+        do: () =>
+          withProperty("recoveryScript", "", () => {
+            adv1($location`Noob Cave`, -1, "");
+            if (["Poetic Justice", "Lost and Found"].includes(get("lastEncounter"))) {
+              uneffect($effect`Beaten Up`);
+            }
+          }),
         choices: Object.fromEntries(
           JuneCleaver.choices.map((choice) => [
             choice,
@@ -158,6 +166,7 @@ export function main(command?: string) {
         sobriety: "either",
         ready: () => JuneCleaver.have() && !get("_juneCleaverFightsLeft"),
         outfit: { weapon: $item`June cleaver` },
+        combat: new CombatStrategy().macro(Macro.abort()),
       },
       {
         name: "Proton Ghost",
