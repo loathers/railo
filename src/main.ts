@@ -7,11 +7,14 @@ import {
   isDarkMode,
   myAdventures,
   myFamiliar,
+  myHp,
   myInebriety,
+  myMaxhp,
   myTurncount,
   print,
   runChoice,
-  visitUrl,
+  useSkill,
+  visitUrl
 } from "kolmafia";
 import {
   $effect,
@@ -98,6 +101,24 @@ export function main(command?: string) {
   const ttt: Quest<ChronerTask> = {
     name: "TimeTwitchingTower",
     tasks: [
+      {
+        name: "Beaten Up",
+        completed: () => !have($effect`Beaten Up`),
+        do: () => {
+          if(have($effect`Beaten Up`)) {
+            throw "You were beaten up!"
+          }
+        },
+        sobriety: "either"
+      },
+      {
+        name: "Recover",
+        completed: () => myHp() / myMaxhp() >= 0.5,
+        do: () => {
+          useSkill($skill`Cannelloni Cocoon`);
+        },
+        sobriety: "either"
+      },
       {
         name: "Kgnee",
         completed: () =>
