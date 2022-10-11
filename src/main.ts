@@ -2,6 +2,7 @@ import { Args, CombatStrategy, Engine, getTasks, OutfitSlot, OutfitSpec, Quest, 
 import {
   adv1,
   cliExecute,
+  equippedAmount,
   Familiar,
   inebrietyLimit,
   isDarkMode,
@@ -33,11 +34,11 @@ import {
   have,
   JuneCleaver,
   Macro,
+  PropertiesManager,
   Session,
-  set,
   sinceKolmafiaRevision,
   uneffect,
-  withProperty,
+  withProperty
 } from "libram";
 
 import { freeFightFamiliar } from "./familiar";
@@ -70,6 +71,13 @@ class ChronerEngine extends Engine<never, ChronerTask> {
       (sober() && task.sobriety === "sober") ||
       (!sober() && task.sobriety === "drunk");
     return sobriety && super.available(task);
+  }
+
+  setChoices(task: ChronerTask, manager: PropertiesManager): void {
+    super.setChoices(task, manager);
+    if(equippedAmount($item`June cleaver`) > 0) {
+      this.propertyManager.setChoices(Object.fromEntries(JuneCleaver.choices.map((choice) => [choice, shouldSkip(choice) ? 4 : bestJuneCleaverOption(choice)])))
+    }
   }
 
   print() {
@@ -125,8 +133,11 @@ export function main(command?: string) {
         name: "Beaten Up",
         completed: () => !have($effect`Beaten Up`),
         do: () => {
+          if(["Poetic Justice", "Lost and Found"].includes(get("lastEncounter"))) {
+            uneffect($effect`Beaten Up`);
+          }
           if(have($effect`Beaten Up`)) {
-            throw "You were beaten up!"
+            throw "Got beaten up for no discernable reason!"
           }
         },
         sobriety: "either"
@@ -162,27 +173,6 @@ export function main(command?: string) {
         do: () => AutumnAton.sendTo($locations`Moonshiners' Woods, The Sleazy Back Alley`),
         ready: () => AutumnAton.available(),
         sobriety: "either",
-      },
-      {
-        name: "June Cleaver",
-        completed: () => !!get("_juneCleaverFightsLeft"),
-        do: () =>
-          withProperty("recoveryScript", "", () => {
-            adv1($location`Noob Cave`, -1, "");
-            if (["Poetic Justice", "Lost and Found"].includes(get("lastEncounter"))) {
-              uneffect($effect`Beaten Up`);
-            }
-          }),
-          prepare: () => {
-            for(const choice of JuneCleaver.choices)
-            {
-              set(`choiceAdventure${choice}`, shouldSkip(choice) ? 4 : bestJuneCleaverOption(choice))
-            }
-          },
-        sobriety: "either",
-        ready: () => JuneCleaver.have() && !get("_juneCleaverFightsLeft"),
-        outfit: { weapon: $item`June cleaver` },
-        combat: new CombatStrategy().macro(Macro.abort()),
       },
       {
         name: "Proton Ghost",
@@ -275,11 +265,13 @@ export function main(command?: string) {
   const engine = new ChronerEngine(getTasks([ttt]));
   const sessionStart = Session.current();
 
+  withProperty("recoveryScript", "", () => {
   try {
     engine.run();
   } finally {
     engine.destruct();
   }
+});
 
   const sessionResults = Session.current().diff(sessionStart);
 
