@@ -93,7 +93,9 @@ export function main(command?: string) {
   };
 
   const engine = new Engine(getTasks([ttt]));
-  const actions = args.turns > 0 ? args.turns : Infinity;
-
-  engine.run(actions);
+  try {
+    engine.run();
+  } finally {
+    engine.destruct();
+  }
 }
