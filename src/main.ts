@@ -80,6 +80,13 @@ class ChronerEngine extends Engine<never, ChronerTask> {
     }
   }
 
+  shouldRepeatAdv(task: ChronerTask): boolean {
+    if(["Poetic Justice", "Lost and Found"].includes(get("lastEncounter"))) {
+      return false
+    }
+    return super.shouldRepeatAdv(task);
+  }
+
   print() {
     printh(`Task List:`)
     for(const task of this.tasks) {
