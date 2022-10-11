@@ -14,6 +14,6 @@ To run chrono, run the following command in the mafia GCLI:
 
 > `chrono`
 
-If you add a number after "chrono", it will run for that # of turns, like the following for 10 turns:
+You can specify the number of turns to run (use negative numbers for the number of turns remaining) with the turns argument. The following example will use 10 turns.
 
-> `chrono 10`
+> `chrono turns=10`
