@@ -1,5 +1,5 @@
-import { myAdventures } from "kolmafia";
-import { SourceTerminal } from "libram";
+import { inebrietyLimit, isDarkMode, myAdventures,myFamiliar,myInebriety,print } from "kolmafia";
+import { $familiar, SourceTerminal } from "libram";
 
 /**
  * Find the best element of an array, where "best" is defined by some given criteria.
@@ -44,4 +44,13 @@ export function shouldRedigitize(): boolean {
     SourceTerminal.canDigitize() &&
     myAdventures() / 0.96 < digitizesLeft * digitizeAdventuresUsed
   );
+}
+
+const HIGHLIGHT = isDarkMode() ? "yellow" : "blue";
+export function printh(message: string) {
+  print(message, HIGHLIGHT);
+}
+
+export function sober() {
+  return myInebriety() <= inebrietyLimit() + (myFamiliar() === $familiar`Stooper` ? -1 : 0);
 }
