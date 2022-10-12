@@ -1,7 +1,7 @@
 import { CombatStrategy, Engine, OutfitSpec, Quest, Task } from "grimoire-kolmafia";
 import { $item, get, JuneCleaver, Macro, PropertiesManager } from "libram";
 import { printh, sober } from "./lib";
-import { equippedAmount, Location } from "kolmafia";
+import { equippedAmount, Location, setAutoAttack } from "kolmafia";
 import { bestJuneCleaverOption, shouldSkip } from "./juneCleaver";
 
 export type ChronerTask = Task & {
@@ -59,6 +59,6 @@ export class ChronerEngine extends Engine<never, ChronerTask> {
 
   destruct(): void {
     super.destruct();
-    Macro.clearAutoAttackMacros();
+    setAutoAttack(0);
   }
 }
