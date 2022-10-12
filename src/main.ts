@@ -233,7 +233,7 @@ export function main(command?: string) {
           };
         },
         completed: () => get("questPAGhost") === "unstarted",
-        combat: new CombatStrategy().macro(
+        combat: new CombatStrategy().autoattack(
           Macro.trySkill($skill`Sing Along`)
             .trySkill($skill`Shoot Ghost`)
             .trySkill($skill`Shoot Ghost`)
@@ -251,7 +251,7 @@ export function main(command?: string) {
           adv1(globeTheater, -1, "");
           digitizes = get("_sourceTerminalDigitizeMonsterCount");
         },
-        combat: new CombatStrategy().macro(
+        combat: new CombatStrategy().autoattack(
           Macro.externalIf(shouldRedigitize(), Macro.skill($skill`Digitize`))
             .externalIf(
               get("cosmicBowlingBallReturnCombats") < 1,
@@ -268,7 +268,9 @@ export function main(command?: string) {
         name: "Asdon Missle",
         ready: () => AsdonMartin.installed(),
         completed: () => get("_missileLauncherUsed") || have($effect`Everything Looks Yellow`),
-        combat: new CombatStrategy().macro(Macro.skill($skill`Asdon Martin: Missile Launcher`)),
+        combat: new CombatStrategy().autoattack(
+          Macro.skill($skill`Asdon Martin: Missile Launcher`)
+        ),
         prepare: () => AsdonMartin.fillTo(100),
         do: yrTarget,
         sobriety: "sober",
@@ -285,7 +287,7 @@ export function main(command?: string) {
         },
         prepare: () => cliExecute("parka dilophosaur"),
         do: yrTarget,
-        combat: new CombatStrategy().macro(Macro.skill($skill`Spit jurassic acid`).abort()),
+        combat: new CombatStrategy().autoattack(Macro.skill($skill`Spit jurassic acid`).abort()),
         sobriety: "sober",
       },
       {
@@ -307,7 +309,7 @@ export function main(command?: string) {
           }
           return outfitSpec();
         },
-        combat: new CombatStrategy().macro(
+        combat: new CombatStrategy().autoattack(
           Macro.externalIf(
             get("cosmicBowlingBallReturnCombats") < 1,
             Macro.trySkill($skill`Bowl Straight Up`)
