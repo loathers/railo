@@ -14,6 +14,7 @@ import {
   sinceKolmafiaRevision,
   withProperty,
 } from "libram";
+import { capsule } from "./capsule";
 import { ChronerEngine, ChronerQuest, ChronerStrategy, ChronerTask } from "./engine";
 import { printh, shouldRedigitize } from "./lib";
 import { rose } from "./rose";
@@ -23,6 +24,11 @@ const args = Args.create("chroner-collector", "A script for farming chroner", {
   turns: Args.number({
     help: "The number of turns to run (use negative numbers for the number of turns remaining)",
     default: Infinity,
+  }),
+  mode: Args.string({
+    key: "mode",
+    options: [["rose"], ["capsule"]],
+    default: "rose",
   }),
 });
 
@@ -37,10 +43,10 @@ export function main(command?: string) {
       : () => myAdventures() === -args.turns;
 
   let digitizes = -1;
-  const globeTheater = $location`Globe Theatre Main Stage`;
   const yrTarget = $location`The Cave Before Time`;
 
-  const quest: ChronerQuest = { ...rose, completed };
+  const quest: ChronerQuest =
+    args.mode === "capsule" ? { ...capsule, completed } : { ...rose, completed };
   const global: Quest<ChronerTask> = {
     name: "Global",
     completed,
@@ -78,10 +84,10 @@ export function main(command?: string) {
       {
         name: "Digitize Wanderer",
         ready: () => Counter.get("Digitize") <= 0,
-        outfit: rose.outfit,
+        outfit: quest.outfit,
         completed: () => get("_sourceTerminalDigitizeMonsterCount") !== digitizes,
         do: () => {
-          adv1(globeTheater, -1, "");
+          adv1(quest.location, -1, "");
           digitizes = get("_sourceTerminalDigitizeMonsterCount");
         },
         combat: new ChronerStrategy(
@@ -123,7 +129,6 @@ export function main(command?: string) {
         },
         prepare: () => cliExecute("parka dilophosaur"),
         do: yrTarget,
-
         combat: new ChronerStrategy(
           Macro.trySkill($skill`Summon Mayfly Swarm`)
             .skill($skill`Spit jurassic acid`)

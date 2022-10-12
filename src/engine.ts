@@ -40,6 +40,7 @@ export class ChronerEngine extends Engine<never, ChronerTask> {
           ])
         )
       );
+      this.propertyManager.setChoices({ 955: 2 });
     }
   }
 
