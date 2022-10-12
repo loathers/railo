@@ -181,6 +181,14 @@ export function main(command?: string) {
         sobriety: "either",
       },
       {
+        name: "Recover Failed",
+        completed: () => myHp() / myMaxhp() >= 0.5,
+        do: () => {
+          throw "Unable to heal above 50% HP, heal yourself!";
+        },
+        sobriety: "either",
+      },
+      {
         name: "Antidote",
         completed: () => poisons.every((e) => !have(e)),
         do: () => poisons.forEach((e) => uneffect(e)),
