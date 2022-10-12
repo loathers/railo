@@ -37,6 +37,7 @@ import {
   $location,
   $locations,
   $path,
+  $phylum,
   $skill,
   AsdonMartin,
   AutumnAton,
@@ -49,6 +50,7 @@ import {
   PropertiesManager,
   Session,
   sinceKolmafiaRevision,
+  Snapper,
   uneffect,
   withProperty,
 } from "libram";
@@ -101,8 +103,8 @@ class ChronerEngine extends Engine<never, ChronerTask> {
   }
 
   shouldRepeatAdv(task: ChronerTask): boolean {
-    if(["Poetic Justice", "Lost and Found"].includes(get("lastEncounter"))) {
-      return false
+    if (["Poetic Justice", "Lost and Found"].includes(get("lastEncounter"))) {
+      return false;
     }
     return super.shouldRepeatAdv(task);
   }
@@ -153,6 +155,7 @@ export function main(command?: string) {
   const globeTheater = $location`Globe Theatre Main Stage`;
   const yrTarget = $location`The Cave Before Time`;
   const poisons = $effects`Hardly Poisoned at All, A Little Bit Poisoned, Somewhat Poisoned, Really Quite Poisoned, Majorly Poisoned`;
+
   let digitizes = -1;
   const ttt: Quest<ChronerTask> = {
     name: "TimeTwitchingTower",
@@ -194,6 +197,13 @@ export function main(command?: string) {
         },
         outfit: { familiar: $familiar`Reagnimated Gnome` },
         sobriety: "sober",
+      },
+      {
+        name: "Snapper",
+        completed: () => Snapper.getTrackedPhylum() === $phylum`dude`,
+        do: () => Snapper.trackPhylum($phylum`dude`),
+        ready: () => Snapper.have(),
+        sobriety: "either",
       },
       {
         name: "Autumn-Aton",
