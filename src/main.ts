@@ -21,7 +21,6 @@ import {
   myHp,
   myInebriety,
   myMaxhp,
-  myPath,
   myTurncount,
   print,
   runChoice,
@@ -36,7 +35,6 @@ import {
   $item,
   $location,
   $locations,
-  $path,
   $phylum,
   $skill,
   AsdonMartin,
@@ -176,9 +174,18 @@ export function main(command?: string) {
       },
       {
         name: "Recover",
-        completed: () => myPath() === $path`Grey You` || myHp() / myMaxhp() >= 0.5,
+        ready: () => have($skill`Cannelloni Cocoon`),
+        completed: () => myHp() / myMaxhp() >= 0.5,
         do: () => {
           useSkill($skill`Cannelloni Cocoon`);
+        },
+        sobriety: "either",
+      },
+      {
+        name: "Recover Failed",
+        completed: () => myHp() / myMaxhp() >= 0.5,
+        do: () => {
+          throw "Unable to heal above 50% HP, heal yourself!";
         },
         sobriety: "either",
       },
@@ -315,6 +322,11 @@ export function main(command?: string) {
           )
             .trySkill($skill`Sing Along`)
             .trySkill($skill`Extract`)
+            .externalIf(have($skill`Meteor Lore`), Macro.trySkill($skill`Micrometeorite`))
+            .tryItem($item`Time-Spinner`)
+            .tryItem($item`Rain-Doh indigo cup`)
+            .tryItem($item`Rain-Doh blue balls`)
+            .tryItem($item`porquoise-handled sixgun`)
             .attack()
             .repeat()
         ),
