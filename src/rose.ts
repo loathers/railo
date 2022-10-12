@@ -1,13 +1,6 @@
 import { OutfitSlot, OutfitSpec } from "grimoire-kolmafia";
 import { Item } from "kolmafia";
-import {
-  $familiars,
-  $item,
-  $location,
-  get,
-  getKramcoWandererChance,
-  have,
-} from "libram";
+import { $familiars, $item, $location, get, getKramcoWandererChance, have } from "libram";
 
 import { ChronerQuest, ChronerStrategy } from "./engine";
 import { chooseFamEquip, chooseFamiliar } from "./familiar";
@@ -61,9 +54,7 @@ export const rose: ChronerQuest = {
         }
         return roseOutfit();
       },
-      combat: new ChronerStrategy(
-        Macro.standardCombat()
-      ),
+      combat: new ChronerStrategy(Macro.standardCombat()),
       sobriety: "either",
     },
   ],

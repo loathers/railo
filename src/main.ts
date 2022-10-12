@@ -21,20 +21,28 @@ import Macro from "./macro";
 import { rose } from "./rose";
 import { setup } from "./setup";
 
-const args = Args.create("chroner-collector", "A script for farming chroner", {
+const args = Args.create("chrono", "A script for farming chroner", {
   turns: Args.number({
     help: "The number of turns to run (use negative numbers for the number of turns remaining)",
     default: Infinity,
   }),
   mode: Args.string({
     key: "mode",
-    options: [["rose"], ["capsule"]],
+    options: [
+      ["rose", "Farm Roses from The Main Stage"],
+      ["capsule", "Farm Time Capsules from the Cave Before Time"],
+    ],
     default: "rose",
   }),
 });
 
 export function main(command?: string) {
   Args.fill(args, command);
+
+  if (args.help) {
+    Args.showHelp(args);
+    return;
+  }
 
   sinceKolmafiaRevision(26834);
   const turncount = myTurncount();
