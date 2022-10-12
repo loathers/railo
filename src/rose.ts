@@ -4,16 +4,15 @@ import {
   $familiars,
   $item,
   $location,
-  $skill,
   get,
   getKramcoWandererChance,
   have,
-  Macro,
 } from "libram";
 
 import { ChronerQuest, ChronerStrategy } from "./engine";
 import { chooseFamEquip, chooseFamiliar } from "./familiar";
 import { sober } from "./lib";
+import Macro from "./macro";
 
 function roseOutfit(): OutfitSpec {
   const familiar = chooseFamiliar();
@@ -63,20 +62,7 @@ export const rose: ChronerQuest = {
         return roseOutfit();
       },
       combat: new ChronerStrategy(
-        Macro.externalIf(
-          get("cosmicBowlingBallReturnCombats") < 1,
-          Macro.trySkill($skill`Bowl Straight Up`)
-        )
-          .trySkill($skill`Summon Mayfly Swarm`)
-          .trySkill($skill`Sing Along`)
-          .trySkill($skill`Extract`)
-          .externalIf(have($skill`Meteor Lore`), Macro.trySkill($skill`Micrometeorite`))
-          .tryItem($item`Time-Spinner`)
-          .tryItem($item`Rain-Doh indigo cup`)
-          .tryItem($item`Rain-Doh blue balls`)
-          .tryItem($item`porquoise-handled sixgun`)
-          .attack()
-          .repeat()
+        Macro.standardCombat()
       ),
       sobriety: "either",
     },
