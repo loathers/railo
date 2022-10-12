@@ -9,7 +9,6 @@ import {
   Counter,
   get,
   have,
-  Macro,
   Session,
   sinceKolmafiaRevision,
   withProperty,
@@ -17,7 +16,8 @@ import {
 
 import { capsule } from "./capsule";
 import { ChronerEngine, ChronerQuest, ChronerStrategy, ChronerTask } from "./engine";
-import { printh, shouldRedigitize } from "./lib";
+import { printh } from "./lib";
+import Macro from "./macro";
 import { rose } from "./rose";
 import { setup } from "./setup";
 
@@ -91,18 +91,7 @@ export function main(command?: string) {
           adv1(quest.location, -1, "");
           digitizes = get("_sourceTerminalDigitizeMonsterCount");
         },
-        combat: new ChronerStrategy(
-          Macro.externalIf(shouldRedigitize(), Macro.skill($skill`Digitize`))
-            .externalIf(
-              get("cosmicBowlingBallReturnCombats") < 1,
-              Macro.trySkill($skill`Bowl Straight Up`)
-            )
-            .trySkill($skill`Summon Mayfly Swarm`)
-            .trySkill($skill`Sing Along`)
-            .trySkill($skill`Extract`)
-            .attack()
-            .repeat()
-        ),
+        combat: new ChronerStrategy(Macro.redigitize().standardCombat()),
         sobriety: "either",
       },
       {
@@ -110,7 +99,7 @@ export function main(command?: string) {
         ready: () => AsdonMartin.installed(),
         completed: () => get("_missileLauncherUsed") || have($effect`Everything Looks Yellow`),
         combat: new ChronerStrategy(
-          Macro.trySkill($skill`Summon Mayfly Swarm`)
+          Macro.tryHaveSkill($skill`Summon Mayfly Swarm`)
             .skill($skill`Asdon Martin: Missile Launcher`)
             .abort()
         ),
@@ -131,7 +120,7 @@ export function main(command?: string) {
         prepare: () => cliExecute("parka dilophosaur"),
         do: yrTarget,
         combat: new ChronerStrategy(
-          Macro.trySkill($skill`Summon Mayfly Swarm`)
+          Macro.tryHaveSkill($skill`Summon Mayfly Swarm`)
             .skill($skill`Spit jurassic acid`)
             .abort()
         ),

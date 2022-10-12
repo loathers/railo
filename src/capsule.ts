@@ -1,19 +1,11 @@
 import { OutfitSlot, OutfitSpec } from "grimoire-kolmafia";
 import { Item } from "kolmafia";
-import {
-  $familiars,
-  $item,
-  $location,
-  $skill,
-  get,
-  getKramcoWandererChance,
-  have,
-  Macro,
-} from "libram";
+import { $familiars, $item, $location, get, getKramcoWandererChance, have } from "libram";
 
 import { ChronerQuest, ChronerStrategy } from "./engine";
 import { chooseFamEquip, chooseFamiliar } from "./familiar";
 import { sober } from "./lib";
+import Macro from "./macro";
 
 function capsuleOutfit(): OutfitSpec {
   const familiar = chooseFamiliar();
@@ -62,22 +54,7 @@ export const capsule: ChronerQuest = {
         }
         return capsuleOutfit();
       },
-      combat: new ChronerStrategy(
-        Macro.externalIf(
-          get("cosmicBowlingBallReturnCombats") < 1,
-          Macro.trySkill($skill`Bowl Straight Up`)
-        )
-          .trySkill($skill`Summon Mayfly Swarm`)
-          .trySkill($skill`Sing Along`)
-          .trySkill($skill`Extract`)
-          .externalIf(have($skill`Meteor Lore`), Macro.trySkill($skill`Micrometeorite`))
-          .tryItem($item`Time-Spinner`)
-          .tryItem($item`Rain-Doh indigo cup`)
-          .tryItem($item`Rain-Doh blue balls`)
-          .tryItem($item`porquoise-handled sixgun`)
-          .attack()
-          .repeat()
-      ),
+      combat: new ChronerStrategy(Macro.standardCombat()),
       sobriety: "either",
     },
   ],
