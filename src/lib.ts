@@ -1,4 +1,4 @@
-import { inebrietyLimit, isDarkMode, myAdventures,myFamiliar,myInebriety,print } from "kolmafia";
+import { inebrietyLimit, isDarkMode, myAdventures, myFamiliar, myInebriety, print } from "kolmafia";
 import { $familiar, SourceTerminal } from "libram";
 
 /**

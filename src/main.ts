@@ -1,14 +1,5 @@
-import {
-  Args,
-  getTasks,
-  Quest,
-} from "grimoire-kolmafia";
-import {
-  adv1,
-  cliExecute,
-  myAdventures,
-  myTurncount,
-} from "kolmafia";
+import { Args, getTasks, Quest } from "grimoire-kolmafia";
+import { adv1, cliExecute, myAdventures, myTurncount } from "kolmafia";
 import {
   $effect,
   $item,
@@ -21,12 +12,12 @@ import {
   Macro,
   Session,
   sinceKolmafiaRevision,
-  withProperty
+  withProperty,
 } from "libram";
 import { ChronerEngine, ChronerQuest, ChronerStrategy, ChronerTask } from "./engine";
 import { printh, shouldRedigitize } from "./lib";
 import { rose } from "./rose";
-import { setup as baseSetup } from "./setup";
+import { setup } from "./setup";
 
 const args = Args.create("chroner-collector", "A script for farming chroner", {
   turns: Args.number({
@@ -38,7 +29,6 @@ const args = Args.create("chroner-collector", "A script for farming chroner", {
 export function main(command?: string) {
   Args.fill(args, command);
 
-
   sinceKolmafiaRevision(26834);
   const turncount = myTurncount();
   const completed =
@@ -46,13 +36,11 @@ export function main(command?: string) {
       ? () => myTurncount() - turncount >= args.turns || myAdventures() === 0
       : () => myAdventures() === -args.turns;
 
-
   let digitizes = -1;
   const globeTheater = $location`Globe Theatre Main Stage`;
   const yrTarget = $location`The Cave Before Time`;
 
-  const quest: ChronerQuest = {...rose, completed};
-  const setup: Quest<ChronerTask> = {...baseSetup, completed}
+  const quest: ChronerQuest = { ...rose, completed };
   const global: Quest<ChronerTask> = {
     name: "Global",
     completed,
@@ -146,7 +134,7 @@ export function main(command?: string) {
     ],
   };
 
-  const engine = new ChronerEngine(getTasks([setup, global, rose]));
+  const engine = new ChronerEngine(getTasks([setup, global, quest]));
   const sessionStart = Session.current();
 
   withProperty("recoveryScript", "", () => {
