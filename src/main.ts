@@ -14,6 +14,7 @@ import {
   sinceKolmafiaRevision,
   withProperty,
 } from "libram";
+
 import { capsule } from "./capsule";
 import { ChronerEngine, ChronerQuest, ChronerStrategy, ChronerTask } from "./engine";
 import { printh, shouldRedigitize } from "./lib";
