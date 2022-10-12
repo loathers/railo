@@ -142,6 +142,7 @@ export function main(command?: string) {
       ...ifHave("acc1", $item`mafia thumb ring`),
       ...ifHave("acc2", $item`time-twitching toolbelt`),
       ...ifHave("acc3", $item`lucky gold ring`),
+      ...(get("_mayflySummons") < 30 ? ifHave("acc3", $item`mayfly bait necklace`) : {}),
       ...ifHave("famequip", famequip),
       ...ifHave("back", $item`Time Cloak`),
       familiar,
@@ -265,6 +266,7 @@ export function main(command?: string) {
               get("cosmicBowlingBallReturnCombats") < 1,
               Macro.trySkill($skill`Bowl Straight Up`)
             )
+            .trySkill($skill`Summon Mayfly Swarm`)
             .trySkill($skill`Sing Along`)
             .trySkill($skill`Extract`)
             .attack()
@@ -276,7 +278,11 @@ export function main(command?: string) {
         name: "Asdon Missle",
         ready: () => AsdonMartin.installed(),
         completed: () => get("_missileLauncherUsed") || have($effect`Everything Looks Yellow`),
-        combat: new CombatStrategy().macro(Macro.skill($skill`Asdon Martin: Missile Launcher`)),
+        combat: new CombatStrategy().macro(
+          Macro.trySkill($skill`Summon Mayfly Swarm`)
+            .skill($skill`Asdon Martin: Missile Launcher`)
+            .abort()
+        ),
         prepare: () => AsdonMartin.fillTo(100),
         do: yrTarget,
         sobriety: "sober",
@@ -293,7 +299,11 @@ export function main(command?: string) {
         },
         prepare: () => cliExecute("parka dilophosaur"),
         do: yrTarget,
-        combat: new CombatStrategy().macro(Macro.skill($skill`Spit jurassic acid`).abort()),
+        combat: new CombatStrategy().macro(
+          Macro.trySkill($skill`Summon Mayfly Swarm`)
+            .skill($skill`Spit jurassic acid`)
+            .abort()
+        ),
         sobriety: "sober",
       },
       {
@@ -320,6 +330,7 @@ export function main(command?: string) {
             get("cosmicBowlingBallReturnCombats") < 1,
             Macro.trySkill($skill`Bowl Straight Up`)
           )
+            .trySkill($skill`Summon Mayfly Swarm`)
             .trySkill($skill`Sing Along`)
             .trySkill($skill`Extract`)
             .externalIf(have($skill`Meteor Lore`), Macro.trySkill($skill`Micrometeorite`))
