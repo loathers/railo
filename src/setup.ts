@@ -1,5 +1,5 @@
 import { Quest } from "grimoire-kolmafia";
-import { ChronerTask } from "./engine";
+import { myHp, myMaxhp, runChoice, useSkill, visitUrl } from "kolmafia";
 import {
   $effect,
   $effects,
@@ -14,7 +14,8 @@ import {
   Snapper,
   uneffect,
 } from "libram";
-import { myHp, myMaxhp, runChoice, useSkill, visitUrl } from "kolmafia";
+
+import { ChronerTask } from "./engine";
 
 const poisons = $effects`Hardly Poisoned at All, A Little Bit Poisoned, Somewhat Poisoned, Really Quite Poisoned, Majorly Poisoned`;
 

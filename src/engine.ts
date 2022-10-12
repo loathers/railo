@@ -1,8 +1,9 @@
 import { CombatStrategy, Engine, OutfitSpec, Quest, Task } from "grimoire-kolmafia";
-import { $item, get, JuneCleaver, Macro, PropertiesManager } from "libram";
-import { printh, sober } from "./lib";
 import { equippedAmount, Location, setAutoAttack } from "kolmafia";
+import { $item, get, JuneCleaver, Macro, PropertiesManager } from "libram";
+
 import { bestJuneCleaverOption, shouldSkip } from "./juneCleaver";
+import { printh, sober } from "./lib";
 
 export type ChronerTask = Task & {
   sobriety: "sober" | "drunk" | "either";
