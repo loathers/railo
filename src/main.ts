@@ -44,7 +44,7 @@ import {
   getKramcoWandererChance,
   have,
   JuneCleaver,
-  Macro,
+  StrictMacro as Macro,
   PropertiesManager,
   Session,
   sinceKolmafiaRevision,
