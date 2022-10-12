@@ -117,6 +117,13 @@ class ChronerEngine extends Engine<never, ChronerTask> {
   }
 }
 
+class ChronerStrategy extends CombatStrategy {
+  constructor(macro: Macro) {
+    super();
+    this.macro(macro).autoattack(macro);
+  }
+}
+
 export function main(command?: string) {
   Args.fill(args, command);
 
@@ -233,7 +240,7 @@ export function main(command?: string) {
           };
         },
         completed: () => get("questPAGhost") === "unstarted",
-        combat: new CombatStrategy().autoattack(
+        combat: new ChronerStrategy(
           Macro.trySkill($skill`Sing Along`)
             .trySkill($skill`Shoot Ghost`)
             .trySkill($skill`Shoot Ghost`)
@@ -251,7 +258,7 @@ export function main(command?: string) {
           adv1(globeTheater, -1, "");
           digitizes = get("_sourceTerminalDigitizeMonsterCount");
         },
-        combat: new CombatStrategy().autoattack(
+        combat: new ChronerStrategy(
           Macro.externalIf(shouldRedigitize(), Macro.skill($skill`Digitize`))
             .externalIf(
               get("cosmicBowlingBallReturnCombats") < 1,
@@ -268,9 +275,7 @@ export function main(command?: string) {
         name: "Asdon Missle",
         ready: () => AsdonMartin.installed(),
         completed: () => get("_missileLauncherUsed") || have($effect`Everything Looks Yellow`),
-        combat: new CombatStrategy().autoattack(
-          Macro.skill($skill`Asdon Martin: Missile Launcher`)
-        ),
+        combat: new ChronerStrategy(Macro.skill($skill`Asdon Martin: Missile Launcher`)),
         prepare: () => AsdonMartin.fillTo(100),
         do: yrTarget,
         sobriety: "sober",
@@ -287,7 +292,7 @@ export function main(command?: string) {
         },
         prepare: () => cliExecute("parka dilophosaur"),
         do: yrTarget,
-        combat: new CombatStrategy().autoattack(Macro.skill($skill`Spit jurassic acid`).abort()),
+        combat: new ChronerStrategy(Macro.skill($skill`Spit jurassic acid`).abort()),
         sobriety: "sober",
       },
       {
@@ -309,7 +314,7 @@ export function main(command?: string) {
           }
           return outfitSpec();
         },
-        combat: new CombatStrategy().autoattack(
+        combat: new ChronerStrategy(
           Macro.externalIf(
             get("cosmicBowlingBallReturnCombats") < 1,
             Macro.trySkill($skill`Bowl Straight Up`)
