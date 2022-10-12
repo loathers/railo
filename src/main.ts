@@ -44,7 +44,7 @@ import {
   getKramcoWandererChance,
   have,
   JuneCleaver,
-  Macro,
+  StrictMacro as Macro,
   PropertiesManager,
   Session,
   sinceKolmafiaRevision,
@@ -112,6 +112,13 @@ class ChronerEngine extends Engine<never, ChronerTask> {
     for (const task of this.tasks) {
       printh(`${task.name}: available:${this.available(task)}`);
     }
+  }
+}
+
+class ChronerStrategy extends CombatStrategy {
+  constructor(macro: Macro) {
+    super();
+    this.macro(macro).autoattack(macro);
   }
 }
 
@@ -242,7 +249,7 @@ export function main(command?: string) {
           };
         },
         completed: () => get("questPAGhost") === "unstarted",
-        combat: new CombatStrategy().macro(
+        combat: new ChronerStrategy(
           Macro.trySkill($skill`Sing Along`)
             .trySkill($skill`Shoot Ghost`)
             .trySkill($skill`Shoot Ghost`)
@@ -260,7 +267,7 @@ export function main(command?: string) {
           adv1(globeTheater, -1, "");
           digitizes = get("_sourceTerminalDigitizeMonsterCount");
         },
-        combat: new CombatStrategy().macro(
+        combat: new ChronerStrategy(
           Macro.externalIf(shouldRedigitize(), Macro.skill($skill`Digitize`))
             .externalIf(
               get("cosmicBowlingBallReturnCombats") < 1,
@@ -278,7 +285,7 @@ export function main(command?: string) {
         name: "Asdon Missle",
         ready: () => AsdonMartin.installed(),
         completed: () => get("_missileLauncherUsed") || have($effect`Everything Looks Yellow`),
-        combat: new CombatStrategy().macro(
+        combat: new ChronerStrategy(
           Macro.trySkill($skill`Summon Mayfly Swarm`)
             .skill($skill`Asdon Martin: Missile Launcher`)
             .abort()
@@ -299,7 +306,8 @@ export function main(command?: string) {
         },
         prepare: () => cliExecute("parka dilophosaur"),
         do: yrTarget,
-        combat: new CombatStrategy().macro(
+
+        combat: new ChronerStrategy(
           Macro.trySkill($skill`Summon Mayfly Swarm`)
             .skill($skill`Spit jurassic acid`)
             .abort()
@@ -325,7 +333,7 @@ export function main(command?: string) {
           }
           return outfitSpec();
         },
-        combat: new CombatStrategy().macro(
+        combat: new ChronerStrategy(
           Macro.externalIf(
             get("cosmicBowlingBallReturnCombats") < 1,
             Macro.trySkill($skill`Bowl Straight Up`)
