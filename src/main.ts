@@ -146,7 +146,7 @@ export function main(command?: string) {
     ],
   };
 
-  const engine = new ChronerEngine(getTasks([setup, global, rose]));
+  const engine = new ChronerEngine(getTasks([setup, global, quest]));
   const sessionStart = Session.current();
 
   withProperty("recoveryScript", "", () => {
