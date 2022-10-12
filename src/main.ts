@@ -145,6 +145,7 @@ export function main(command?: string) {
       ...ifHave("acc2", $item`time-twitching toolbelt`),
       ...ifHave("acc3", $item`lucky gold ring`),
       ...ifHave("famequip", famequip),
+      ...ifHave("back", $item`Time Cloak`),
       familiar,
       modifier: $familiars`Reagnimated Gnome, Temporal Riftlet`.includes(familiar)
         ? "Familiar Weight"
