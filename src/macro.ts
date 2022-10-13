@@ -1,4 +1,4 @@
-import { haveEquipped, Item, myFamiliar, Skill } from "kolmafia";
+import { Item, myFamiliar, Skill } from "kolmafia";
 import {
   $familiar,
   $item,
@@ -47,9 +47,10 @@ export default class Macro extends StrictMacro {
 
   doItems(): this {
     const steps = new Macro();
-    const items = $items`Rain-Doh blue balls, Time-Spinner, Rain-Doh indigo cup, HOA citation pad, porquoise-handled sixgun`.filter(
-      (i) => have(i)
-    );
+    const items =
+      $items`Rain-Doh blue balls, Time-Spinner, Rain-Doh indigo cup, HOA citation pad, porquoise-handled sixgun`.filter(
+        (i) => have(i)
+      );
     if (items.length) {
       if (!have($skill`Ambidextrous Funkslinging`)) {
         for (const item of items) steps.tryItem(item);
@@ -79,10 +80,7 @@ export default class Macro extends StrictMacro {
         get("cosmicBowlingBallReturnCombats") < 1,
         Macro.trySkill($skill`Bowl Straight Up`)
       )
-      .externalIf(
-        haveEquipped($item`packet of mayfly bait`),
-        Macro.trySkill($skill`Summon Mayfly Swarm`)
-      )
+      .tryHaveSkill($skill`Summon Mayfly Swarm`)
       .externalIf(
         SongBoom.song() === "Total Eclipse of Your Meat",
         Macro.tryHaveSkill($skill`Sing Along`)

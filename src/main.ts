@@ -219,7 +219,9 @@ export function main(command?: string) {
         sobriety: "sober",
         do: $location`The Cave Before Time`,
         combat: new ChronerStrategy(
-          Macro.skill($skill`Asdon Martin: Spring-Loaded Front Bumper`).abort()
+          Macro.tryHaveSkill($skill`Summon Mayfly Swarm`)
+            .skill($skill`Asdon Martin: Spring-Loaded Front Bumper`)
+            .abort()
         ),
         prepare: () => AsdonMartin.fillTo(50),
       },
