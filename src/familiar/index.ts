@@ -4,13 +4,7 @@ import { $familiar, $familiars, $item, have } from "libram";
 import { freeFightFamiliar } from "./freeFightFamiliar";
 import { canOpenRedPresent, MenuOptions, pocketProfessorLectures, timeToMeatify } from "./lib";
 
-export {
-  canOpenRedPresent,
-  timeToMeatify,
-  pocketProfessorLectures,
-  freeFightFamiliar,
-  MenuOptions,
-};
+export { canOpenRedPresent, timeToMeatify, pocketProfessorLectures, freeFightFamiliar };
 
 export const chooseFamiliar = (options: MenuOptions = {}) =>
   canInteract() && myInebriety() <= inebrietyLimit()
