@@ -1,5 +1,5 @@
 import { Quest } from "grimoire-kolmafia";
-import { myHp, myMaxhp, runChoice, useSkill, visitUrl } from "kolmafia";
+import { itemAmount, myHp, myMaxhp, putCloset, runChoice, useSkill, visitUrl } from "kolmafia";
 import {
   $effect,
   $effects,
@@ -68,6 +68,19 @@ export const setup: Quest<ChronerTask> = {
       },
       outfit: { familiar: $familiar`Reagnimated Gnome` },
       sobriety: "sober",
+    },
+    {
+      name: "Closet Sand Dollars",
+      completed: () => itemAmount($item`sand dollar`) === 0,
+      do: () => putCloset(itemAmount($item`sand dollar`), $item`sand dollar`),
+      sobriety: "either",
+    },
+    {
+      name: "Closet Hobo Nickels",
+      completed: () => itemAmount($item`hobo nickel`) === 0 || (!have($familiar`Hobo Monkey`) && !have($item`hobo nickel`, 1000)),
+      do: () => putCloset(itemAmount($item`hobo nickel`), $item`hobo nickel`)
+      ,
+      sobriety: "either",
     },
     {
       name: "Snapper",
