@@ -1,4 +1,5 @@
 import { OutfitSpec } from "grimoire-kolmafia";
+import { myLocation } from "kolmafia";
 import {
   $familiars,
   $item,
@@ -8,7 +9,6 @@ import {
   getKramcoWandererChance,
   have,
 } from "libram";
-import { myLocation } from "kolmafia";
 
 import { ChronerQuest, ChronerStrategy } from "./engine";
 import { chooseFamEquip, chooseFamiliar } from "./familiar";
@@ -46,7 +46,7 @@ function roseOutfit(): OutfitSpec {
 }
 
 const location = $location`Globe Theatre Main Stage`;
-
+let triedFlorist = false;
 export const rose: ChronerQuest = {
   name: "Rose",
   location,
@@ -55,9 +55,7 @@ export const rose: ChronerQuest = {
     {
       name: "Flowers",
       ready: () => FloristFriar.have() && myLocation() === location,
-      completed: () =>
-        FloristFriar.flowersIn(location).length >= 3 ||
-        FloristFriar.flowersAvailableFor(location).length === 0,
+      completed: () => FloristFriar.isFull() || triedFlorist,
       do: () => {
         const flowers = [
           FloristFriar.ArcticMoss,
@@ -65,9 +63,8 @@ export const rose: ChronerQuest = {
           FloristFriar.BamBoo,
           ...FloristFriar.flowersAvailableFor(location),
         ];
-        for (const flower of flowers) {
-          if (!flower.plant()) break;
-        }
+        for (const flower of flowers) flower.plant();
+        triedFlorist = true;
       },
       sobriety: "either",
     },
