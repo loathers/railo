@@ -1,6 +1,5 @@
-import { Args, OutfitSlot, OutfitSpec } from "grimoire-kolmafia";
+import { Args } from "grimoire-kolmafia";
 import {
-  canEquip,
   descToItem,
   inebrietyLimit,
   isDarkMode,
@@ -12,7 +11,7 @@ import {
   runChoice,
   visitUrl,
 } from "kolmafia";
-import { $familiar, get, have, SourceTerminal } from "libram";
+import { $familiar, get, SourceTerminal } from "libram";
 
 /**
  * Find the best element of an array, where "best" is defined by some given criteria.
@@ -74,12 +73,6 @@ export function sober() {
   return myInebriety() <= inebrietyLimit() + (myFamiliar() === $familiar`Stooper` ? -1 : 0);
 }
 
-export function ifHave(slot: OutfitSlot, item: Item, condition?: () => boolean): OutfitSpec {
-  return have(item) && canEquip(item) && (condition?.() ?? true)
-    ? Object.fromEntries([[slot, item]])
-    : {};
-}
-
 export const args = Args.create("chrono", "A script for farming chroner", {
   turns: Args.number({
     help: "The number of turns to run (use negative numbers for the number of turns remaining)",
@@ -123,4 +116,14 @@ export function countEnvironment(environment: CMCEnvironment): number {
   return get("lastCombatEnvironments")
     .split("")
     .filter((e) => e === environment).length;
+}
+
+export type RealmType = "spooky" | "stench" | "hot" | "cold" | "sleaze" | "fantasy" | "pirate";
+export function realmAvailable(identifier: RealmType): boolean {
+  if (identifier === "fantasy") {
+    return get(`_frToday`) || get(`frAlways`);
+  } else if (identifier === "pirate") {
+    return get(`_prToday`) || get(`prAlways`);
+  }
+  return get(`_${identifier}AirportToday`, false) || get(`${identifier}AirportAlways`, false);
 }

@@ -1,6 +1,13 @@
-import { CombatStrategy, Engine, OutfitSpec, Quest, Task } from "grimoire-kolmafia";
-import { equippedAmount, Location, setAutoAttack } from "kolmafia";
-import { $item, get, JuneCleaver, PropertiesManager } from "libram";
+import { CombatStrategy, Engine, Outfit, OutfitSpec, Quest, Task } from "grimoire-kolmafia";
+import {
+  bjornifyFamiliar,
+  enthroneFamiliar,
+  equippedAmount,
+  Location,
+  setAutoAttack,
+} from "kolmafia";
+import { $item, $slot, CrownOfThrones, get, JuneCleaver, PropertiesManager } from "libram";
+
 import { bestJuneCleaverOption, shouldSkip } from "./juneCleaver";
 import { printd, sober } from "./lib";
 import Macro from "./macro";
@@ -32,6 +39,8 @@ export function resetNcForced() {
   printd("Reset NC forcing");
   ncForced = false;
 }
+CrownOfThrones.createRiderMode("Default", () => 0);
+const chooseRider = () => CrownOfThrones.pickRider("default");
 export class ChronerEngine extends Engine<never, ChronerTask> {
   available(task: ChronerTask): boolean {
     const sobriety =
@@ -43,6 +52,18 @@ export class ChronerEngine extends Engine<never, ChronerTask> {
       return sobriety && ncForced && super.available(task);
     }
     return sobriety && super.available(task);
+  }
+
+  createOutfit(task: ChronerTask): Outfit {
+    const outfit = super.createOutfit(task);
+    if (outfit.equips.get($slot`hat`) === $item`Crown of Thrones`) {
+      const choice = chooseRider();
+      if (choice) enthroneFamiliar(choice.familiar);
+    } else if (outfit.equips.get($slot`back`) === $item`Buddy Bjorn`) {
+      const choice = chooseRider();
+      if (choice) bjornifyFamiliar(choice.familiar);
+    }
+    return outfit;
   }
 
   execute(task: ChronerTask): void {
