@@ -137,7 +137,7 @@ export const setup: Quest<ChronerTask> = {
       completed: () =>
         getWorkshed() !== $item`cold medicine cabinet` ||
         totalTurnsPlayed() > get("_nextColdMedicineConsult") ||
-        get("_coldMedicineConsults") < 5 ||
+        get("_coldMedicineConsults") >= 5 ||
         countEnvironment(cmcTarget().environment) <= 10,
       do: () => tryGetCMCItem(cmcTarget().item),
       sobriety: "either",
