@@ -194,7 +194,7 @@ export function main(command?: string) {
       {
         name: "Asdon Bumper",
         ready: () => AsdonMartin.installed(),
-        completed: () => !get("banishedMonsters").includes("Spring-Loaded Front Bumper"),
+        completed: () => get("banishedMonsters").includes("Spring-Loaded Front Bumper"),
         sobriety: "sober",
         do: $location`The Cave Before Time`,
         combat: new ChronerStrategy(
