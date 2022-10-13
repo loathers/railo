@@ -1,5 +1,13 @@
 import { Args, getTasks, Quest } from "grimoire-kolmafia";
-import { adv1, cliExecute, getLocationMonsters, myAdventures, myTurncount, totalTurnsPlayed, use } from "kolmafia";
+import {
+  adv1,
+  cliExecute,
+  getLocationMonsters,
+  myAdventures,
+  myTurncount,
+  totalTurnsPlayed,
+  use,
+} from "kolmafia";
 import {
   $effect,
   $item,
@@ -107,10 +115,10 @@ export function main(command?: string) {
       {
         name: "Vote Wanderer",
         ready: () =>
-        have($item`"I Voted!" sticker`) &&
-        totalTurnsPlayed() % 11 === 1 &&
-        get("lastVoteMonsterTurn") < totalTurnsPlayed() &&
-        get("_voteFreeFights") < 3,
+          have($item`"I Voted!" sticker`) &&
+          totalTurnsPlayed() % 11 === 1 &&
+          get("lastVoteMonsterTurn") < totalTurnsPlayed() &&
+          get("_voteFreeFights") < 3,
         do: (): void => {
           adv1(quest.location, -1, "");
         },
@@ -160,6 +168,25 @@ export function main(command?: string) {
         sobriety: "either",
         completed: () => false,
         combat: new ChronerStrategy(Macro.standardCombat()),
+      }, {
+        name: "Spikolodon Spikes",
+        ready: () =>
+          have($item`Jurassic Parka`) &&
+          have($skill`Torso Awareness`) &&
+          get("_spikolodonSpikeUses") < 5,
+        outfit: () => {
+          return {
+            ...quest.outfit(),
+            shirt: $item`Jurassic Parka`,
+          };
+        },
+        do: quest.location,
+        completed: () => false,
+        prepare: () => cliExecute("parka spikolodon"),
+        combat: new ChronerStrategy(
+          Macro.trySkill($skill`Launch spikolodon spikes`).standardCombat()
+        ),
+        sobriety: "sober",
       },
       {
         name: "Bowling Ball Run",
@@ -202,26 +229,6 @@ export function main(command?: string) {
           Macro.tryHaveSkill($skill`Summon Mayfly Swarm`)
             .skill($skill`Spit jurassic acid`)
             .abort()
-        ),
-        sobriety: "sober",
-      },
-      {
-        name: "Spikolodon Spikes",
-        ready: () =>
-          have($item`Jurassic Parka`) &&
-          have($skill`Torso Awareness`) &&
-          get("_spikolodonSpikeUses") < 5,
-        outfit: () => {
-          return {
-            ...quest.outfit(),
-            shirt: $item`Jurassic Parka`,
-          };
-        },
-        do: quest.location,
-        completed: () => false,
-        prepare: () => cliExecute("parka spikolodon"),
-        combat: new ChronerStrategy(
-          Macro.trySkill($skill`Launch spikolodon spikes`).standardCombat()
         ),
         sobriety: "sober",
       },
