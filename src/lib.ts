@@ -1,6 +1,7 @@
 import { Args, OutfitSlot, OutfitSpec } from "grimoire-kolmafia";
 import {
   canEquip,
+  descToItem,
   inebrietyLimit,
   isDarkMode,
   Item,
@@ -8,8 +9,10 @@ import {
   myFamiliar,
   myInebriety,
   print,
+  runChoice,
+  visitUrl,
 } from "kolmafia";
-import { $familiar, have, SourceTerminal } from "libram";
+import { $familiar, get, have, SourceTerminal } from "libram";
 
 /**
  * Find the best element of an array, where "best" is defined by some given criteria.
@@ -94,3 +97,30 @@ export const args = Args.create("chrono", "A script for farming chroner", {
     default: false,
   }),
 });
+
+function getCMCChoices(): { [choice: string]: number } {
+  const options = visitUrl("campground.php?action=workshed");
+  let i = 0;
+  let match;
+  const entries: [string, number][] = [];
+
+  const regexp = /descitem\((\d+)\)/g;
+  while ((match = regexp.exec(options)) !== null) {
+    entries.push([`${descToItem(match[1])}`, ++i]);
+  }
+  return Object.fromEntries(entries);
+}
+
+export function tryGetCMCItem(item: Item): void {
+  const choice = getCMCChoices()[`${item}`];
+  if (choice) {
+    runChoice(choice);
+  }
+}
+
+export type CMCEnvironment = "u" | "i";
+export function countEnvironment(environment: CMCEnvironment): number {
+  return get("lastCombatEnvironments")
+    .split("")
+    .filter((e) => e === environment).length;
+}

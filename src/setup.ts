@@ -1,5 +1,16 @@
 import { Quest } from "grimoire-kolmafia";
-import { itemAmount, myHp, myMaxhp, putCloset, runChoice, useSkill, visitUrl } from "kolmafia";
+import {
+  getWorkshed,
+  Item,
+  itemAmount,
+  myHp,
+  myMaxhp,
+  putCloset,
+  runChoice,
+  totalTurnsPlayed,
+  useSkill,
+  visitUrl,
+} from "kolmafia";
 import {
   $effect,
   $effects,
@@ -16,8 +27,22 @@ import {
 } from "libram";
 
 import { ChronerTask } from "./engine";
+import { args, CMCEnvironment, countEnvironment, tryGetCMCItem } from "./lib";
 
 const poisons = $effects`Hardly Poisoned at All, A Little Bit Poisoned, Somewhat Poisoned, Really Quite Poisoned, Majorly Poisoned`;
+function cmcTarget(): { item: Item; environment: CMCEnvironment } {
+  if (args.mode === "rose") {
+    return {
+      item: $item`Extrovermectin™`,
+      environment: "i",
+    };
+  } else {
+    return {
+      item: $item`Breathitin™`,
+      environment: "u",
+    };
+  }
+}
 
 export const setup: Quest<ChronerTask> = {
   name: "Setup",
@@ -105,6 +130,16 @@ export const setup: Quest<ChronerTask> = {
           $locations`Moonshiners' Woods, The Cave Before Time, The Sleazy Back Alley`
         ),
       ready: () => AutumnAton.available(),
+      sobriety: "either",
+    },
+    {
+      name: "Cold Medicine Cabinent",
+      completed: () =>
+        getWorkshed() !== $item`cold medicine cabinet` ||
+        totalTurnsPlayed() > get("_nextColdMedicineConsult") ||
+        get("_coldMedicineConsults") < 5 ||
+        countEnvironment(cmcTarget().environment) <= 10,
+      do: () => tryGetCMCItem(cmcTarget().item),
       sobriety: "either",
     },
   ],
