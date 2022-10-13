@@ -87,6 +87,9 @@ export default class Macro extends StrictMacro {
       .tryHaveSkill($skill`Extract`)
       .tryHaveSkill($skill`Micrometeorite`)
       .doItems()
+      .tryHaveSkill($skill`Nantlers`)
+      .tryHaveSkill($skill`Nanoshock`)
+      .tryHaveSkill($skill`Audioclasm`)
       .attack()
       .repeat();
   }
