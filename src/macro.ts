@@ -1,5 +1,5 @@
 import { haveEquipped, Item, myFamiliar, Skill } from "kolmafia";
-import { $familiar, $item, $monster, $skill, get, have, StrictMacro } from "libram";
+import { $familiar, $item, $items, $monster, $skill, get, have, StrictMacro } from "libram";
 
 import { canOpenRedPresent, timeToMeatify } from "./familiar";
 import { shouldRedigitize } from "./lib";
@@ -35,6 +35,28 @@ export default class Macro extends StrictMacro {
     return new Macro().redigitize();
   }
 
+  doItems(): this {
+    const steps = new Macro();
+    const items =
+      $items`Rain-Doh blue balls, Time-Spinner, Rain-Doh indigo cup, HOA citation pad, porquoise-handled sixgun`.filter(
+        (i) => have(i)
+      );
+    if (items.length) {
+      if (!have($skill`Ambidextrous Funkslinging`)) {
+        for (const item of items) steps.tryItem(item);
+      } else {
+        for (let i = 0; i <= items.length; i += 2) {
+          const chunk = items.slice(i, i + 1);
+          if (chunk.length === 2) steps.tryItem(chunk as [Item, Item]);
+          else steps.tryItem(...chunk);
+        }
+      }
+    } else {
+      steps.tryHaveItem($item`seal tooth`);
+    }
+    return this.step(steps);
+  }
+
   standardCombat(): this {
     return this.externalIf(
       canOpenRedPresent() && myFamiliar() === $familiar`Crimbo Shrub`,
@@ -55,10 +77,7 @@ export default class Macro extends StrictMacro {
       .tryHaveSkill($skill`Sing Along`)
       .tryHaveSkill($skill`Extract`)
       .tryHaveSkill($skill`Micrometeorite`)
-      .tryHaveItem($item`Time-Spinner`)
-      .tryHaveItem($item`Rain-Doh indigo cup`)
-      .tryHaveItem($item`Rain-Doh blue balls`)
-      .tryHaveItem($item`porquoise-handled sixgun`)
+      .doItems()
       .attack()
       .repeat();
   }
