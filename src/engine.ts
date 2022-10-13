@@ -66,8 +66,8 @@ export class ChronerEngine extends Engine<never, ChronerTask> {
           ])
         )
       );
-      this.propertyManager.setChoices({ 955: 2 });
     }
+    this.propertyManager.setChoices({ 955: 2 });
   }
 
   shouldRepeatAdv(task: ChronerTask): boolean {
