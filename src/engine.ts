@@ -1,13 +1,13 @@
 import { CombatStrategy, Engine, OutfitSpec, Quest, Task } from "grimoire-kolmafia";
 import { equippedAmount, Location, setAutoAttack } from "kolmafia";
 import { $item, get, JuneCleaver, PropertiesManager } from "libram";
-
 import { bestJuneCleaverOption, shouldSkip } from "./juneCleaver";
-import { printh, sober } from "./lib";
+import { printd, sober } from "./lib";
 import Macro from "./macro";
 
 export type ChronerTask = Task & {
   sobriety: "sober" | "drunk" | "either";
+  forced?: boolean;
 };
 
 export type ChronerQuest = Quest<ChronerTask> & {
@@ -22,13 +22,36 @@ export class ChronerStrategy extends CombatStrategy {
   }
 }
 
+function countAvailableNcForces() {
+  return (get("_claraBellUsed") ? 0 : 1) + (5 - get("_spikolodonSpikeUses"));
+}
+
+let ncForced = false;
+export function resetNcForced() {
+  printd("Reset NC forcing");
+  ncForced = false;
+}
 export class ChronerEngine extends Engine<never, ChronerTask> {
   available(task: ChronerTask): boolean {
     const sobriety =
       task.sobriety === "either" ||
       (sober() && task.sobriety === "sober") ||
       (!sober() && task.sobriety === "drunk");
+
+    if (task.forced) {
+      return sobriety && ncForced && super.available(task);
+    }
     return sobriety && super.available(task);
+  }
+
+  execute(task: ChronerTask): void {
+    const ncBefore = countAvailableNcForces();
+    super.execute(task);
+    const ncAfter = countAvailableNcForces();
+
+    if (ncBefore > ncAfter) {
+      ncForced = true;
+    }
   }
 
   setChoices(task: ChronerTask, manager: PropertiesManager): void {
@@ -48,15 +71,16 @@ export class ChronerEngine extends Engine<never, ChronerTask> {
 
   shouldRepeatAdv(task: ChronerTask): boolean {
     if (["Poetic Justice", "Lost and Found"].includes(get("lastEncounter"))) {
+      printd("Skipping repeating Adventure despite free NC (beaten up)");
       return false;
     }
     return super.shouldRepeatAdv(task);
   }
 
   print() {
-    printh(`Task List:`);
+    printd(`Task List:`);
     for (const task of this.tasks) {
-      printh(`${task.name}: available:${this.available(task)}`);
+      printd(`${task.name}: available:${this.available(task)}`);
     }
   }
 

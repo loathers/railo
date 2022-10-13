@@ -1,14 +1,14 @@
 import { OutfitSlot, OutfitSpec } from "grimoire-kolmafia";
 import { Item } from "kolmafia";
-import { $familiars, $item, $location, get, getKramcoWandererChance, have } from "libram";
 
+import { $familiars, $item, $location, get, getKramcoWandererChance, have } from "libram";
 import { ChronerQuest, ChronerStrategy } from "./engine";
 import { chooseFamEquip, chooseFamiliar } from "./familiar";
 import { sober } from "./lib";
 import Macro from "./macro";
 
 function roseOutfit(): OutfitSpec {
-  const familiar = chooseFamiliar({ location: $location`Globe Theatre Main Stage`});
+  const familiar = chooseFamiliar({ location: $location`Globe Theatre Main Stage` });
   const famequip = chooseFamEquip(familiar);
 
   const ifHave = (slot: OutfitSlot, item: Item): OutfitSpec =>

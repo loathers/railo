@@ -1,5 +1,5 @@
 import { Args, getTasks, Quest } from "grimoire-kolmafia";
-import { adv1, cliExecute, myAdventures, myTurncount } from "kolmafia";
+import { adv1, cliExecute, getLocationMonsters, myAdventures, myTurncount, use } from "kolmafia";
 import {
   $effect,
   $item,
@@ -15,8 +15,8 @@ import {
 } from "libram";
 
 import { capsule } from "./capsule";
-import { ChronerEngine, ChronerQuest, ChronerStrategy, ChronerTask } from "./engine";
-import { printh } from "./lib";
+import { ChronerEngine, ChronerQuest, ChronerStrategy, ChronerTask, resetNcForced } from "./engine";
+import { enableDebug, printd, printh } from "./lib";
 import Macro from "./macro";
 import { rose } from "./rose";
 import { setup } from "./setup";
@@ -27,12 +27,15 @@ const args = Args.create("chrono", "A script for farming chroner", {
     default: Infinity,
   }),
   mode: Args.string({
-    key: "mode",
     options: [
       ["rose", "Farm Roses from The Main Stage"],
       ["capsule", "Farm Time Capsules from the Cave Before Time"],
     ],
     default: "rose",
+  }),
+  debug: Args.flag({
+    help: "Turn on debug printing",
+    default: false,
   }),
 });
 
@@ -42,6 +45,9 @@ export function main(command?: string) {
   if (args.help) {
     Args.showHelp(args);
     return;
+  }
+  if (args.debug) {
+    enableDebug();
   }
 
   sinceKolmafiaRevision(26834);
@@ -60,6 +66,14 @@ export function main(command?: string) {
     name: "Global",
     completed,
     tasks: [
+      {
+        name: "Clara's Bell",
+        completed: () => !have($item`Clara's bell`) || get("_claraBellUsed"),
+        do: () => {
+          use($item`Clara's bell`);
+        },
+        sobriety: "either",
+      },
       {
         name: "Proton Ghost",
         ready: () =>
@@ -103,6 +117,43 @@ export function main(command?: string) {
         sobriety: "either",
       },
       {
+        name: "Time Capsule",
+        do: () => {
+          adv1($location`The Cave Before Time`, 0, "");
+          if (get("lastEncounter") === "Time Cave.  Period.") {
+            printd("Forced noncombat!");
+            resetNcForced();
+          } else {
+            printd("Uh oh, we didn't force the NC");
+            const possibleEncouters = Object.keys(
+              getLocationMonsters($location`The Cave Before Time`)
+            );
+            if (possibleEncouters.includes(get("lastEncounter"))) {
+              printd("We hit a normal monster, so reset the noncombat forcing");
+              resetNcForced();
+            } else {
+              printd("We hit something else, so keep trying for the noncombat");
+            }
+          }
+        },
+        forced: true,
+        sobriety: "either",
+        completed: () => false,
+        combat: new ChronerStrategy(Macro.standardCombat()),
+      },
+      {
+        name: "Bowling Ball Run",
+        ready: () => get("cosmicBowlingBallReturnCombats") < 1,
+        do: $location`The Cave Before Time`,
+        sobriety: "sober",
+        completed: () => false,
+        combat: new ChronerStrategy(
+          Macro.tryHaveSkill($skill`Summon Mayfly Swarm`)
+            .trySkill($skill`Bowl a Curveball`)
+            .abort()
+        ),
+      },
+      {
         name: "Asdon Missle",
         ready: () => AsdonMartin.installed(),
         completed: () => get("_missileLauncherUsed") || have($effect`Everything Looks Yellow`),
@@ -134,10 +185,32 @@ export function main(command?: string) {
         ),
         sobriety: "sober",
       },
+      {
+        name: "Spikolodon Spikes",
+        ready: () =>
+          have($item`Jurassic Parka`) &&
+          have($skill`Torso Awareness`) &&
+          get("_spikolodonSpikeUses") < 5,
+        outfit: () => {
+          return {
+            ...quest.outfit(),
+            shirt: $item`Jurassic Parka`,
+          };
+        },
+        do: quest.location,
+        completed: () => false,
+        prepare: () => cliExecute("parka spikolodon"),
+        combat: new ChronerStrategy(
+          Macro.trySkill($skill`Launch spikolodon spikes`).standardCombat()
+        ),
+        sobriety: "sober",
+      },
     ],
   };
 
   const engine = new ChronerEngine(getTasks([setup, global, quest]));
+  engine.print();
+
   const sessionStart = Session.current();
 
   withProperty("recoveryScript", "", () => {

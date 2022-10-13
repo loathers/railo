@@ -51,6 +51,16 @@ export function printh(message: string) {
   print(message, HIGHLIGHT);
 }
 
+let debugEnabled = false;
+export function enableDebug() {
+  debugEnabled = true;
+}
+export function printd(message: string) {
+  if (debugEnabled) {
+    print(message, HIGHLIGHT);
+  }
+}
+
 export function sober() {
   return myInebriety() <= inebrietyLimit() + (myFamiliar() === $familiar`Stooper` ? -1 : 0);
 }
