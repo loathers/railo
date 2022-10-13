@@ -29,6 +29,7 @@ import { capsule } from "./capsule";
 import { ChronerEngine, ChronerQuest, ChronerStrategy, ChronerTask, resetNcForced } from "./engine";
 import { args, printd, printh } from "./lib";
 import Macro from "./macro";
+import { chooseQuestOutfit } from "./outfit";
 import { rose } from "./rose";
 import { setup } from "./setup";
 
@@ -78,12 +79,11 @@ export function main(command?: string) {
             throw "Could not determine Proton Ghost location!";
           }
         },
-        outfit: () => {
-          return {
-            ...quest.outfit(),
-            back: $item`protonic accelerator pack`,
-          };
-        },
+        outfit: () =>
+          chooseQuestOutfit(
+            { location: quest.location, isFree: true },
+            { back: $item`protonic accelerator pack` }
+          ),
         completed: () => get("questPAGhost") === "unstarted",
         combat: new ChronerStrategy(
           Macro.trySkill($skill`Sing Along`)
@@ -104,12 +104,11 @@ export function main(command?: string) {
         do: (): void => {
           adv1(quest.location, -1, "");
         },
-        outfit: () => {
-          return {
-            ...quest.outfit(),
-            acc3: $item`"I Voted!" sticker`,
-          };
-        },
+        outfit: () =>
+          chooseQuestOutfit(
+            { location: quest.location, isFree: true },
+            { acc3: $item`"I Voted!" sticker` }
+          ),
         completed: () => get("lastVoteMonsterTurn") === totalTurnsPlayed(),
         combat: new ChronerStrategy(Macro.redigitize().standardCombat()),
         sobriety: "either",
@@ -117,7 +116,11 @@ export function main(command?: string) {
       {
         name: "Digitize Wanderer",
         ready: () => Counter.get("Digitize") <= 0,
-        outfit: quest.outfit,
+        outfit: () =>
+          chooseQuestOutfit({
+            location: quest.location,
+            isFree: get("_sourceTerminalDigitizeMonster")?.attributes.includes("FREE"),
+          }),
         completed: () => get("_sourceTerminalDigitizeMonsterCount") !== digitizes,
         do: () => {
           adv1(quest.location, -1, "");
@@ -131,7 +134,11 @@ export function main(command?: string) {
         ready: () =>
           have($item`cursed magnifying glass`) && get("cursedMagnifyingGlassCount") === 13,
         completed: () => get("_voidFreeFights") >= 5,
-        outfit: () => ({ ...quest.outfit(), offhand: $item`cursed magnifying glass` }),
+        outfit: () =>
+          chooseQuestOutfit(
+            { location: quest.location, isFree: true },
+            { offhand: $item`cursed magnifying glass` }
+          ),
         do: quest.location,
         sobriety: "sober",
         combat: new ChronerStrategy(Macro.standardCombat()),
@@ -167,12 +174,13 @@ export function main(command?: string) {
           have($item`Jurassic Parka`) &&
           have($skill`Torso Awareness`) &&
           get("_spikolodonSpikeUses") < 5,
-        outfit: () => {
-          return {
-            ...quest.outfit(),
-            shirt: $item`Jurassic Parka`,
-          };
-        },
+        outfit: () =>
+          chooseQuestOutfit(
+            { location: quest.location },
+            {
+              shirt: $item`Jurassic Parka`,
+            }
+          ),
         do: quest.location,
         completed: () => false,
         prepare: () => cliExecute("parka spikolodon"),
@@ -216,6 +224,8 @@ export function main(command?: string) {
             .skill($skill`Asdon Martin: Missile Launcher`)
             .abort()
         ),
+        outfit: () =>
+          chooseQuestOutfit({ location: yrTarget, isFree: true }, { shirt: $item`Jurassic Parka` }),
         prepare: () => AsdonMartin.fillTo(100),
         do: yrTarget,
         sobriety: "sober",
@@ -224,12 +234,8 @@ export function main(command?: string) {
         name: "Spit Jurassic Acid",
         completed: () => have($effect`Everything Looks Yellow`),
         ready: () => have($item`Jurassic Parka`) && have($skill`Torso Awareness`),
-        outfit: () => {
-          return {
-            ...quest.outfit(),
-            shirt: $item`Jurassic Parka`,
-          };
-        },
+        outfit: () =>
+          chooseQuestOutfit({ location: yrTarget, isFree: true }, { shirt: $item`Jurassic Parka` }),
         prepare: () => cliExecute("parka dilophosaur"),
         do: yrTarget,
         combat: new ChronerStrategy(

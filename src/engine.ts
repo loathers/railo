@@ -1,4 +1,4 @@
-import { CombatStrategy, Engine, Outfit, OutfitSpec, Quest, Task } from "grimoire-kolmafia";
+import { CombatStrategy, Engine, Outfit, Quest, Task } from "grimoire-kolmafia";
 import {
   bjornifyFamiliar,
   enthroneFamiliar,
@@ -19,7 +19,6 @@ export type ChronerTask = Task & {
 
 export type ChronerQuest = Quest<ChronerTask> & {
   location: Location;
-  outfit: () => OutfitSpec;
 };
 
 const introAdventures = ["The Cave Before Time"];

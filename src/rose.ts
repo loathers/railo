@@ -11,7 +11,6 @@ let triedFlorist = false;
 export const rose: ChronerQuest = {
   name: "Rose",
   location,
-  outfit: () => chooseQuestOutfit(rose),
   tasks: [
     {
       name: "Flowers",
@@ -37,7 +36,7 @@ export const rose: ChronerQuest = {
         const drunkSpec = sober() ? {} : { offhand: $item`Drunkula's wineglass` };
         const sausageSpec =
           getKramcoWandererChance() >= 1 ? ifHave("offhand", $item`Kramco Sausage-o-Matic™`) : {};
-        return chooseQuestOutfit(rose, sausageSpec, drunkSpec);
+        return chooseQuestOutfit({location, isFree: getKramcoWandererChance() >= 1}, sausageSpec, drunkSpec);
       },
       combat: new ChronerStrategy(Macro.standardCombat()),
       sobriety: "either",
