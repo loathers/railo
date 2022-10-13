@@ -1,5 +1,5 @@
 import { haveEquipped, Item, myFamiliar, Skill } from "kolmafia";
-import { $familiar, $item, $monster, $skill, get, have, StrictMacro } from "libram";
+import { $familiar, $item, $monster, $skill, get, have, SongBoom, StrictMacro } from "libram";
 
 import { canOpenRedPresent, timeToMeatify } from "./familiar";
 import { shouldRedigitize } from "./lib";
@@ -52,7 +52,10 @@ export default class Macro extends StrictMacro {
         haveEquipped($item`packet of mayfly bait`),
         Macro.trySkill($skill`Summon Mayfly Swarm`)
       )
-      .tryHaveSkill($skill`Sing Along`)
+      .externalIf(
+        SongBoom.song() === "Total Eclipse of Your Meat",
+        Macro.tryHaveSkill($skill`Sing Along`)
+      )
       .tryHaveSkill($skill`Extract`)
       .tryHaveSkill($skill`Micrometeorite`)
       .tryHaveItem($item`Time-Spinner`)
