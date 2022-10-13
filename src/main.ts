@@ -5,7 +5,6 @@ import {
   getLocationMonsters,
   myAdventures,
   myClass,
-  myPath,
   myTurncount,
   totalTurnsPlayed,
   use,
