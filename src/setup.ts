@@ -23,6 +23,7 @@ import {
   get,
   have,
   Snapper,
+  SongBoom,
   uneffect,
 } from "libram";
 
@@ -140,6 +141,12 @@ export const setup: Quest<ChronerTask> = {
         get("_coldMedicineConsults") >= 5 ||
         countEnvironment(cmcTarget().environment) <= 10,
       do: () => tryGetCMCItem(cmcTarget().item),
+      sobriety: "either",
+    },
+    {
+      name: "Boombox",
+      completed: () => !SongBoom.have() || SongBoom.song() === "Food Vibrations",
+      do: () => SongBoom.setSong("Food Vibrations"),
       sobriety: "either",
     },
   ],
