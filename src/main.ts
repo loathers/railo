@@ -168,7 +168,8 @@ export function main(command?: string) {
         sobriety: "either",
         completed: () => false,
         combat: new ChronerStrategy(Macro.standardCombat()),
-      }, {
+      },
+      {
         name: "Spikolodon Spikes",
         ready: () =>
           have($item`Jurassic Parka`) &&
@@ -196,14 +197,26 @@ export function main(command?: string) {
         completed: () => false,
         combat: new ChronerStrategy(
           Macro.tryHaveSkill($skill`Summon Mayfly Swarm`)
+            .tryHaveSkill($skill`Curse of Weaksauce`)
             .trySkill($skill`Bowl a Curveball`)
             .abort()
         ),
       },
       {
+        name: "Asdon Bumper",
+        ready: () => AsdonMartin.installed(),
+        completed: () => !get("banishedMonsters").includes("Spring-Loaded Front Bumper"),
+        sobriety: "sober",
+        do: $location`The Cave Before Time`,
+        combat: new ChronerStrategy(
+          Macro.skill($skill`Asdon Martin: Spring-Loaded Front Bumper`).abort()
+        ),
+        prepare: () => AsdonMartin.fillTo(50),
+      },
+      {
         name: "Asdon Missle",
         ready: () => AsdonMartin.installed(),
-        completed: () => get("_missileLauncherUsed") || have($effect`Everything Looks Yellow`),
+        completed: () => get("_missileLauncherUsed"),
         combat: new ChronerStrategy(
           Macro.tryHaveSkill($skill`Summon Mayfly Swarm`)
             .skill($skill`Asdon Martin: Missile Launcher`)
