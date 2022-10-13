@@ -1,5 +1,5 @@
 import { Args, getTasks, Quest } from "grimoire-kolmafia";
-import { adv1, cliExecute, getLocationMonsters, myAdventures, myTurncount, use } from "kolmafia";
+import { adv1, cliExecute, getLocationMonsters, myAdventures, myTurncount, totalTurnsPlayed, use } from "kolmafia";
 import {
   $effect,
   $item,
@@ -103,6 +103,26 @@ export function main(command?: string) {
             .trySkill($skill`Trap Ghost`)
         ),
         sobriety: "sober",
+      },
+      {
+        name: "Vote Wanderer",
+        ready: () =>
+        have($item`"I Voted!" sticker`) &&
+        totalTurnsPlayed() % 11 === 1 &&
+        get("lastVoteMonsterTurn") < totalTurnsPlayed() &&
+        get("_voteFreeFights") < 3,
+        do: (): void => {
+          adv1(quest.location, -1, "");
+        },
+        outfit: () => {
+          return {
+            ...quest.outfit(),
+            acc3: $item`"I Voted!" sticker`,
+          };
+        },
+        completed: () => get("lastVoteMonsterTurn") === totalTurnsPlayed(),
+        combat: new ChronerStrategy(Macro.redigitize().standardCombat()),
+        sobriety: "either",
       },
       {
         name: "Digitize Wanderer",
