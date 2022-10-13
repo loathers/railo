@@ -1,4 +1,4 @@
-import { OutfitSlot, OutfitSpec } from "grimoire-kolmafia";
+import { Args, OutfitSlot, OutfitSpec } from "grimoire-kolmafia";
 import {
   canEquip,
   inebrietyLimit,
@@ -61,12 +61,8 @@ export function printh(message: string) {
   print(message, HIGHLIGHT);
 }
 
-let debugEnabled = false;
-export function enableDebug() {
-  debugEnabled = true;
-}
 export function printd(message: string) {
-  if (debugEnabled) {
+  if (args.debug) {
     print(message, HIGHLIGHT);
   }
 }
@@ -75,5 +71,26 @@ export function sober() {
   return myInebriety() <= inebrietyLimit() + (myFamiliar() === $familiar`Stooper` ? -1 : 0);
 }
 
-export const ifHave = (slot: OutfitSlot, item: Item, condition?: () => boolean): OutfitSpec =>
-  have(item) && canEquip(item) && (condition?.() ?? true) ? Object.fromEntries([[slot, item]]) : {};
+export function ifHave(slot: OutfitSlot, item: Item, condition?: () => boolean): OutfitSpec {
+  return have(item) && canEquip(item) && (condition?.() ?? true)
+    ? Object.fromEntries([[slot, item]])
+    : {};
+}
+
+export const args = Args.create("chrono", "A script for farming chroner", {
+  turns: Args.number({
+    help: "The number of turns to run (use negative numbers for the number of turns remaining)",
+    default: Infinity,
+  }),
+  mode: Args.string({
+    options: [
+      ["rose", "Farm Roses from The Main Stage"],
+      ["capsule", "Farm Time Capsules from the Cave Before Time"],
+    ],
+    default: "rose",
+  }),
+  debug: Args.flag({
+    help: "Turn on debug printing",
+    default: false,
+  }),
+});

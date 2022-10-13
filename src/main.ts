@@ -24,28 +24,10 @@ import {
 
 import { capsule } from "./capsule";
 import { ChronerEngine, ChronerQuest, ChronerStrategy, ChronerTask, resetNcForced } from "./engine";
-import { enableDebug, printd, printh } from "./lib";
+import { args, printd, printh } from "./lib";
 import Macro from "./macro";
 import { rose } from "./rose";
 import { setup } from "./setup";
-
-const args = Args.create("chrono", "A script for farming chroner", {
-  turns: Args.number({
-    help: "The number of turns to run (use negative numbers for the number of turns remaining)",
-    default: Infinity,
-  }),
-  mode: Args.string({
-    options: [
-      ["rose", "Farm Roses from The Main Stage"],
-      ["capsule", "Farm Time Capsules from the Cave Before Time"],
-    ],
-    default: "rose",
-  }),
-  debug: Args.flag({
-    help: "Turn on debug printing",
-    default: false,
-  }),
-});
 
 export function main(command?: string) {
   Args.fill(args, command);
@@ -53,9 +35,6 @@ export function main(command?: string) {
   if (args.help) {
     Args.showHelp(args);
     return;
-  }
-  if (args.debug) {
-    enableDebug();
   }
 
   sinceKolmafiaRevision(26834);

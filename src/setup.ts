@@ -84,7 +84,9 @@ export const setup: Quest<ChronerTask> = {
     },
     {
       name: "Closet Hobo Nickels",
-      completed: () => itemAmount($item`hobo nickel`) === 0 || (!have($familiar`Hobo Monkey`) && !have($item`hobo nickel`, 1000)),
+      completed: () =>
+        itemAmount($item`hobo nickel`) === 0 ||
+        (!have($familiar`Hobo Monkey`) && !have($item`hobo nickel`, 1000)),
       do: () => putCloset(itemAmount($item`hobo nickel`), $item`hobo nickel`),
       sobriety: "either",
     },

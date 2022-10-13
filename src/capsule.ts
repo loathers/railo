@@ -24,7 +24,11 @@ function capsuleOutfit(): OutfitSpec {
       $item`designer sweatpants`,
       () => 25 * get("_sweatOutSomeBoozeUsed") + get("sweat") < 75
     ),
-    ...ifHave("offhand", $item`cursed magnifying glass`, () => get("_voidFreeFights") < 5 && get("cursedMagnifyingGlassCount") < 13),
+    ...ifHave(
+      "offhand",
+      $item`cursed magnifying glass`,
+      () => get("_voidFreeFights") < 5 && get("cursedMagnifyingGlassCount") < 13
+    ),
     familiar,
     modifier: $familiars`Reagnimated Gnome, Temporal Riftlet`.includes(familiar)
       ? "Familiar Weight"
