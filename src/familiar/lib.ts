@@ -2,6 +2,7 @@ import {
   Familiar,
   familiarWeight,
   inebrietyLimit,
+  Location,
   myAdventures,
   myInebriety,
   totalTurnsPlayed,
@@ -78,3 +79,11 @@ export function canOpenRedPresent(): boolean {
     myInebriety() <= inebrietyLimit()
   );
 }
+
+export type MenuOptions = {
+  canChooseMacro?: boolean;
+  location?: Location;
+  extraFamiliars?: GeneralFamiliar[];
+  includeExperienceFamiliars?: boolean;
+  allowAttackFamiliars?: boolean;
+};

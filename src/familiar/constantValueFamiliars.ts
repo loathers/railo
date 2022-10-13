@@ -4,6 +4,7 @@ import {
   $familiar,
   $item,
   $items,
+  $location,
   findLeprechaunMultiplier,
   get,
   have,
@@ -12,11 +13,11 @@ import {
 
 import { garboAverageValue, garboValue } from "../garboValue";
 
-import { GeneralFamiliar } from "./lib";
+import { GeneralFamiliar, MenuOptions } from "./lib";
 
 type ConstantValueFamiliar = {
   familiar: Familiar;
-  value: () => number;
+  value: (options: MenuOptions) => number;
 };
 
 const standardFamiliars: ConstantValueFamiliar[] = [
@@ -63,16 +64,17 @@ const standardFamiliars: ConstantValueFamiliar[] = [
   },
   {
     familiar: $familiar`Red-Nosed Snapper`,
-    value: () => garboValue($item`human musk`) / 11,
+    value: ({ location }) =>
+      location === $location`Globe Theatre Main Stage` ? garboValue($item`human musk`) / 11 : 0,
   },
 ];
 
-export default function getConstantValueFamiliars(): GeneralFamiliar[] {
+export default function getConstantValueFamiliars(options: MenuOptions = {}): GeneralFamiliar[] {
   return standardFamiliars
     .filter(({ familiar }) => have(familiar))
     .map(({ familiar, value }) => ({
       familiar,
-      expectedValue: value(),
+      expectedValue: value(options),
       leprechaunMultiplier: findLeprechaunMultiplier(familiar),
       limit: "none",
     }));
