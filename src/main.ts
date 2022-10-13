@@ -145,6 +145,16 @@ export function main(command?: string) {
         sobriety: "either",
       },
       {
+        name: "Void Monster",
+        ready: () =>
+          have($item`cursed magnifying glass`) && get("cursedMagnifyingGlassCount") === 13,
+        completed: () => get("_voidFreeFights") >= 5,
+        outfit: () => ({ ...quest.outfit(), offhand: $item`cursed magnifying glass` }),
+        do: quest.location,
+        sobriety: "sober",
+        combat: new ChronerStrategy(Macro.standardCombat()),
+      },
+      {
         name: "Time Capsule",
         do: () => {
           adv1($location`The Cave Before Time`, 0, "");

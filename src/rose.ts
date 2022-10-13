@@ -1,5 +1,4 @@
-import { OutfitSlot, OutfitSpec } from "grimoire-kolmafia";
-import { Item, myLocation } from "kolmafia";
+import { OutfitSpec } from "grimoire-kolmafia";
 import {
   $familiars,
   $item,
@@ -9,18 +8,16 @@ import {
   getKramcoWandererChance,
   have,
 } from "libram";
+import { myLocation } from "kolmafia";
 
 import { ChronerQuest, ChronerStrategy } from "./engine";
 import { chooseFamEquip, chooseFamiliar } from "./familiar";
-import { sober } from "./lib";
+import { ifHave, sober } from "./lib";
 import Macro from "./macro";
 
 function roseOutfit(): OutfitSpec {
   const familiar = chooseFamiliar({ location: $location`Globe Theatre Main Stage` });
   const famequip = chooseFamEquip(familiar);
-
-  const ifHave = (slot: OutfitSlot, item: Item): OutfitSpec =>
-    have(item) ? Object.fromEntries([[slot, item]]) : {};
 
   return {
     ...ifHave("weapon", $item`June cleaver`),
@@ -28,12 +25,19 @@ function roseOutfit(): OutfitSpec {
     ...ifHave("acc1", $item`mafia thumb ring`),
     ...ifHave("acc2", $item`time-twitching toolbelt`),
     ...ifHave("acc3", $item`lucky gold ring`),
-    ...(get("_mayflySummons") < 30 ? ifHave("acc3", $item`mayfly bait necklace`) : {}),
+    ...ifHave("acc3", $item`mayfly bait necklace`, () => get("_mayflySummons") < 30),
     ...ifHave("famequip", famequip),
     ...ifHave("back", $item`Time Cloak`),
-    ...(25 * get("_sweatOutSomeBoozeUsed") + get("sweat") < 75
-      ? ifHave("pants", $item`designer sweatpants`)
-      : {}),
+    ...ifHave(
+      "pants",
+      $item`designer sweatpants`,
+      () => 25 * get("_sweatOutSomeBoozeUsed") + get("sweat") < 75
+    ),
+    ...ifHave(
+      "offhand",
+      $item`cursed magnifying glass`,
+      () => get("_voidFreeFights") < 5 && get("cursedMagnifyingGlassCount") < 13
+    ),
     familiar,
     modifier: $familiars`Reagnimated Gnome, Temporal Riftlet`.includes(familiar)
       ? "Familiar Weight"

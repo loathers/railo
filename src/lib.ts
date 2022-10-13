@@ -1,5 +1,15 @@
-import { inebrietyLimit, isDarkMode, myAdventures, myFamiliar, myInebriety, print } from "kolmafia";
-import { $familiar, SourceTerminal } from "libram";
+import { OutfitSlot, OutfitSpec } from "grimoire-kolmafia";
+import {
+  canEquip,
+  inebrietyLimit,
+  isDarkMode,
+  Item,
+  myAdventures,
+  myFamiliar,
+  myInebriety,
+  print,
+} from "kolmafia";
+import { $familiar, have, SourceTerminal } from "libram";
 
 /**
  * Find the best element of an array, where "best" is defined by some given criteria.
@@ -64,3 +74,6 @@ export function printd(message: string) {
 export function sober() {
   return myInebriety() <= inebrietyLimit() + (myFamiliar() === $familiar`Stooper` ? -1 : 0);
 }
+
+export const ifHave = (slot: OutfitSlot, item: Item, condition?: () => boolean): OutfitSpec =>
+  have(item) && canEquip(item) && (condition?.() ?? true) ? Object.fromEntries([[slot, item]]) : {};
