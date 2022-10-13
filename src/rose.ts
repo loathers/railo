@@ -8,7 +8,7 @@ import { sober } from "./lib";
 import Macro from "./macro";
 
 function roseOutfit(): OutfitSpec {
-  const familiar = chooseFamiliar();
+  const familiar = chooseFamiliar({ location: $location`Globe Theatre Main Stage`});
   const famequip = chooseFamEquip(familiar);
 
   const ifHave = (slot: OutfitSlot, item: Item): OutfitSpec =>
