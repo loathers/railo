@@ -12,4 +12,8 @@ export const chooseFamiliar = (options: MenuOptions = {}) =>
       freeFightFamiliar(options)
     : freeFightFamiliar();
 export const chooseFamEquip = (fam: Familiar) =>
-  fam === $familiar`Reagnimated Gnome` ? $item`gnomish housemaid's kgnee` : $item`tiny stillsuit`;
+  fam === $familiar`Reagnimated Gnome`
+    ? $item`gnomish housemaid's kgnee`
+    : fam.elementalDamage || fam.physicalDamage
+    ? $item`oversized fish scaler`
+    : $item`tiny stillsuit`;
