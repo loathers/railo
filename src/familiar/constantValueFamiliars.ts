@@ -67,6 +67,12 @@ const standardFamiliars: ConstantValueFamiliar[] = [
     value: ({ location }) =>
       location === $location`Globe Theatre Main Stage` ? garboValue($item`human musk`) / 11 : 0,
   },
+  {
+    familiar: $familiar`Mosquito`,
+    // Acts as default familiar.
+    // Extra roses when using an attacking familiar and everyone has this one
+    value: () => 1,
+  },
 ];
 
 export default function getConstantValueFamiliars(options: MenuOptions = {}): GeneralFamiliar[] {
