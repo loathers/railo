@@ -99,7 +99,7 @@ export function chooseQuestOutfit(
     if (!accessory) break;
     spec[`acc${i + 1}` as OutfitSlot] = accessory;
   }
-  const mergedSpec = mergeSpecs(spec, ...outfits);
+  const mergedSpec = mergeSpecs(...outfits, spec);
   if (!have($item`Crown of Thrones`) && have($item`Buddy Bjorn`) && !("back" in mergedSpec)) {
     mergedSpec.back = $item`Buddy Bjorn`;
   }
