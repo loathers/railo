@@ -26,7 +26,7 @@ const experienceFamiliars: ExperienceFamiliar[] = [
 function valueExperienceFamiliar({ familiar, useValue }: ExperienceFamiliar): GeneralFamiliar {
   const currentExp = familiar.experience || (have($familiar`Shorter-Order Cook`) ? 100 : 0);
   const experienceNeeded = 400 - currentExp;
-  const estimatedExperience = 1;
+  const estimatedExperience = 3;
   return {
     familiar,
     expectedValue: useValue / (experienceNeeded / estimatedExperience),
