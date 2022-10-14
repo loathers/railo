@@ -1,6 +1,7 @@
 import { Args, getTasks, Quest } from "grimoire-kolmafia";
 import {
   adv1,
+  canAdventure,
   cliExecute,
   getLocationMonsters,
   myAdventures,
@@ -242,7 +243,7 @@ export function main(command?: string) {
         name: "Grey You Attack Skill",
         completed: () => have($skill`Nantlers`) || have($skill`Nanoshock`) || have($skill`Audioclasm`),
         do: $location`The Haunted Storage Room`,
-        ready: () => myClass() === $class`Grey Goo`,
+        ready: () => myClass() === $class`Grey Goo` && canAdventure($location`The Haunted Storage Room`),
         combat: new ChronerStrategy(Macro.standardCombat()),
         sobriety: "sober",
       },
