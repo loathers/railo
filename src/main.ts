@@ -183,7 +183,7 @@ export function main(command?: string) {
       },
       {
         name: "Bowling Ball Run",
-        ready: () => get("cosmicBowlingBallReturnCombats") < 1,
+        ready: () => get("cosmicBowlingBallReturnCombats") < 1 && get("hasCosmicBowlingBall"),
         do: $location`The Cave Before Time`,
         sobriety: "sober",
         completed: () => false,
@@ -241,9 +241,11 @@ export function main(command?: string) {
       },
       {
         name: "Grey You Attack Skill",
-        completed: () => have($skill`Nantlers`) || have($skill`Nanoshock`) || have($skill`Audioclasm`),
+        completed: () =>
+          have($skill`Nantlers`) || have($skill`Nanoshock`) || have($skill`Audioclasm`),
         do: $location`The Haunted Storage Room`,
-        ready: () => myClass() === $class`Grey Goo` && canAdventure($location`The Haunted Storage Room`),
+        ready: () =>
+          myClass() === $class`Grey Goo` && canAdventure($location`The Haunted Storage Room`),
         combat: new ChronerStrategy(Macro.standardCombat()),
         sobriety: "sober",
       },
