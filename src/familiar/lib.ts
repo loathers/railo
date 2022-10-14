@@ -7,6 +7,7 @@ import {
   weightAdjustment,
 } from "kolmafia";
 import { $effect, $familiar, $item, get, have } from "libram";
+
 import { sober } from "../lib";
 
 export type GeneralFamiliar = {
@@ -17,11 +18,7 @@ export type GeneralFamiliar = {
 };
 
 export function timeToMeatify(): boolean {
-  if (
-    !have($familiar`Grey Goose`) ||
-    get("_meatifyMatterUsed") ||
-    !sober()
-  ) {
+  if (!have($familiar`Grey Goose`) || get("_meatifyMatterUsed") || !sober()) {
     return false;
   } else if ($familiar`Grey Goose`.experience >= 400) return true;
   else if (myAdventures() > 50) return false;
