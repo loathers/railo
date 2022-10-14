@@ -145,7 +145,10 @@ export const setup: Quest<ChronerTask> = {
     },
     {
       name: "Boombox",
-      completed: () => !SongBoom.have() || SongBoom.song() === "Food Vibrations",
+      completed: () =>
+        !SongBoom.have() ||
+        SongBoom.song() === "Food Vibrations" ||
+        SongBoom.songChangesLeft() === 0,
       do: () => SongBoom.setSong("Food Vibrations"),
       sobriety: "either",
     },
