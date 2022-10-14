@@ -47,15 +47,16 @@ export default class Macro extends StrictMacro {
 
   doItems(): this {
     const steps = new Macro();
-    const items = $items`Rain-Doh blue balls, Time-Spinner, Rain-Doh indigo cup, HOA citation pad, porquoise-handled sixgun`.filter(
-      (i) => have(i)
-    );
+    const items =
+      $items`Rain-Doh blue balls, Time-Spinner, Rain-Doh indigo cup, HOA citation pad, porquoise-handled sixgun`.filter(
+        (i) => have(i)
+      );
     if (items.length) {
       if (!have($skill`Ambidextrous Funkslinging`)) {
         for (const item of items) steps.tryItem(item);
       } else {
         for (let i = 0; i <= items.length; i += 2) {
-          const chunk = items.slice(i, i + 1);
+          const chunk = items.slice(i, i + 2);
           if (chunk.length === 2) steps.tryItem(chunk as [Item, Item]);
           else steps.tryItem(...chunk);
         }
