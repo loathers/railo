@@ -51,16 +51,12 @@ export function chooseQuestOutfit(
       ? $item`tiny stillsuit`
       : $item`oversized fish scaler`);
 
-  // each slot here is in priority order
-  const offhands = maxBy(
-    [
-      { offhand: $item`Kramco Sausage-o-Matic™`, p: getKramcoWandererChance() },
-      { offhand: $item`cursed magnifying glass`, p: get("_voidFreeFights") < 5 ? 1 / 13 : 0 },
-      { offhand: $item`carnivorous potted plant`, p: 0.04 },
-      { p: 0 },
-    ].filter(({ offhand }) => !offhand || have(offhand)),
-    "p"
-  );
+  const freeChance = [
+    { i: $item`Kramco Sausage-o-Matic™`, p: getKramcoWandererChance() },
+    { i: $item`carnivorous potted plant`, p: 0.04 },
+    { i: $item`cursed magnifying glass`, p: get("_voidFreeFights") < 5 ? 1 / 13 : 0 },
+  ].filter(({ i }) => have(i) && canEquip(i));
+  const offhands = freeChance.length ? { offhand: maxBy(freeChance, "p").i } : {};
 
   const weapons = mergeSpecs(
     ifHave("weapon", $item`June cleaver`),
