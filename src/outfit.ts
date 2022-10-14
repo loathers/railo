@@ -10,7 +10,16 @@ import {
   myInebriety,
   totalTurnsPlayed,
 } from "kolmafia";
-import { $familiar, $familiars, $item, $items, get, have, sumNumbers } from "libram";
+import {
+  $familiar,
+  $familiars,
+  $item,
+  $items,
+  get,
+  getKramcoWandererChance,
+  have,
+  sumNumbers,
+} from "libram";
 
 import { freeFightFamiliar, MenuOptions } from "./familiar";
 import { garboAverageValue, garboValue } from "./garboValue";
@@ -20,6 +29,10 @@ export function ifHave(slot: OutfitSlot, item: Item, condition?: () => boolean):
   return have(item) && canEquip(item) && (condition?.() ?? true)
     ? Object.fromEntries([[slot, item]])
     : {};
+}
+
+function mergeSpecs(...outfits: OutfitSpec[]): OutfitSpec {
+  return outfits.reduce((current, next) => ({ ...next, ...current }), {});
 }
 
 const chooseFamiliar = (options: MenuOptions = {}): Familiar =>
@@ -39,29 +52,46 @@ export function chooseQuestOutfit(
     (familiar.elementalDamage || familiar.physicalDamage
       ? $item`tiny stillsuit`
       : $item`oversized fish scaler`);
-  const spec = {
-    familiar,
-    ...ifHave("famequip", famEquip),
-    ...ifHave("back", $item`Time Cloak`),
-    ...ifHave("weapon", $item`June cleaver`),
-    ...ifHave("offhand", $item`carnivorous potted plant`),
-    ...ifHave(
-      "pants",
-      $item`designer sweatpants`,
-      () => 25 * get("_sweatOutSomeBoozeUsed") + get("sweat") < 75
-    ),
-    ...ifHave(
+
+  // each slot here is in priority order
+  const offhands = mergeSpecs(
+    ifHave(
       "offhand",
       $item`cursed magnifying glass`,
       () => !isFree && get("_voidFreeFights") < 5 && get("cursedMagnifyingGlassCount") < 13
     ),
-    ...ifHave(
+    ifHave("offhand", $item`Kramco Sausage-o-Matic™`, () => getKramcoWandererChance() >= 0.04),
+    ifHave("offhand", $item`carnivorous potted plant`)
+  );
+
+  const weapons = mergeSpecs(
+    ifHave("weapon", $item`June cleaver`),
+    ifHave("weapon", $item`Fourth of May Cosplay Saber`)
+  );
+
+  const backs = mergeSpecs(
+    ifHave(
       "back",
       $item`protonic accelerator pack`,
       () =>
         get("questPAGhost") === "unstarted" && get("nextParanormalActivity") <= totalTurnsPlayed()
     ),
-  };
+    ifHave("back", $item`Time Cloak`)
+  );
+
+  const spec = mergeSpecs(
+    ifHave("hat", $item`Crown of Thrones`),
+    offhands,
+    weapons,
+    backs,
+    { familiar },
+    ifHave("famequip", famEquip),
+    ifHave(
+      "pants",
+      $item`designer sweatpants`,
+      () => 25 * get("_sweatOutSomeBoozeUsed") + get("sweat") < 75
+    )
+  );
 
   const bestAccessories = getBestAccessories(isFree);
   for (let i = 0; i < 3; i++) {
@@ -69,12 +99,8 @@ export function chooseQuestOutfit(
     if (!accessory) break;
     spec[`acc${i + 1}` as OutfitSlot] = accessory;
   }
-
-  const outfit = outfits.reduce((current, next) => ({ ...current, ...next }), {});
-
-  const mergedSpec = { ...spec, ...outfit };
-  if (have($item`Crown of Thrones`)) mergedSpec.hat = $item`Crown of Thrones`;
-  else if (have($item`Buddy Bjorn`) && !("back" in mergedSpec)) {
+  const mergedSpec = mergeSpecs(spec, ...outfits);
+  if (!have($item`Crown of Thrones`) && have($item`Buddy Bjorn`) && !("back" in mergedSpec)) {
     mergedSpec.back = $item`Buddy Bjorn`;
   }
   mergedSpec.modifier = $familiars`Reagnimated Gnome, Temporal Riftlet`.includes(familiar)
