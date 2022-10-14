@@ -1,14 +1,13 @@
 import {
   Familiar,
   familiarWeight,
-  inebrietyLimit,
   Location,
   myAdventures,
-  myInebriety,
   totalTurnsPlayed,
   weightAdjustment,
 } from "kolmafia";
 import { $effect, $familiar, $item, get, have } from "libram";
+import { sober } from "../lib";
 
 export type GeneralFamiliar = {
   familiar: Familiar;
@@ -21,7 +20,7 @@ export function timeToMeatify(): boolean {
   if (
     !have($familiar`Grey Goose`) ||
     get("_meatifyMatterUsed") ||
-    myInebriety() > inebrietyLimit()
+    !sober()
   ) {
     return false;
   } else if ($familiar`Grey Goose`.experience >= 400) return true;
@@ -76,7 +75,7 @@ export function canOpenRedPresent(): boolean {
     have($familiar`Crimbo Shrub`) &&
     !have($effect`Everything Looks Red`) &&
     get("shrubGifts") === "meat" &&
-    myInebriety() <= inebrietyLimit()
+    sober()
   );
 }
 

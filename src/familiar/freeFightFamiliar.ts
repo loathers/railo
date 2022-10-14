@@ -1,8 +1,9 @@
 import { canOpenRedPresent } from ".";
-import { Familiar, familiarWeight, inebrietyLimit, myInebriety } from "kolmafia";
+import { Familiar, familiarWeight } from "kolmafia";
 import { $familiar, $item, $location, clamp, get, have } from "libram";
 
 import { garboValue } from "../garboValue";
+import { sober } from "../lib";
 
 import getConstantValueFamiliars from "./constantValueFamiliars";
 import getDropFamiliars from "./dropFamiliars";
@@ -40,7 +41,7 @@ export function menu(options: MenuOptions = {}): GeneralFamiliar[] {
     },
   ];
 
-  if (canChooseMacro && myInebriety() <= inebrietyLimit()) {
+  if (canChooseMacro && sober()) {
     if (timeToMeatify()) {
       familiarMenu.push({
         familiar: $familiar`Grey Goose`,

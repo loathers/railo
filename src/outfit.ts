@@ -3,11 +3,9 @@ import {
   canEquip,
   canInteract,
   Familiar,
-  inebrietyLimit,
   Item,
   itemAmount,
   Location,
-  myInebriety,
   totalTurnsPlayed,
 } from "kolmafia";
 import {
@@ -23,7 +21,7 @@ import {
 
 import { freeFightFamiliar, MenuOptions } from "./familiar";
 import { garboAverageValue, garboValue } from "./garboValue";
-import { realmAvailable } from "./lib";
+import { maxBy, realmAvailable, sober } from "./lib";
 
 export function ifHave(slot: OutfitSlot, item: Item, condition?: () => boolean): OutfitSpec {
   return have(item) && canEquip(item) && (condition?.() ?? true)
@@ -36,7 +34,7 @@ function mergeSpecs(...outfits: OutfitSpec[]): OutfitSpec {
 }
 
 const chooseFamiliar = (options: MenuOptions = {}): Familiar =>
-  canInteract() && myInebriety() <= inebrietyLimit()
+  canInteract() && sober()
     ? $familiars`Reagnimated Gnome, Temporal Riftlet`.find((f) => have(f)) ??
       freeFightFamiliar(options)
     : freeFightFamiliar(options);
@@ -54,14 +52,14 @@ export function chooseQuestOutfit(
       : $item`oversized fish scaler`);
 
   // each slot here is in priority order
-  const offhands = mergeSpecs(
-    ifHave(
-      "offhand",
-      $item`cursed magnifying glass`,
-      () => !isFree && get("_voidFreeFights") < 5 && get("cursedMagnifyingGlassCount") < 13
-    ),
-    ifHave("offhand", $item`Kramco Sausage-o-Matic™`, () => getKramcoWandererChance() >= 0.04),
-    ifHave("offhand", $item`carnivorous potted plant`)
+  const offhands = maxBy(
+    [
+      { offhand: $item`Kramco Sausage-o-Matic™`, p: getKramcoWandererChance() },
+      { offhand: $item`cursed magnifying glass`, p: get("_voidFreeFights") < 5 ? 1 / 13 : 0 },
+      { offhand: $item`carnivorous potted plant`, p: 0.04 },
+      { p: 0 },
+    ].filter(({ offhand }) => !offhand || have(offhand)),
+    "p"
   );
 
   const weapons = mergeSpecs(
@@ -74,7 +72,9 @@ export function chooseQuestOutfit(
       "back",
       $item`protonic accelerator pack`,
       () =>
-        get("questPAGhost") === "unstarted" && get("nextParanormalActivity") <= totalTurnsPlayed()
+        get("questPAGhost") === "unstarted" &&
+        get("nextParanormalActivity") <= totalTurnsPlayed() &&
+        sober()
     ),
     ifHave("back", $item`Time Cloak`)
   );
