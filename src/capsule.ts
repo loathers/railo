@@ -24,7 +24,7 @@ export const capsule: ChronerQuest = {
           drunkSpec
         );
       },
-      combat: new ChronerStrategy(Macro.standardCombat()),
+      combat: new ChronerStrategy(() => Macro.standardCombat()),
       sobriety: "either",
     },
   ],

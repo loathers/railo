@@ -85,7 +85,7 @@ export function main(command?: string) {
             { back: $item`protonic accelerator pack` }
           ),
         completed: () => get("questPAGhost") === "unstarted",
-        combat: new ChronerStrategy(
+        combat: new ChronerStrategy(() =>
           Macro.trySkill($skill`Sing Along`)
             .trySkill($skill`Shoot Ghost`)
             .trySkill($skill`Shoot Ghost`)
@@ -110,7 +110,7 @@ export function main(command?: string) {
             { acc3: $item`"I Voted!" sticker` }
           ),
         completed: () => get("lastVoteMonsterTurn") === totalTurnsPlayed(),
-        combat: new ChronerStrategy(Macro.redigitize().standardCombat()),
+        combat: new ChronerStrategy(() => Macro.redigitize().standardCombat()),
         sobriety: "either",
       },
       {
@@ -126,7 +126,7 @@ export function main(command?: string) {
           adv1(quest.location, -1, "");
           digitizes = get("_sourceTerminalDigitizeMonsterCount");
         },
-        combat: new ChronerStrategy(Macro.redigitize().standardCombat()),
+        combat: new ChronerStrategy(() => Macro.redigitize().standardCombat()),
         sobriety: "either",
       },
       {
@@ -141,7 +141,7 @@ export function main(command?: string) {
           ),
         do: quest.location,
         sobriety: "sober",
-        combat: new ChronerStrategy(Macro.standardCombat()),
+        combat: new ChronerStrategy(() => Macro.standardCombat()),
       },
       {
         name: "Time Capsule",
@@ -166,7 +166,7 @@ export function main(command?: string) {
         forced: true,
         sobriety: "either",
         completed: () => false,
-        combat: new ChronerStrategy(Macro.standardCombat()),
+        combat: new ChronerStrategy(() => Macro.standardCombat()),
       },
       {
         name: "Spikolodon Spikes",
@@ -184,7 +184,7 @@ export function main(command?: string) {
         do: quest.location,
         completed: () => false,
         prepare: () => cliExecute("parka spikolodon"),
-        combat: new ChronerStrategy(
+        combat: new ChronerStrategy(() =>
           Macro.trySkill($skill`Launch spikolodon spikes`).standardCombat()
         ),
         sobriety: "sober",
@@ -195,7 +195,7 @@ export function main(command?: string) {
         do: $location`The Cave Before Time`,
         sobriety: "sober",
         completed: () => false,
-        combat: new ChronerStrategy(
+        combat: new ChronerStrategy(() =>
           Macro.tryHaveSkill($skill`Summon Mayfly Swarm`)
             .tryHaveSkill($skill`Curse of Weaksauce`)
             .trySkill($skill`Bowl a Curveball`)
@@ -208,7 +208,7 @@ export function main(command?: string) {
         completed: () => get("banishedMonsters").includes("Spring-Loaded Front Bumper"),
         sobriety: "sober",
         do: $location`The Cave Before Time`,
-        combat: new ChronerStrategy(
+        combat: new ChronerStrategy(() =>
           Macro.tryHaveSkill($skill`Summon Mayfly Swarm`)
             .skill($skill`Asdon Martin: Spring-Loaded Front Bumper`)
             .abort()
@@ -219,7 +219,7 @@ export function main(command?: string) {
         name: "Asdon Missle",
         ready: () => AsdonMartin.installed(),
         completed: () => get("_missileLauncherUsed"),
-        combat: new ChronerStrategy(
+        combat: new ChronerStrategy(() =>
           Macro.tryHaveSkill($skill`Summon Mayfly Swarm`)
             .skill($skill`Asdon Martin: Missile Launcher`)
             .abort()
@@ -238,7 +238,7 @@ export function main(command?: string) {
           chooseQuestOutfit({ location: yrTarget, isFree: true }, { shirt: $item`Jurassic Parka` }),
         prepare: () => cliExecute("parka dilophosaur"),
         do: yrTarget,
-        combat: new ChronerStrategy(
+        combat: new ChronerStrategy(() =>
           Macro.tryHaveSkill($skill`Summon Mayfly Swarm`)
             .skill($skill`Spit jurassic acid`)
             .abort()
@@ -252,7 +252,7 @@ export function main(command?: string) {
         do: $location`The Haunted Storage Room`,
         ready: () =>
           myClass() === $class`Grey Goo` && canAdventure($location`The Haunted Storage Room`),
-        combat: new ChronerStrategy(Macro.standardCombat()),
+        combat: new ChronerStrategy(() => Macro.standardCombat()),
         sobriety: "sober",
       },
     ],

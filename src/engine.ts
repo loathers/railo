@@ -23,7 +23,7 @@ export type ChronerQuest = Quest<ChronerTask> & {
 
 const introAdventures = ["The Cave Before Time"];
 export class ChronerStrategy extends CombatStrategy {
-  constructor(macro: Macro) {
+  constructor(macro: () => Macro) {
     super();
     this.macro(macro).autoattack(macro);
   }

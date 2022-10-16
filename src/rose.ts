@@ -42,7 +42,7 @@ export const rose: ChronerQuest = {
           drunkSpec
         );
       },
-      combat: new ChronerStrategy(Macro.standardCombat()),
+      combat: new ChronerStrategy(() => Macro.standardCombat()),
       sobriety: "either",
     },
   ],
