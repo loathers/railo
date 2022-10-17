@@ -223,7 +223,7 @@ export function main(command?: string) {
         prepare: () => AsdonMartin.fillTo(50),
       },
       {
-        name: "Asdon Missle",
+        name: "Asdon Missile",
         ready: () => AsdonMartin.installed(),
         completed: () => get("_missileLauncherUsed"),
         combat: new ChronerStrategy(() => {
@@ -235,8 +235,7 @@ export function main(command?: string) {
             .skill($skill`Asdon Martin: Missile Launcher`)
             .abort();
         }),
-        outfit: () =>
-          chooseQuestOutfit({ location: yrTarget, isFree: true }, { shirt: $item`Jurassic Parka` }),
+        outfit: () => chooseQuestOutfit({ location: yrTarget, isFree: true }),
         prepare: () => AsdonMartin.fillTo(100),
         do: yrTarget,
         sobriety: "sober",
