@@ -15,6 +15,7 @@ import {
   $effect,
   $item,
   $location,
+  $monsters,
   $skill,
   AsdonMartin,
   Counter,
@@ -195,12 +196,15 @@ export function main(command?: string) {
         do: $location`The Cave Before Time`,
         sobriety: "sober",
         completed: () => false,
-        combat: new ChronerStrategy(() =>
-          Macro.tryHaveSkill($skill`Summon Mayfly Swarm`)
+        combat: new ChronerStrategy(() => {
+          const romance = get("romanticTarget");
+          const freeMonsters = $monsters`sausage goblin`;
+          if (romance?.attributes.includes("FREE")) freeMonsters.push(romance);
+          return Macro.if_(freeMonsters, Macro.standardCombat())
             .tryHaveSkill($skill`Curse of Weaksauce`)
             .trySkill($skill`Bowl a Curveball`)
-            .abort()
-        ),
+            .abort();
+        }),
       },
       {
         name: "Asdon Bumper",
@@ -208,22 +212,29 @@ export function main(command?: string) {
         completed: () => get("banishedMonsters").includes("Spring-Loaded Front Bumper"),
         sobriety: "sober",
         do: $location`The Cave Before Time`,
-        combat: new ChronerStrategy(() =>
-          Macro.tryHaveSkill($skill`Summon Mayfly Swarm`)
+        combat: new ChronerStrategy(() => {
+          const romance = get("romanticTarget");
+          const freeMonsters = $monsters`sausage goblin`;
+          if (romance?.attributes.includes("FREE")) freeMonsters.push(romance);
+          return Macro.if_(freeMonsters, Macro.standardCombat())
             .skill($skill`Asdon Martin: Spring-Loaded Front Bumper`)
-            .abort()
-        ),
+            .abort();
+        }),
         prepare: () => AsdonMartin.fillTo(50),
       },
       {
         name: "Asdon Missle",
         ready: () => AsdonMartin.installed(),
         completed: () => get("_missileLauncherUsed"),
-        combat: new ChronerStrategy(() =>
-          Macro.tryHaveSkill($skill`Summon Mayfly Swarm`)
+        combat: new ChronerStrategy(() => {
+          const romance = get("romanticTarget");
+          const freeMonsters = $monsters`sausage goblin`;
+          if (romance?.attributes.includes("FREE")) freeMonsters.push(romance);
+          return Macro.if_(freeMonsters, Macro.standardCombat())
+            .tryHaveSkill($skill`Summon Mayfly Swarm`)
             .skill($skill`Asdon Martin: Missile Launcher`)
-            .abort()
-        ),
+            .abort();
+        }),
         outfit: () =>
           chooseQuestOutfit({ location: yrTarget, isFree: true }, { shirt: $item`Jurassic Parka` }),
         prepare: () => AsdonMartin.fillTo(100),
@@ -238,11 +249,15 @@ export function main(command?: string) {
           chooseQuestOutfit({ location: yrTarget, isFree: true }, { shirt: $item`Jurassic Parka` }),
         prepare: () => cliExecute("parka dilophosaur"),
         do: yrTarget,
-        combat: new ChronerStrategy(() =>
-          Macro.tryHaveSkill($skill`Summon Mayfly Swarm`)
+        combat: new ChronerStrategy(() => {
+          const romance = get("romanticTarget");
+          const freeMonsters = $monsters`sausage goblin`;
+          if (romance?.attributes.includes("FREE")) freeMonsters.push(romance);
+          return Macro.if_(freeMonsters, Macro.standardCombat())
+            .tryHaveSkill($skill`Summon Mayfly Swarm`)
             .skill($skill`Spit jurassic acid`)
-            .abort()
-        ),
+            .abort();
+        }),
         sobriety: "sober",
       },
       {
