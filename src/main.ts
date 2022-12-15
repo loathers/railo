@@ -55,7 +55,7 @@ export function main(command?: string) {
 
   let digitizes = -1;
 
-  const quest: CrimboQuest = QUESTS[args.car as keyof typeof QUESTS];
+  const quest: CrimboQuest = { ...QUESTS[args.car as keyof typeof QUESTS], completed };
   const global: Quest<CrimboTask> = {
     name: "Global",
     completed,
