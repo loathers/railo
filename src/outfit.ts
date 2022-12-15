@@ -8,20 +8,11 @@ import {
   Location,
   totalTurnsPlayed,
 } from "kolmafia";
-import {
-  $familiar,
-  $familiars,
-  $item,
-  $items,
-  get,
-  getKramcoWandererChance,
-  have,
-  sumNumbers,
-} from "libram";
+import { $familiar, $familiars, $item, get, have, sumNumbers } from "libram";
 
 import { freeFightFamiliar, MenuOptions } from "./familiar";
-import { garboAverageValue, garboValue } from "./garboValue";
-import { maxBy, realmAvailable, sober } from "./lib";
+import { garboValue } from "./garboValue";
+import { realmAvailable, sober } from "./lib";
 
 export function ifHave(slot: OutfitSlot, item: Item, condition?: () => boolean): OutfitSpec {
   return have(item) && canEquip(item) && (condition?.() ?? true)
@@ -51,16 +42,14 @@ export function chooseQuestOutfit(
       ? $item`tiny stillsuit`
       : $item`oversized fish scaler`);
 
-  const freeChance = [
-    { i: $item`Kramco Sausage-o-Matic™`, p: getKramcoWandererChance() },
-    { i: $item`carnivorous potted plant`, p: 0.04 },
-    { i: $item`cursed magnifying glass`, p: get("_voidFreeFights") < 5 ? 1 / 13 : 0 },
-  ].filter(({ i }) => have(i) && canEquip(i));
-  const offhands = freeChance.length ? { offhand: maxBy(freeChance, "p").i } : {};
-
   const weapons = mergeSpecs(
     ifHave("weapon", $item`June cleaver`),
     ifHave("weapon", $item`Fourth of May Cosplay Saber`)
+  );
+  const offhands = ifHave(
+    "offhand",
+    $item`cursed magnifying glass`,
+    () => get("_voidFreeFights") < 5 && get("cursedMagnifyingGlassCount") < 13
   );
 
   const backs = mergeSpecs(
@@ -77,8 +66,8 @@ export function chooseQuestOutfit(
 
   const spec = mergeSpecs(
     ifHave("hat", $item`Crown of Thrones`),
-    offhands,
     weapons,
+    offhands,
     backs,
     { familiar },
     ifHave("famequip", famEquip),
@@ -86,7 +75,8 @@ export function chooseQuestOutfit(
       "pants",
       $item`designer sweatpants`,
       () => 25 * get("_sweatOutSomeBoozeUsed") + get("sweat") < 75
-    )
+    ),
+    { modifier: "Familiar Weight" }
   );
 
   const bestAccessories = getBestAccessories(isFree);
@@ -99,9 +89,7 @@ export function chooseQuestOutfit(
   if (!have($item`Crown of Thrones`) && have($item`Buddy Bjorn`) && !("back" in mergedSpec)) {
     mergedSpec.back = $item`Buddy Bjorn`;
   }
-  mergedSpec.modifier = $familiars`Reagnimated Gnome, Temporal Riftlet`.includes(familiar)
-    ? "Familiar Weight"
-    : "Item Drop";
+
   return mergedSpec;
 }
 
@@ -137,19 +125,6 @@ const accessories = new Map<Item, (isFree?: boolean) => number>([
   [
     $item`mafia thumb ring`,
     (isFree?: boolean) => (!isFree ? (1 / 0.96 - 1) * get("valueOfAdventure") : 0),
-  ],
-  // 18.2 expected turns per drug
-  // https://kol.coldfront.net/thekolwiki/index.php/Time-twitching_toolbelt
-  [
-    $item`time-twitching toolbelt`,
-    () =>
-      garboAverageValue(
-        ...$items`future drug: Muscularactum, future drug: Smartinex, future drug: Coolscaline`
-      ) / 18.2,
-  ],
-  [
-    $item`mayfly bait necklace`,
-    () => (get("_mayflySummons") < 30 ? 0.5 * garboValue($item`rose`) : 0),
   ],
   [$item`lucky gold ring`, luckyGoldRing],
   [$item`Mr. Screege's spectacles`, () => 180],

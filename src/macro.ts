@@ -80,7 +80,6 @@ export default class Macro extends StrictMacro {
         get("cosmicBowlingBallReturnCombats") < 1,
         Macro.trySkill($skill`Bowl Straight Up`)
       )
-      .tryHaveSkill($skill`Summon Mayfly Swarm`)
       .externalIf(
         SongBoom.song() === "Total Eclipse of Your Meat",
         Macro.tryHaveSkill($skill`Sing Along`)

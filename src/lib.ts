@@ -4,6 +4,7 @@ import {
   inebrietyLimit,
   isDarkMode,
   Item,
+  Location,
   myAdventures,
   myFamiliar,
   myInebriety,
@@ -11,7 +12,7 @@ import {
   runChoice,
   visitUrl,
 } from "kolmafia";
-import { $familiar, get, SourceTerminal } from "libram";
+import { $familiar, $location, Counter, get, SourceTerminal } from "libram";
 
 /**
  * Find the best element of an array, where "best" is defined by some given criteria.
@@ -73,21 +74,26 @@ export function sober() {
   return myInebriety() <= inebrietyLimit() + (myFamiliar() === $familiar`Stooper` ? -1 : 0);
 }
 
-export const args = Args.create("chrono", "A script for farming chroner", {
+export const args = Args.create("railo", "A script for farming elf stuff", {
   turns: Args.number({
     help: "The number of turns to run (use negative numbers for the number of turns remaining)",
     default: Infinity,
   }),
-  mode: Args.string({
-    options: [
-      ["rose", "Farm Roses from The Main Stage"],
-      ["capsule", "Farm Time Capsules from the Cave Before Time"],
-    ],
-    default: "rose",
+  car: Args.string({
+    options: [["caboose", "Kill robots in the Caboose"]],
+    default: "caboose",
   }),
   debug: Args.flag({
     help: "Turn on debug printing",
     default: false,
+  }),
+  priority: Args.string({
+    options: [
+      ["elves", "rescue elves"],
+      ["parts", "gather train parts"],
+      ["pingpong", "pingpong"],
+    ],
+    default: "parts",
   }),
 });
 
@@ -126,4 +132,70 @@ export function realmAvailable(identifier: RealmType): boolean {
     return get(`_prToday`) || get(`prAlways`);
   }
   return get(`_${identifier}AirportToday`, false) || get(`${identifier}AirportAlways`, false);
+}
+
+export const unsupportedChoices = new Map<Location, { [choice: number]: number | string }>([
+  [$location`The Spooky Forest`, { [502]: 2, [505]: 2 }],
+  [$location`Guano Junction`, { [1427]: 1 }],
+  [$location`The Hidden Apartment Building`, { [780]: 6, [1578]: 6 }],
+  [$location`The Black Forest`, { [923]: 1, [924]: 1 }],
+  [$location`LavaCo™ Lamp Factory`, { [1091]: 9 }],
+  [$location`The Haunted Laboratory`, { [884]: 6 }],
+  [$location`The Haunted Nursery`, { [885]: 6 }],
+  [$location`The Haunted Storage Room`, { [886]: 6 }],
+  [$location`The Hidden Park`, { [789]: 6 }],
+  [$location`A Mob of Zeppelin Protesters`, { [1432]: 1, [857]: 2 }],
+  [$location`A-Boo Peak`, { [1430]: 2 }],
+  [$location`Sloppy Seconds Diner`, { [919]: 6 }],
+  [$location`VYKEA`, { [1115]: 6 }],
+  [
+    $location`The Castle in the Clouds in the Sky (Basement)`,
+    {
+      [670]: 4,
+      [671]: 4,
+      [672]: 1,
+    },
+  ],
+  [
+    $location`The Haunted Bedroom`,
+    {
+      [876]: 1, // old leather wallet, 500 meat
+      [877]: 1, // old coin purse, 500 meat
+      [878]: 1, // 400-600 meat
+      [879]: 2, // grouchy spirit
+      [880]: 2, // a dumb 75 meat club
+    },
+  ],
+  [$location`The Copperhead Club`, { [855]: 4 }],
+  [$location`The Castle in the Clouds in the Sky (Top Floor)`, { [1431]: 1, [677]: 2 }],
+  [$location`The Hidden Office Building`, { [786]: 6 }],
+]);
+
+function untangleDigitizes(turnCount: number, chunks: number): number {
+  const turnsPerChunk = turnCount / chunks;
+  const monstersPerChunk = Math.sqrt((turnsPerChunk + 3) / 5 + 1 / 4) - 1 / 2;
+  return Math.round(chunks * monstersPerChunk);
+}
+
+/**
+ *
+ * @returns The number of digitized monsters that we expect to fight today
+ */
+export function digitizedMonstersRemaining(): number {
+  if (!SourceTerminal.have()) return 0;
+
+  const digitizesLeft = SourceTerminal.getDigitizeUsesRemaining();
+  if (digitizesLeft === SourceTerminal.getMaximumDigitizeUses()) {
+    return untangleDigitizes(myAdventures(), SourceTerminal.getMaximumDigitizeUses());
+  }
+
+  const monsterCount = SourceTerminal.getDigitizeMonsterCount() + 1;
+
+  const turnsLeftAtNextMonster = myAdventures() - Counter.get("Digitize Monster");
+  if (turnsLeftAtNextMonster <= 0) return 0;
+  const turnsAtLastDigitize = turnsLeftAtNextMonster + ((monsterCount + 1) * monsterCount * 5 - 3);
+  return (
+    untangleDigitizes(turnsAtLastDigitize, digitizesLeft + 1) -
+    SourceTerminal.getDigitizeMonsterCount()
+  );
 }
