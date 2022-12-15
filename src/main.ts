@@ -169,7 +169,6 @@ export function main(command?: string) {
           const freeMonsters = $monsters`sausage goblin`;
           if (romance?.attributes.includes("FREE")) freeMonsters.push(romance);
           return Macro.if_(freeMonsters, Macro.standardCombat())
-            .tryHaveSkill($skill`Summon Mayfly Swarm`)
             .skill($skill`Spit jurassic acid`)
             .abort();
         }),

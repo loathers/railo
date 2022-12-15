@@ -135,10 +135,6 @@ const accessories = new Map<Item, (isFree?: boolean) => number>([
         ...$items`future drug: Muscularactum, future drug: Smartinex, future drug: Coolscaline`
       ) / 18.2,
   ],
-  [
-    $item`mayfly bait necklace`,
-    () => (get("_mayflySummons") < 30 ? 0.5 * garboValue($item`rose`) : 0),
-  ],
   [$item`lucky gold ring`, luckyGoldRing],
   [$item`Mr. Screege's spectacles`, () => 180],
   [$item`Mr. Cheeng's spectacles`, () => 220],
