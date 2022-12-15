@@ -9,7 +9,7 @@ import {
 import { $item, $slot, CrownOfThrones, get, JuneCleaver, PropertiesManager } from "libram";
 
 import { bestJuneCleaverOption, shouldSkip } from "./juneCleaver";
-import { printd, sober } from "./lib";
+import { printd, sober, unsupportedChoices } from "./lib";
 import Macro from "./macro";
 
 export type CrimboTask = Task & {
@@ -51,6 +51,11 @@ export class CrimboEngine extends Engine<never, CrimboTask> {
       return sobriety && ncForced && super.available(task);
     }
     return sobriety && super.available(task);
+  }
+
+  initPropertiesManager(manager: PropertiesManager): void {
+    super.initPropertiesManager(manager);
+    for (const choices of unsupportedChoices.values()) manager.setChoices(choices);
   }
 
   createOutfit(task: CrimboTask): Outfit {
