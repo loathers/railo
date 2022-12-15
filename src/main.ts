@@ -32,7 +32,7 @@ import { args, printh } from "./lib";
 import Macro from "./macro";
 import { chooseQuestOutfit } from "./outfit";
 import { setup } from "./setup";
-import { wanderWhere } from "./wanderer";
+import { drunkSafeWander } from "./wanderer";
 
 const QUESTS = {
   caboose,
@@ -112,11 +112,11 @@ export function main(command?: string) {
           get("lastVoteMonsterTurn") < totalTurnsPlayed() &&
           get("_voteFreeFights") < 3,
         do: (): void => {
-          adv1(wanderWhere("wanderer"), -1, "");
+          adv1(drunkSafeWander("wanderer"), -1, "");
         },
         outfit: () =>
           chooseQuestOutfit(
-            { location: wanderWhere("wanderer"), isFree: true },
+            { location: drunkSafeWander("wanderer"), isFree: true },
             { acc3: $item`"I Voted!" sticker` }
           ),
         completed: () => get("lastVoteMonsterTurn") === totalTurnsPlayed(),
@@ -128,12 +128,12 @@ export function main(command?: string) {
         ready: () => Counter.get("Digitize") <= 0,
         outfit: () =>
           chooseQuestOutfit({
-            location: wanderWhere("wanderer"),
+            location: drunkSafeWander("wanderer"),
             isFree: get("_sourceTerminalDigitizeMonster")?.attributes.includes("FREE"),
           }),
         completed: () => get("_sourceTerminalDigitizeMonsterCount") !== digitizes,
         do: () => {
-          adv1(wanderWhere("wanderer"), -1, "");
+          adv1(drunkSafeWander("wanderer"), -1, "");
           digitizes = get("_sourceTerminalDigitizeMonsterCount");
         },
         combat: new CrimboStrategy(() => Macro.redigitize().standardCombat()),
@@ -146,10 +146,10 @@ export function main(command?: string) {
         completed: () => get("_voidFreeFights") >= 5,
         outfit: () =>
           chooseQuestOutfit(
-            { location: wanderWhere("wanderer"), isFree: true },
+            { location: drunkSafeWander("wanderer"), isFree: true },
             { offhand: $item`cursed magnifying glass` }
           ),
-        do: () => adv1(wanderWhere("wanderer"), -1, ""),
+        do: () => adv1(drunkSafeWander("wanderer"), -1, ""),
         sobriety: "sober",
         combat: new CrimboStrategy(() => Macro.standardCombat()),
       },
@@ -159,11 +159,11 @@ export function main(command?: string) {
         ready: () => have($item`Jurassic Parka`) && have($skill`Torso Awareness`),
         outfit: () =>
           chooseQuestOutfit(
-            { location: wanderWhere("yellow ray"), isFree: true },
+            { location: drunkSafeWander("yellow ray"), isFree: true },
             { shirt: $item`Jurassic Parka` }
           ),
         prepare: () => cliExecute("parka dilophosaur"),
-        do: () => adv1(wanderWhere("yellow ray"), -1, ""),
+        do: () => adv1(drunkSafeWander("yellow ray"), -1, ""),
         combat: new CrimboStrategy(() => {
           const romance = get("romanticTarget");
           const freeMonsters = $monsters`sausage goblin`;
