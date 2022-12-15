@@ -10393,7 +10393,7 @@ function _taggedTemplateLiteral24(strings, raw) {
 }
 var poisons = $effects(_templateObject181 || (_templateObject181 = _taggedTemplateLiteral24(["Hardly Poisoned at All, A Little Bit Poisoned, Somewhat Poisoned, Really Quite Poisoned, Majorly Poisoned"])));
 function cmcTarget() {
-  return args.mode === "rose" ? {
+  return args.car === "caboose" ? {
     item: $item(_templateObject280 || (_templateObject280 = _taggedTemplateLiteral24(["Extrovermectin\u2122"]))),
     environment: "i"
   } : {
@@ -10956,6 +10956,10 @@ function yellowRayFactory(type, locationSkiplist) {
 }
 
 // src/wanderer/index.ts
+var _templateObject201;
+function _taggedTemplateLiteral28(strings, raw) {
+  return raw || (raw = strings.slice(0)), Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } }));
+}
 function _toConsumableArray20(arr) {
   return _arrayWithoutHoles20(arr) || _iterableToArray20(arr) || _unsupportedIterableToArray26(arr) || _nonIterableSpread20();
 }
@@ -11065,9 +11069,12 @@ function wanderWhere(type) {
   }).join("; "), value = candidate.value.toFixed(2);
   return printh("Wandering at ".concat(candidate.location, " for expected value ").concat(value, " (").concat(targets, ")")), candidate.location;
 }
+function drunkSafeWander(type) {
+  return sober() ? wanderWhere(type) : $location(_templateObject201 || (_templateObject201 = _taggedTemplateLiteral28(["Drunken Stupor"])));
+}
 
 // src/main.ts
-var _templateObject201, _templateObject2100, _templateObject349, _templateObject435, _templateObject529, _templateObject628, _templateObject727, _templateObject826, _templateObject924, _templateObject1023, _templateObject1119, _templateObject1217, _templateObject1317, _templateObject1417, _templateObject1517, _templateObject1616, _templateObject1715, _templateObject1815, _templateObject1915, _templateObject2013, _templateObject2117, _templateObject2214, _templateObject2313, _templateObject2412, _templateObject2512, _templateObject2612, _templateObject2711, _templateObject2810, _templateObject2910;
+var _templateObject300, _templateObject2100, _templateObject349, _templateObject435, _templateObject529, _templateObject628, _templateObject727, _templateObject826, _templateObject924, _templateObject1023, _templateObject1119, _templateObject1217, _templateObject1317, _templateObject1417, _templateObject1517, _templateObject1616, _templateObject1715, _templateObject1815, _templateObject1915, _templateObject2013, _templateObject2117, _templateObject2214, _templateObject2313, _templateObject2412, _templateObject2512, _templateObject2612, _templateObject2711, _templateObject2810, _templateObject2910;
 function _slicedToArray9(arr, i) {
   return _arrayWithHoles9(arr) || _iterableToArrayLimit9(arr, i) || _unsupportedIterableToArray27(arr, i) || _nonIterableRest9();
 }
@@ -11147,7 +11154,7 @@ function _arrayLikeToArray27(arr, len) {
     arr2[i] = arr[i];
   return arr2;
 }
-function _taggedTemplateLiteral28(strings, raw) {
+function _taggedTemplateLiteral29(strings, raw) {
   return raw || (raw = strings.slice(0)), Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } }));
 }
 var QUESTS = {
@@ -11169,11 +11176,11 @@ function main(command) {
     tasks: [{
       name: "June Cleaver",
       ready: function() {
-        return have($item(_templateObject201 || (_templateObject201 = _taggedTemplateLiteral28(["June cleaver"])))) && get("_juneCleaverFightsLeft") === 0;
+        return have($item(_templateObject300 || (_templateObject300 = _taggedTemplateLiteral29(["June cleaver"])))) && get("_juneCleaverFightsLeft") === 0;
       },
-      do: (0, import_kolmafia35.myInebriety)() <= (0, import_kolmafia35.inebrietyLimit)() ? $location(_templateObject2100 || (_templateObject2100 = _taggedTemplateLiteral28(["Noob Cave"]))) : $location(_templateObject349 || (_templateObject349 = _taggedTemplateLiteral28(["Drunken Stupor"]))),
+      do: (0, import_kolmafia35.myInebriety)() <= (0, import_kolmafia35.inebrietyLimit)() ? $location(_templateObject2100 || (_templateObject2100 = _taggedTemplateLiteral29(["Noob Cave"]))) : $location(_templateObject349 || (_templateObject349 = _taggedTemplateLiteral29(["Drunken Stupor"]))),
       outfit: {
-        weapon: $item(_templateObject435 || (_templateObject435 = _taggedTemplateLiteral28(["June cleaver"])))
+        weapon: $item(_templateObject435 || (_templateObject435 = _taggedTemplateLiteral29(["June cleaver"])))
       },
       completed: function() {
         return get("_juneCleaverFightsLeft") > 0;
@@ -11185,7 +11192,7 @@ function main(command) {
     }, {
       name: "Proton Ghost",
       ready: function() {
-        return have($item(_templateObject529 || (_templateObject529 = _taggedTemplateLiteral28(["protonic accelerator pack"])))) && get("questPAGhost") !== "unstarted" && !!get("ghostLocation");
+        return have($item(_templateObject529 || (_templateObject529 = _taggedTemplateLiteral29(["protonic accelerator pack"])))) && get("questPAGhost") !== "unstarted" && !!get("ghostLocation");
       },
       do: function() {
         var location2 = get("ghostLocation");
@@ -11200,31 +11207,31 @@ function main(command) {
           location: (_get3 = get("ghostLocation")) !== null && _get3 !== void 0 ? _get3 : $location.none,
           isFree: !0
         }, {
-          back: $item(_templateObject628 || (_templateObject628 = _taggedTemplateLiteral28(["protonic accelerator pack"]))),
-          avoid: get("ghostLocation") === $location(_templateObject727 || (_templateObject727 = _taggedTemplateLiteral28(["The Icy Peak"]))) ? $items(_templateObject826 || (_templateObject826 = _taggedTemplateLiteral28(["Great Wolf's beastly trousers"]))) : []
+          back: $item(_templateObject628 || (_templateObject628 = _taggedTemplateLiteral29(["protonic accelerator pack"]))),
+          avoid: get("ghostLocation") === $location(_templateObject727 || (_templateObject727 = _taggedTemplateLiteral29(["The Icy Peak"]))) ? $items(_templateObject826 || (_templateObject826 = _taggedTemplateLiteral29(["Great Wolf's beastly trousers"]))) : []
         });
       },
       completed: function() {
         return get("questPAGhost") === "unstarted";
       },
       combat: new CrimboStrategy(function() {
-        return Macro2.trySkill($skill(_templateObject924 || (_templateObject924 = _taggedTemplateLiteral28(["Sing Along"])))).trySkill($skill(_templateObject1023 || (_templateObject1023 = _taggedTemplateLiteral28(["Shoot Ghost"])))).trySkill($skill(_templateObject1119 || (_templateObject1119 = _taggedTemplateLiteral28(["Shoot Ghost"])))).trySkill($skill(_templateObject1217 || (_templateObject1217 = _taggedTemplateLiteral28(["Shoot Ghost"])))).trySkill($skill(_templateObject1317 || (_templateObject1317 = _taggedTemplateLiteral28(["Trap Ghost"]))));
+        return Macro2.trySkill($skill(_templateObject924 || (_templateObject924 = _taggedTemplateLiteral29(["Sing Along"])))).trySkill($skill(_templateObject1023 || (_templateObject1023 = _taggedTemplateLiteral29(["Shoot Ghost"])))).trySkill($skill(_templateObject1119 || (_templateObject1119 = _taggedTemplateLiteral29(["Shoot Ghost"])))).trySkill($skill(_templateObject1217 || (_templateObject1217 = _taggedTemplateLiteral29(["Shoot Ghost"])))).trySkill($skill(_templateObject1317 || (_templateObject1317 = _taggedTemplateLiteral29(["Trap Ghost"]))));
       }),
       sobriety: "sober"
     }, {
       name: "Vote Wanderer",
       ready: function() {
-        return have($item(_templateObject1417 || (_templateObject1417 = _taggedTemplateLiteral28(['"I Voted!" sticker'])))) && (0, import_kolmafia35.totalTurnsPlayed)() % 11 === 1 && get("lastVoteMonsterTurn") < (0, import_kolmafia35.totalTurnsPlayed)() && get("_voteFreeFights") < 3;
+        return have($item(_templateObject1417 || (_templateObject1417 = _taggedTemplateLiteral29(['"I Voted!" sticker'])))) && (0, import_kolmafia35.totalTurnsPlayed)() % 11 === 1 && get("lastVoteMonsterTurn") < (0, import_kolmafia35.totalTurnsPlayed)() && get("_voteFreeFights") < 3;
       },
       do: function() {
-        (0, import_kolmafia35.adv1)(wanderWhere("wanderer"), -1, "");
+        (0, import_kolmafia35.adv1)(drunkSafeWander("wanderer"), -1, "");
       },
       outfit: function() {
         return chooseQuestOutfit({
-          location: wanderWhere("wanderer"),
+          location: drunkSafeWander("wanderer"),
           isFree: !0
         }, {
-          acc3: $item(_templateObject1517 || (_templateObject1517 = _taggedTemplateLiteral28(['"I Voted!" sticker'])))
+          acc3: $item(_templateObject1517 || (_templateObject1517 = _taggedTemplateLiteral29(['"I Voted!" sticker'])))
         });
       },
       completed: function() {
@@ -11242,7 +11249,7 @@ function main(command) {
       outfit: function() {
         var _get22;
         return chooseQuestOutfit({
-          location: wanderWhere("wanderer"),
+          location: drunkSafeWander("wanderer"),
           isFree: (_get22 = get("_sourceTerminalDigitizeMonster")) === null || _get22 === void 0 ? void 0 : _get22.attributes.includes("FREE")
         });
       },
@@ -11250,7 +11257,7 @@ function main(command) {
         return get("_sourceTerminalDigitizeMonsterCount") !== digitizes;
       },
       do: function() {
-        (0, import_kolmafia35.adv1)(wanderWhere("wanderer"), -1, ""), digitizes = get("_sourceTerminalDigitizeMonsterCount");
+        (0, import_kolmafia35.adv1)(drunkSafeWander("wanderer"), -1, ""), digitizes = get("_sourceTerminalDigitizeMonsterCount");
       },
       combat: new CrimboStrategy(function() {
         return Macro2.redigitize().standardCombat();
@@ -11259,21 +11266,21 @@ function main(command) {
     }, {
       name: "Void Monster",
       ready: function() {
-        return have($item(_templateObject1616 || (_templateObject1616 = _taggedTemplateLiteral28(["cursed magnifying glass"])))) && get("cursedMagnifyingGlassCount") === 13;
+        return have($item(_templateObject1616 || (_templateObject1616 = _taggedTemplateLiteral29(["cursed magnifying glass"])))) && get("cursedMagnifyingGlassCount") === 13;
       },
       completed: function() {
         return get("_voidFreeFights") >= 5;
       },
       outfit: function() {
         return chooseQuestOutfit({
-          location: wanderWhere("wanderer"),
+          location: drunkSafeWander("wanderer"),
           isFree: !0
         }, {
-          offhand: $item(_templateObject1715 || (_templateObject1715 = _taggedTemplateLiteral28(["cursed magnifying glass"])))
+          offhand: $item(_templateObject1715 || (_templateObject1715 = _taggedTemplateLiteral29(["cursed magnifying glass"])))
         });
       },
       do: function() {
-        return (0, import_kolmafia35.adv1)(wanderWhere("wanderer"), -1, "");
+        return (0, import_kolmafia35.adv1)(drunkSafeWander("wanderer"), -1, "");
       },
       sobriety: "sober",
       combat: new CrimboStrategy(function() {
@@ -11282,38 +11289,38 @@ function main(command) {
     }, {
       name: "Spit Jurassic Acid",
       completed: function() {
-        return have($effect(_templateObject1815 || (_templateObject1815 = _taggedTemplateLiteral28(["Everything Looks Yellow"]))));
+        return have($effect(_templateObject1815 || (_templateObject1815 = _taggedTemplateLiteral29(["Everything Looks Yellow"]))));
       },
       ready: function() {
-        return have($item(_templateObject1915 || (_templateObject1915 = _taggedTemplateLiteral28(["Jurassic Parka"])))) && have($skill(_templateObject2013 || (_templateObject2013 = _taggedTemplateLiteral28(["Torso Awareness"]))));
+        return have($item(_templateObject1915 || (_templateObject1915 = _taggedTemplateLiteral29(["Jurassic Parka"])))) && have($skill(_templateObject2013 || (_templateObject2013 = _taggedTemplateLiteral29(["Torso Awareness"]))));
       },
       outfit: function() {
         return chooseQuestOutfit({
-          location: wanderWhere("yellow ray"),
+          location: drunkSafeWander("yellow ray"),
           isFree: !0
         }, {
-          shirt: $item(_templateObject2117 || (_templateObject2117 = _taggedTemplateLiteral28(["Jurassic Parka"])))
+          shirt: $item(_templateObject2117 || (_templateObject2117 = _taggedTemplateLiteral29(["Jurassic Parka"])))
         });
       },
       prepare: function() {
         return (0, import_kolmafia35.cliExecute)("parka dilophosaur");
       },
       do: function() {
-        return (0, import_kolmafia35.adv1)(wanderWhere("yellow ray"), -1, "");
+        return (0, import_kolmafia35.adv1)(drunkSafeWander("yellow ray"), -1, "");
       },
       combat: new CrimboStrategy(function() {
-        var romance = get("romanticTarget"), freeMonsters = $monsters(_templateObject2214 || (_templateObject2214 = _taggedTemplateLiteral28(["sausage goblin"])));
-        return romance != null && romance.attributes.includes("FREE") && freeMonsters.push(romance), Macro2.if_(freeMonsters, Macro2.standardCombat()).skill($skill(_templateObject2313 || (_templateObject2313 = _taggedTemplateLiteral28(["Spit jurassic acid"])))).abort();
+        var romance = get("romanticTarget"), freeMonsters = $monsters(_templateObject2214 || (_templateObject2214 = _taggedTemplateLiteral29(["sausage goblin"])));
+        return romance != null && romance.attributes.includes("FREE") && freeMonsters.push(romance), Macro2.if_(freeMonsters, Macro2.standardCombat()).skill($skill(_templateObject2313 || (_templateObject2313 = _taggedTemplateLiteral29(["Spit jurassic acid"])))).abort();
       }),
       sobriety: "sober"
     }, {
       name: "Grey You Attack Skill",
       completed: function() {
-        return have($skill(_templateObject2412 || (_templateObject2412 = _taggedTemplateLiteral28(["Nantlers"])))) || have($skill(_templateObject2512 || (_templateObject2512 = _taggedTemplateLiteral28(["Nanoshock"])))) || have($skill(_templateObject2612 || (_templateObject2612 = _taggedTemplateLiteral28(["Audioclasm"]))));
+        return have($skill(_templateObject2412 || (_templateObject2412 = _taggedTemplateLiteral29(["Nantlers"])))) || have($skill(_templateObject2512 || (_templateObject2512 = _taggedTemplateLiteral29(["Nanoshock"])))) || have($skill(_templateObject2612 || (_templateObject2612 = _taggedTemplateLiteral29(["Audioclasm"]))));
       },
-      do: $location(_templateObject2711 || (_templateObject2711 = _taggedTemplateLiteral28(["The Haunted Storage Room"]))),
+      do: $location(_templateObject2711 || (_templateObject2711 = _taggedTemplateLiteral29(["The Haunted Storage Room"]))),
       ready: function() {
-        return (0, import_kolmafia35.myClass)() === $class(_templateObject2810 || (_templateObject2810 = _taggedTemplateLiteral28(["Grey Goo"]))) && (0, import_kolmafia35.canAdventure)($location(_templateObject2910 || (_templateObject2910 = _taggedTemplateLiteral28(["The Haunted Storage Room"]))));
+        return (0, import_kolmafia35.myClass)() === $class(_templateObject2810 || (_templateObject2810 = _taggedTemplateLiteral29(["Grey Goo"]))) && (0, import_kolmafia35.canAdventure)($location(_templateObject2910 || (_templateObject2910 = _taggedTemplateLiteral29(["The Haunted Storage Room"]))));
       },
       combat: new CrimboStrategy(function() {
         return Macro2.standardCombat();
