@@ -106,6 +106,7 @@ export class CrimboEngine extends Engine<never, CrimboTask> {
       printd(`Hit Intro adventure ${get("lastEncounter")} which is a free NC`);
       return true;
     }
+    if (task.name === "June Cleaver") return false;
     return super.shouldRepeatAdv(task);
   }
 
