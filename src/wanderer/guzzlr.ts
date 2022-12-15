@@ -1,6 +1,8 @@
 import { buy, craftType, Location, print, retrieveItem } from "kolmafia";
 import { $item, $skill, get, Guzzlr, have } from "libram";
+
 import { garboValue } from "../garboValue";
+
 import {
   canAdventureOrUnlock,
   DraggableFight,
@@ -30,7 +32,7 @@ function considerAbandon(locationSkiplist: Location[]) {
     !location || // if mafia faled to track the location correctly
     locationSkiplist.includes(location) ||
     !canAdventureOrUnlock(location) || // or the zone is marked as "generally cannot adv"
-    (wandererTurnsAvailableToday(location) < remaningTurns) // or ascending and not enough turns to finish
+    wandererTurnsAvailableToday(location) < remaningTurns // or ascending and not enough turns to finish
   ) {
     print("Abandoning...");
     Guzzlr.abandon();
