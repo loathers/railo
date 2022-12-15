@@ -67,6 +67,7 @@ export function main(command?: string) {
         outfit: { weapon: $item`June cleaver` },
         completed: () => get("_juneCleaverFightsLeft") > 0,
         sobriety: "either",
+        combat: new CrimboStrategy(Macro.abort),
       },
       {
         name: "Proton Ghost",
