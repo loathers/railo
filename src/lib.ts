@@ -73,17 +73,16 @@ export function sober() {
   return myInebriety() <= inebrietyLimit() + (myFamiliar() === $familiar`Stooper` ? -1 : 0);
 }
 
-export const args = Args.create("chrono", "A script for farming chroner", {
+export const args = Args.create("railo", "A script for farming elf stuff", {
   turns: Args.number({
     help: "The number of turns to run (use negative numbers for the number of turns remaining)",
     default: Infinity,
   }),
-  mode: Args.string({
+  car: Args.string({
     options: [
-      ["rose", "Farm Roses from The Main Stage"],
-      ["capsule", "Farm Time Capsules from the Cave Before Time"],
+      ["caboose", "Kill robots in the Caboose"],
     ],
-    default: "rose",
+    default: "caboose",
   }),
   debug: Args.flag({
     help: "Turn on debug printing",

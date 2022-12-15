@@ -12,17 +12,17 @@ import { bestJuneCleaverOption, shouldSkip } from "./juneCleaver";
 import { printd, sober } from "./lib";
 import Macro from "./macro";
 
-export type ChronerTask = Task & {
+export type CrimboTask = Task & {
   sobriety: "sober" | "drunk" | "either";
   forced?: boolean;
 };
 
-export type ChronerQuest = Quest<ChronerTask> & {
+export type CrimboQuest = Quest<CrimboTask> & {
   location: Location;
 };
 
-const introAdventures = ["The Cave Before Time"];
-export class ChronerStrategy extends CombatStrategy {
+const introAdventures: string[] = [];
+export class CrimboStrategy extends CombatStrategy {
   constructor(macro: () => Macro) {
     super();
     this.macro(macro).autoattack(macro);
@@ -40,8 +40,8 @@ export function resetNcForced() {
 }
 CrownOfThrones.createRiderMode("default", () => 0);
 const chooseRider = () => CrownOfThrones.pickRider("default");
-export class ChronerEngine extends Engine<never, ChronerTask> {
-  available(task: ChronerTask): boolean {
+export class CrimboEngine extends Engine<never, CrimboTask> {
+  available(task: CrimboTask): boolean {
     const sobriety =
       task.sobriety === "either" ||
       (sober() && task.sobriety === "sober") ||
@@ -53,7 +53,7 @@ export class ChronerEngine extends Engine<never, ChronerTask> {
     return sobriety && super.available(task);
   }
 
-  createOutfit(task: ChronerTask): Outfit {
+  createOutfit(task: CrimboTask): Outfit {
     const outfit = super.createOutfit(task);
     if (outfit.equips.get($slot`hat`) === $item`Crown of Thrones`) {
       const choice = chooseRider();
@@ -65,7 +65,7 @@ export class ChronerEngine extends Engine<never, ChronerTask> {
     return outfit;
   }
 
-  execute(task: ChronerTask): void {
+  execute(task: CrimboTask): void {
     const ncBefore = countAvailableNcForces();
     super.execute(task);
     const ncAfter = countAvailableNcForces();
@@ -75,7 +75,7 @@ export class ChronerEngine extends Engine<never, ChronerTask> {
     }
   }
 
-  setChoices(task: ChronerTask, manager: PropertiesManager): void {
+  setChoices(task: CrimboTask, manager: PropertiesManager): void {
     super.setChoices(task, manager);
     if (equippedAmount($item`June cleaver`) > 0) {
       this.propertyManager.setChoices(
@@ -90,7 +90,7 @@ export class ChronerEngine extends Engine<never, ChronerTask> {
     this.propertyManager.setChoices({ 955: 2 });
   }
 
-  shouldRepeatAdv(task: ChronerTask): boolean {
+  shouldRepeatAdv(task: CrimboTask): boolean {
     if (["Poetic Justice", "Lost and Found"].includes(get("lastEncounter"))) {
       printd("Skipping repeating Adventure despite free NC (beaten up)");
       return false;
