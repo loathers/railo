@@ -60,7 +60,7 @@ export function chooseQuestOutfit(
         get("questPAGhost") === "unstarted" &&
         get("nextParanormalActivity") <= totalTurnsPlayed() &&
         sober()
-    ),
+    )
   );
 
   const spec = mergeSpecs(
