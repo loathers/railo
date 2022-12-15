@@ -27,12 +27,12 @@ import {
   uneffect,
 } from "libram";
 
-import { ChronerTask } from "./engine";
+import { CrimboTask } from "./engine";
 import { args, CMCEnvironment, countEnvironment, tryGetCMCItem } from "./lib";
 
 const poisons = $effects`Hardly Poisoned at All, A Little Bit Poisoned, Somewhat Poisoned, Really Quite Poisoned, Majorly Poisoned`;
 function cmcTarget(): { item: Item; environment: CMCEnvironment } {
-  if (args.mode === "rose") {
+  if (args.car === "caboose") {
     return {
       item: $item`Extrovermectin™`,
       environment: "i",
@@ -45,7 +45,7 @@ function cmcTarget(): { item: Item; environment: CMCEnvironment } {
   }
 }
 
-export const setup: Quest<ChronerTask> = {
+export const setup: Quest<CrimboTask> = {
   name: "Setup",
   tasks: [
     {

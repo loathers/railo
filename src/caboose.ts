@@ -16,10 +16,7 @@ export const caboose: CrimboQuest = {
       do: location,
       outfit: () => {
         const drunkSpec = sober() ? {} : { offhand: $item`Drunkula's wineglass` };
-        return chooseQuestOutfit(
-          { location, isFree: false },
-          drunkSpec
-        );
+        return chooseQuestOutfit({ location, isFree: false }, drunkSpec);
       },
       combat: new CrimboStrategy(() => Macro.standardCombat()),
       sobriety: "either",
