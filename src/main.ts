@@ -3,8 +3,10 @@ import {
   adv1,
   canAdventure,
   cliExecute,
+  inebrietyLimit,
   myAdventures,
   myClass,
+  myInebriety,
   myTurncount,
   totalTurnsPlayed,
 } from "kolmafia";
@@ -58,6 +60,14 @@ export function main(command?: string) {
     name: "Global",
     completed,
     tasks: [
+      {
+        name: "June Cleaver",
+        ready: () => have($item`June cleaver`) && get("_juneCleaverFightsLeft") === 0,
+        do: myInebriety() <= inebrietyLimit() ? $location`Noob Cave` : $location`Drunken Stupor`,
+        outfit: { weapon: $item`June cleaver` },
+        completed: () => get("_juneCleaverFightsLeft") > 0,
+        sobriety: "either",
+      },
       {
         name: "Proton Ghost",
         ready: () =>
