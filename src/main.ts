@@ -7,7 +7,6 @@ import {
   myClass,
   myTurncount,
   totalTurnsPlayed,
-  use,
 } from "kolmafia";
 import {
   $class,
@@ -25,15 +24,16 @@ import {
   withProperty,
 } from "libram";
 
+import { caboose } from "./caboose";
 import { CrimboEngine, CrimboQuest, CrimboStrategy, CrimboTask } from "./engine";
 import { args, printh } from "./lib";
 import Macro from "./macro";
 import { chooseQuestOutfit } from "./outfit";
-import { caboose } from "./caboose";
 import { setup } from "./setup";
+import { wanderWhere } from "./wanderer";
 
 const QUESTS = {
-  caboose
+  caboose,
 } as const;
 
 export function main(command?: string) {
@@ -52,21 +52,12 @@ export function main(command?: string) {
       : () => myAdventures() === -args.turns;
 
   let digitizes = -1;
-  const yrTarget = $location`The Cave Before Time`;
 
   const quest: CrimboQuest = QUESTS[args.car as keyof typeof QUESTS];
   const global: Quest<CrimboTask> = {
     name: "Global",
     completed,
     tasks: [
-      {
-        name: "Clara's Bell",
-        completed: () => !have($item`Clara's bell`) || get("_claraBellUsed"),
-        do: () => {
-          use($item`Clara's bell`);
-        },
-        sobriety: "either",
-      },
       {
         name: "Proton Ghost",
         ready: () =>
@@ -83,7 +74,7 @@ export function main(command?: string) {
         },
         outfit: () =>
           chooseQuestOutfit(
-            { location: quest.location, isFree: true },
+            { location: get("ghostLocation") ?? $location.none, isFree: true },
             {
               back: $item`protonic accelerator pack`,
               avoid:
@@ -110,11 +101,11 @@ export function main(command?: string) {
           get("lastVoteMonsterTurn") < totalTurnsPlayed() &&
           get("_voteFreeFights") < 3,
         do: (): void => {
-          adv1(quest.location, -1, "");
+          adv1(wanderWhere("wanderer"), -1, "");
         },
         outfit: () =>
           chooseQuestOutfit(
-            { location: quest.location, isFree: true },
+            { location: wanderWhere("wanderer"), isFree: true },
             { acc3: $item`"I Voted!" sticker` }
           ),
         completed: () => get("lastVoteMonsterTurn") === totalTurnsPlayed(),
@@ -126,12 +117,12 @@ export function main(command?: string) {
         ready: () => Counter.get("Digitize") <= 0,
         outfit: () =>
           chooseQuestOutfit({
-            location: quest.location,
+            location: wanderWhere("wanderer"),
             isFree: get("_sourceTerminalDigitizeMonster")?.attributes.includes("FREE"),
           }),
         completed: () => get("_sourceTerminalDigitizeMonsterCount") !== digitizes,
         do: () => {
-          adv1(quest.location, -1, "");
+          adv1(wanderWhere("wanderer"), -1, "");
           digitizes = get("_sourceTerminalDigitizeMonsterCount");
         },
         combat: new CrimboStrategy(() => Macro.redigitize().standardCombat()),
@@ -144,10 +135,10 @@ export function main(command?: string) {
         completed: () => get("_voidFreeFights") >= 5,
         outfit: () =>
           chooseQuestOutfit(
-            { location: quest.location, isFree: true },
+            { location: wanderWhere("wanderer"), isFree: true },
             { offhand: $item`cursed magnifying glass` }
           ),
-        do: quest.location,
+        do: () => adv1(wanderWhere("wanderer"), -1, ""),
         sobriety: "sober",
         combat: new CrimboStrategy(() => Macro.standardCombat()),
       },
@@ -156,9 +147,12 @@ export function main(command?: string) {
         completed: () => have($effect`Everything Looks Yellow`),
         ready: () => have($item`Jurassic Parka`) && have($skill`Torso Awareness`),
         outfit: () =>
-          chooseQuestOutfit({ location: yrTarget, isFree: true }, { shirt: $item`Jurassic Parka` }),
+          chooseQuestOutfit(
+            { location: wanderWhere("yellow ray"), isFree: true },
+            { shirt: $item`Jurassic Parka` }
+          ),
         prepare: () => cliExecute("parka dilophosaur"),
-        do: yrTarget,
+        do: () => adv1(wanderWhere("yellow ray"), -1, ""),
         combat: new CrimboStrategy(() => {
           const romance = get("romanticTarget");
           const freeMonsters = $monsters`sausage goblin`;
