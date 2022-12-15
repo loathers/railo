@@ -8,10 +8,10 @@ import {
   Location,
   totalTurnsPlayed,
 } from "kolmafia";
-import { $familiar, $familiars, $item, $items, get, have, sumNumbers } from "libram";
+import { $familiar, $familiars, $item, get, have, sumNumbers } from "libram";
 
 import { freeFightFamiliar, MenuOptions } from "./familiar";
-import { garboAverageValue, garboValue } from "./garboValue";
+import { garboValue } from "./garboValue";
 import { realmAvailable, sober } from "./lib";
 
 export function ifHave(slot: OutfitSlot, item: Item, condition?: () => boolean): OutfitSpec {
@@ -125,15 +125,6 @@ const accessories = new Map<Item, (isFree?: boolean) => number>([
   [
     $item`mafia thumb ring`,
     (isFree?: boolean) => (!isFree ? (1 / 0.96 - 1) * get("valueOfAdventure") : 0),
-  ],
-  // 18.2 expected turns per drug
-  // https://kol.coldfront.net/thekolwiki/index.php/Time-twitching_toolbelt
-  [
-    $item`time-twitching toolbelt`,
-    () =>
-      garboAverageValue(
-        ...$items`future drug: Muscularactum, future drug: Smartinex, future drug: Coolscaline`
-      ) / 18.2,
   ],
   [$item`lucky gold ring`, luckyGoldRing],
   [$item`Mr. Screege's spectacles`, () => 180],
