@@ -48,7 +48,7 @@ export default class Macro extends StrictMacro {
   doItems(): this {
     const steps = new Macro();
     const items =
-      $items`Rain-Doh blue balls, Time-Spinner, Rain-Doh indigo cup, HOA citation pad, porquoise-handled sixgun`.filter(
+      $items`Rain-Doh blue balls, Time-Spinner, Rain-Doh indigo cup, porquoise-handled sixgun`.filter(
         (i) => have(i)
       );
     if (items.length) {
