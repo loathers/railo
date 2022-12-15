@@ -12,7 +12,7 @@ import { $familiar, $familiars, $item, get, have, sumNumbers } from "libram";
 
 import { freeFightFamiliar, MenuOptions } from "./familiar";
 import { garboValue } from "./garboValue";
-import { realmAvailable, sober } from "./lib";
+import { args, realmAvailable, sober } from "./lib";
 
 export function ifHave(slot: OutfitSlot, item: Item, condition?: () => boolean): OutfitSpec {
   return have(item) && canEquip(item) && (condition?.() ?? true)
@@ -60,7 +60,8 @@ export function chooseQuestOutfit(
         get("questPAGhost") === "unstarted" &&
         get("nextParanormalActivity") <= totalTurnsPlayed() &&
         sober()
-    )
+    ),
+    ifHave("back", $item`Trainbot harness`, () => args.priority === "elves")
   );
 
   const spec = mergeSpecs(
@@ -87,6 +88,8 @@ export function chooseQuestOutfit(
   const mergedSpec = mergeSpecs(...outfits, spec);
   if (!have($item`Crown of Thrones`) && have($item`Buddy Bjorn`) && !("back" in mergedSpec)) {
     mergedSpec.back = $item`Buddy Bjorn`;
+  } else {
+    mergedSpec.avoid = [...(mergedSpec.avoid ?? []), $item`Buddy Bjorn`];
   }
 
   return mergedSpec;
