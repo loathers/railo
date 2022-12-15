@@ -87,6 +87,14 @@ export const args = Args.create("railo", "A script for farming elf stuff", {
     help: "Turn on debug printing",
     default: false,
   }),
+  priority: Args.string({
+    options: [
+      ["elves", "rescue elves"],
+      ["parts", "gather train parts"],
+      ["pingpong", "pingpong"],
+    ],
+    default: "parts",
+  }),
 });
 
 function getCMCChoices(): { [choice: string]: number } {
