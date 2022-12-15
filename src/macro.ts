@@ -48,7 +48,7 @@ export default class Macro extends StrictMacro {
   doItems(): this {
     const steps = new Macro();
     const items =
-      $items`Rain-Doh blue balls, Time-Spinner, Rain-Doh indigo cup, HOA citation pad, porquoise-handled sixgun`.filter(
+      $items`Rain-Doh blue balls, Time-Spinner, Rain-Doh indigo cup, porquoise-handled sixgun`.filter(
         (i) => have(i)
       );
     if (items.length) {
@@ -68,10 +68,11 @@ export default class Macro extends StrictMacro {
   }
 
   standardCombat(): this {
-    return this.externalIf(
-      canOpenRedPresent() && myFamiliar() === $familiar`Crimbo Shrub`,
-      Macro.trySkill($skill`Open a Big Red Present`)
-    )
+    return this.tryHaveSkill($skill`Curse of Weaksauce`)
+      .externalIf(
+        canOpenRedPresent() && myFamiliar() === $familiar`Crimbo Shrub`,
+        Macro.trySkill($skill`Open a Big Red Present`)
+      )
       .externalIf(
         timeToMeatify() && myFamiliar() === $familiar`Grey Goose`,
         Macro.trySkill($skill`Meatify Matter`)
