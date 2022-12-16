@@ -37,11 +37,7 @@ export function chooseQuestOutfit(
   ...outfits: OutfitSpec[]
 ): OutfitSpec {
   const familiar = chooseFamiliar({ location });
-  const famEquip =
-    equipmentFamiliars.get(familiar) ??
-    (familiar.elementalDamage || familiar.physicalDamage
-      ? $item`tiny stillsuit`
-      : $item`oversized fish scaler`);
+  const famEquip = equipmentFamiliars.get(familiar) ?? $item`tiny stillsuit`;
 
   const weapons = mergeSpecs(
     ifHave("weapon", $item`June cleaver`),
