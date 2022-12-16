@@ -6,6 +6,7 @@ import {
   Item,
   itemAmount,
   Location,
+  toSlot,
   totalTurnsPlayed,
 } from "kolmafia";
 import { $familiar, $familiars, $item, get, have, sumNumbers } from "libram";
@@ -61,7 +62,7 @@ export function chooseQuestOutfit(
         get("nextParanormalActivity") <= totalTurnsPlayed() &&
         sober()
     ),
-    ifHave("back", $item`Trainbot harness`, () => args.priority === "elves")
+    ifHave("back", $item`Trainbot harness`, () => harnessIsEffective(location))
   );
 
   const spec = mergeSpecs(
@@ -86,13 +87,23 @@ export function chooseQuestOutfit(
     spec[`acc${i + 1}` as OutfitSlot] = accessory;
   }
   const mergedSpec = mergeSpecs(...outfits, spec);
-  if (!have($item`Crown of Thrones`) && have($item`Buddy Bjorn`) && !("back" in mergedSpec)) {
-    mergedSpec.back = $item`Buddy Bjorn`;
+
+  const preferCrown = harnessIsEffective(location);
+
+  const [goodFammy, lessGoodFammy] = preferCrown ? [$item`Crown of Thrones`, $item`Buddy Bjorn`] : [$item`Buddy Bjorn`, $item`Crown of Thrones`]
+
+  if (!have(goodFammy) && have(lessGoodFammy) && !(toSlot(lessGoodFammy).toString() in mergedSpec)) {
+    mergedSpec.back = lessGoodFammy;
   } else {
-    mergedSpec.avoid = [...(mergedSpec.avoid ?? []), $item`Buddy Bjorn`];
+    mergedSpec.avoid = [...(mergedSpec.avoid ?? []), lessGoodFammy];
   }
 
   return mergedSpec;
+}
+
+function harnessIsEffective(location: Location) {
+  // Eventually this should check that the location is one that applies the expected benefits from the harness.
+  return false && args.priority === "elves";
 }
 
 const equipmentFamiliars = new Map<Familiar, Item>([
