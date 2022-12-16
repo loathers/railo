@@ -20,4 +20,8 @@ You can specify the number of turns to run (use negative numbers for the number 
 
 `railo turns=10`
 
-WIP
+You can specify which choice adventure is taken in the caboose.
+
+`railo priority=elves`
+`railo priority=parts`
+`railo priority=pingpong`
