@@ -3,6 +3,7 @@ import {
   getWorkshed,
   Item,
   itemAmount,
+  myAdventures,
   myHp,
   myMaxhp,
   putCloset,
@@ -130,7 +131,7 @@ export const setup: Quest<CrimboTask> = {
         AutumnAton.sendTo(
           $locations`The Toxic Teacups, The Oasis, The Deep Dark Jungle, The Bubblin' Caldera, The Neverending Party, The Sleazy Back Alley`
         ),
-      ready: () => AutumnAton.available(),
+      ready: () => AutumnAton.available() && AutumnAton.turnsForQuest() < myAdventures() + 10,
       sobriety: "either",
     },
     {
