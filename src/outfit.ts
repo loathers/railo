@@ -91,9 +91,9 @@ export function chooseQuestOutfit(
   const preferCrown = harnessIsEffective(location);
 
   const [goodFammy, lessGoodFammy] = preferCrown ? [$item`Crown of Thrones`, $item`Buddy Bjorn`] : [$item`Buddy Bjorn`, $item`Crown of Thrones`]
-
-  if (!have(goodFammy) && have(lessGoodFammy) && !(toSlot(lessGoodFammy).toString() in mergedSpec)) {
-    mergedSpec.back = lessGoodFammy;
+  const lessGoodSlot = toSlot(lessGoodFammy).toString() as OutfitSlot;
+  if (!have(goodFammy) && have(lessGoodFammy) && !(lessGoodSlot in mergedSpec)) {
+    mergedSpec[lessGoodSlot] = lessGoodFammy;
   } else {
     mergedSpec.avoid = [...(mergedSpec.avoid ?? []), lessGoodFammy];
   }
