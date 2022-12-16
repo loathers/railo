@@ -82,7 +82,7 @@ export function chooseQuestOutfit(
       $item`Pantsgiving`,
       () => get("_pantsgivingCount") < 50 || (get("_pantsgivingFullness") < 2 && getRemainingStomach() === 0)
     ),
-    { modifier: "Familiar Weight" }
+    { modifier: "Familiar Weight, -buddy-bjorn, -crown-of-thrones" }
   );
 
   const bestAccessories = getBestAccessories(isFree);
