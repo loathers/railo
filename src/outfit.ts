@@ -76,6 +76,11 @@ export function chooseQuestOutfit(
       $item`designer sweatpants`,
       () => 25 * get("_sweatOutSomeBoozeUsed") + get("sweat") < 75
     ),
+    ifHave(
+      "pants",
+      $item`Pantsgiving`,
+      () => get("_pantsgivingCount") < 50
+    ),
     { modifier: "Familiar Weight" }
   );
 
