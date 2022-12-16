@@ -10563,7 +10563,7 @@ var setup = {
       return AutumnAton_exports.sendTo($locations(_templateObject2511 || (_templateObject2511 = _taggedTemplateLiteral24(["The Toxic Teacups, The Oasis, The Deep Dark Jungle, The Bubblin' Caldera, The Neverending Party, The Sleazy Back Alley"]))));
     },
     ready: function() {
-      return AutumnAton_exports.available();
+      return AutumnAton_exports.available() && AutumnAton_exports.turnsForQuest() < (0, import_kolmafia33.myAdventures)() + 10;
     },
     sobriety: "either"
   }, {
