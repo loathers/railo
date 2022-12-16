@@ -2841,10 +2841,10 @@ var require_memoize = __commonJS({
       if (typeof func != "function" || resolver != null && typeof resolver != "function")
         throw new TypeError(FUNC_ERROR_TEXT);
       var memoized = function memoized2() {
-        var args2 = arguments, key = resolver ? resolver.apply(this, args2) : args2[0], cache = memoized2.cache;
+        var args3 = arguments, key = resolver ? resolver.apply(this, args3) : args3[0], cache = memoized2.cache;
         if (cache.has(key))
           return cache.get(key);
-        var result = func.apply(this, args2);
+        var result = func.apply(this, args3);
         return memoized2.cache = cache.set(key, result) || cache, result;
       };
       return memoized.cache = new (memoize.Cache || MapCache)(), memoized;
@@ -3733,10 +3733,10 @@ function _wrapNativeSuper(Class5) {
     return Wrapper.prototype = Object.create(Class6.prototype, { constructor: { value: Wrapper, enumerable: !1, writable: !0, configurable: !0 } }), _setPrototypeOf(Wrapper, Class6);
   }, _wrapNativeSuper(Class5);
 }
-function _construct(Parent, args2, Class5) {
-  return _isNativeReflectConstruct() ? _construct = Reflect.construct.bind() : _construct = function(Parent2, args3, Class6) {
+function _construct(Parent, args3, Class5) {
+  return _isNativeReflectConstruct() ? _construct = Reflect.construct.bind() : _construct = function(Parent2, args4, Class6) {
     var a = [null];
-    a.push.apply(a, args3);
+    a.push.apply(a, args4);
     var Constructor = Function.bind.apply(Parent2, a), instance = new Constructor();
     return Class6 && _setPrototypeOf(instance, Class6.prototype), instance;
   }, _construct.apply(null, arguments);
@@ -4049,10 +4049,10 @@ function _wrapNativeSuper2(Class5) {
     return Wrapper.prototype = Object.create(Class6.prototype, { constructor: { value: Wrapper, enumerable: !1, writable: !0, configurable: !0 } }), _setPrototypeOf2(Wrapper, Class6);
   }, _wrapNativeSuper2(Class5);
 }
-function _construct2(Parent, args2, Class5) {
-  return _isNativeReflectConstruct2() ? _construct2 = Reflect.construct.bind() : _construct2 = function(Parent2, args3, Class6) {
+function _construct2(Parent, args3, Class5) {
+  return _isNativeReflectConstruct2() ? _construct2 = Reflect.construct.bind() : _construct2 = function(Parent2, args4, Class6) {
     var a = [null];
-    a.push.apply(a, args3);
+    a.push.apply(a, args4);
     var Constructor = Function.bind.apply(Parent2, a), instance = new Constructor();
     return Class6 && _setPrototypeOf2(instance, Class6.prototype), instance;
   }, _construct2.apply(null, arguments);
@@ -6744,10 +6744,10 @@ function _wrapNativeSuper3(Class5) {
     return Wrapper.prototype = Object.create(Class6.prototype, { constructor: { value: Wrapper, enumerable: !1, writable: !0, configurable: !0 } }), _setPrototypeOf3(Wrapper, Class6);
   }, _wrapNativeSuper3(Class5);
 }
-function _construct3(Parent, args2, Class5) {
-  return _isNativeReflectConstruct3() ? _construct3 = Reflect.construct.bind() : _construct3 = function(Parent2, args3, Class6) {
+function _construct3(Parent, args3, Class5) {
+  return _isNativeReflectConstruct3() ? _construct3 = Reflect.construct.bind() : _construct3 = function(Parent2, args4, Class6) {
     var a = [null];
-    a.push.apply(a, args3);
+    a.push.apply(a, args4);
     var Constructor = Function.bind.apply(Parent2, a), instance = new Constructor();
     return Class6 && _setPrototypeOf3(instance, Class6.prototype), instance;
   }, _construct3.apply(null, arguments);
@@ -7345,21 +7345,21 @@ var Args = /* @__PURE__ */ function() {
     }
   }, {
     key: "group",
-    value: function(groupName, args2) {
+    value: function(groupName, args3) {
       return {
         name: groupName,
-        args: args2
+        args: args3
       };
     }
   }, {
     key: "create",
-    value: function(scriptName, scriptHelp, args2, options) {
+    value: function(scriptName, scriptHelp, args3, options) {
       var _objectSpread22;
-      _traverse(args2, function(keySpec, key) {
+      _traverse(args3, function(keySpec, key) {
         if (key === "help" || keySpec.key === "help")
           throw "help is a reserved argument name";
       });
-      var argsWithHelp = _objectSpread3(_objectSpread3({}, args2), {}, {
+      var argsWithHelp = _objectSpread3(_objectSpread3({}, args3), {}, {
         help: this.flag({
           help: "Show this message and exit.",
           setting: ""
@@ -7395,10 +7395,10 @@ var Args = /* @__PURE__ */ function() {
     }
   }, {
     key: "fill",
-    value: function(args2, command) {
+    value: function(args3, command) {
       var _a;
       if (!(command === void 0 || command === "")) {
-        var metadata = Args2.getMetadata(args2), keys = /* @__PURE__ */ new Set(), flags = /* @__PURE__ */ new Set();
+        var metadata = Args2.getMetadata(args3), keys = /* @__PURE__ */ new Set(), flags = /* @__PURE__ */ new Set();
         metadata.traverse(function(keySpec, key) {
           var _a2, name = (_a2 = keySpec.key) !== null && _a2 !== void 0 ? _a2 : key;
           if (flags.has(name) || keys.has(name))
@@ -7406,7 +7406,7 @@ var Args = /* @__PURE__ */ function() {
           keySpec.valueHelpName === "FLAG" ? flags.add(name) : keys.add(name);
         });
         var parsed = new CommandParser(command, keys, flags, (_a = metadata.options.positionalArgs) !== null && _a !== void 0 ? _a : []).parse();
-        metadata.traverseAndMaybeSet(args2, function(keySpec, key) {
+        metadata.traverseAndMaybeSet(args3, function(keySpec, key) {
           var _a2, argKey = (_a2 = keySpec.key) !== null && _a2 !== void 0 ? _a2 : key, value_str = parsed.get(argKey);
           if (value_str !== void 0)
             return parseAndValidate(keySpec, "Argument ".concat(argKey), value_str);
@@ -7416,13 +7416,13 @@ var Args = /* @__PURE__ */ function() {
   }, {
     key: "parse",
     value: function(scriptName, scriptHelp, spec, command, options) {
-      var args2 = this.create(scriptName, scriptHelp, spec, options);
-      return this.fill(args2, command), args2;
+      var args3 = this.create(scriptName, scriptHelp, spec, options);
+      return this.fill(args3, command), args3;
     }
   }, {
     key: "showHelp",
-    value: function(args2, maxOptionsToDisplay) {
-      var _a, metadata = Args2.getMetadata(args2);
+    value: function(args3, maxOptionsToDisplay) {
+      var _a, metadata = Args2.getMetadata(args3);
       (0, import_kolmafia18.printHtml)("".concat(metadata.scriptHelp)), (0, import_kolmafia18.printHtml)(""), (0, import_kolmafia18.printHtml)("<b>".concat((_a = metadata.options.defaultGroupName) !== null && _a !== void 0 ? _a : "Options", ":</b>")), metadata.traverse(function(arg, key) {
         var _a2, _b, _c, _d, _e;
         if (!arg.hidden) {
@@ -7449,8 +7449,8 @@ var Args = /* @__PURE__ */ function() {
     }
   }, {
     key: "getMetadata",
-    value: function(args2) {
-      return new WrappedArgMetadata(args2);
+    value: function(args3) {
+      return new WrappedArgMetadata(args3);
     }
   }]), Args2;
 }(), ParseError = /* @__PURE__ */ _createClass9(function ParseError2(message) {
@@ -7470,8 +7470,8 @@ function parseAndValidate(arg, source, value) {
   return parsed_value;
 }
 var WrappedArgMetadata = /* @__PURE__ */ function() {
-  function WrappedArgMetadata2(args2) {
-    _classCallCheck9(this, WrappedArgMetadata2), this.spec = args2[specSymbol], this.scriptName = args2[scriptSymbol], this.scriptHelp = args2[scriptHelpSymbol], this.options = args2[optionsSymbol];
+  function WrappedArgMetadata2(args3) {
+    _classCallCheck9(this, WrappedArgMetadata2), this.spec = args3[specSymbol], this.scriptName = args3[scriptSymbol], this.scriptHelp = args3[scriptHelpSymbol], this.options = args3[optionsSymbol];
   }
   return _createClass9(WrappedArgMetadata2, [{
     key: "loadDefaultValues",
@@ -10186,11 +10186,42 @@ var Macro2 = /* @__PURE__ */ function(_StrictMacro) {
 init_kolmafia_polyfill();
 var import_kolmafia30 = require("kolmafia");
 var _templateObject171, _templateObject270, _templateObject339, _templateObject429, _templateObject525, _templateObject624, _templateObject724, _templateObject823, _templateObject920, _templateObject1019, _templateObject1116, _templateObject1214, _templateObject1314, _templateObject1414, _templateObject1514, _templateObject1613, _templateObject1712, _templateObject1812, _templateObject1912, _templateObject2010, _templateObject2114, _templateObject2211, _templateObject2311, _templateObject2410, _templateObject2510, _templateObject2610, _templateObject2710, _templateObject289, _templateObject299, _templateObject309, _templateObject3112, _templateObject3210, _templateObject3310, _templateObject347, _templateObject357;
+function _toConsumableArray17(arr) {
+  return _arrayWithoutHoles17(arr) || _iterableToArray17(arr) || _unsupportedIterableToArray23(arr) || _nonIterableSpread17();
+}
+function _nonIterableSpread17() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+function _iterableToArray17(iter) {
+  if (typeof Symbol != "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null)
+    return Array.from(iter);
+}
+function _arrayWithoutHoles17(arr) {
+  if (Array.isArray(arr))
+    return _arrayLikeToArray23(arr);
+}
 function _slicedToArray8(arr, i) {
   return _arrayWithHoles8(arr) || _iterableToArrayLimit8(arr, i) || _unsupportedIterableToArray23(arr, i) || _nonIterableRest8();
 }
 function _nonIterableRest8() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+function _unsupportedIterableToArray23(o, minLen) {
+  if (!!o) {
+    if (typeof o == "string")
+      return _arrayLikeToArray23(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === "Object" && o.constructor && (n = o.constructor.name), n === "Map" || n === "Set")
+      return Array.from(o);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
+      return _arrayLikeToArray23(o, minLen);
+  }
+}
+function _arrayLikeToArray23(arr, len) {
+  (len == null || len > arr.length) && (len = arr.length);
+  for (var i = 0, arr2 = new Array(len); i < len; i++)
+    arr2[i] = arr[i];
+  return arr2;
 }
 function _iterableToArrayLimit8(arr, i) {
   var _i = arr == null ? null : typeof Symbol != "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
@@ -10215,37 +10246,6 @@ function _iterableToArrayLimit8(arr, i) {
 function _arrayWithHoles8(arr) {
   if (Array.isArray(arr))
     return arr;
-}
-function _toConsumableArray17(arr) {
-  return _arrayWithoutHoles17(arr) || _iterableToArray17(arr) || _unsupportedIterableToArray23(arr) || _nonIterableSpread17();
-}
-function _nonIterableSpread17() {
-  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-function _unsupportedIterableToArray23(o, minLen) {
-  if (!!o) {
-    if (typeof o == "string")
-      return _arrayLikeToArray23(o, minLen);
-    var n = Object.prototype.toString.call(o).slice(8, -1);
-    if (n === "Object" && o.constructor && (n = o.constructor.name), n === "Map" || n === "Set")
-      return Array.from(o);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
-      return _arrayLikeToArray23(o, minLen);
-  }
-}
-function _iterableToArray17(iter) {
-  if (typeof Symbol != "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null)
-    return Array.from(iter);
-}
-function _arrayWithoutHoles17(arr) {
-  if (Array.isArray(arr))
-    return _arrayLikeToArray23(arr);
-}
-function _arrayLikeToArray23(arr, len) {
-  (len == null || len > arr.length) && (len = arr.length);
-  for (var i = 0, arr2 = new Array(len); i < len; i++)
-    arr2[i] = arr[i];
-  return arr2;
 }
 function _taggedTemplateLiteral22(strings, raw) {
   return raw || (raw = strings.slice(0)), Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } }));
@@ -10299,7 +10299,7 @@ function chooseQuestOutfit(_ref2) {
   }), backs = mergeSpecs(ifHave("back", $item(_templateObject724 || (_templateObject724 = _taggedTemplateLiteral22(["protonic accelerator pack"]))), function() {
     return get("questPAGhost") === "unstarted" && get("nextParanormalActivity") <= (0, import_kolmafia30.totalTurnsPlayed)() && sober();
   }), ifHave("back", $item(_templateObject823 || (_templateObject823 = _taggedTemplateLiteral22(["Trainbot harness"]))), function() {
-    return args.priority === "elves";
+    return harnessIsEffective(location2);
   })), spec = mergeSpecs(ifHave("hat", $item(_templateObject920 || (_templateObject920 = _taggedTemplateLiteral22(["Crown of Thrones"])))), weapons, offhands, backs, {
     familiar: familiar3
   }, ifHave("famequip", famEquip), ifHave("pants", $item(_templateObject1019 || (_templateObject1019 = _taggedTemplateLiteral22(["designer sweatpants"]))), function() {
@@ -10314,14 +10314,17 @@ function chooseQuestOutfit(_ref2) {
   }
   for (var _len2 = arguments.length, outfits = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++)
     outfits[_key2 - 1] = arguments[_key2];
-  var mergedSpec = mergeSpecs.apply(void 0, outfits.concat([spec]));
-  if (!have($item(_templateObject1116 || (_templateObject1116 = _taggedTemplateLiteral22(["Crown of Thrones"])))) && have($item(_templateObject1214 || (_templateObject1214 = _taggedTemplateLiteral22(["Buddy Bjorn"])))) && !("back" in mergedSpec))
-    mergedSpec.back = $item(_templateObject1314 || (_templateObject1314 = _taggedTemplateLiteral22(["Buddy Bjorn"])));
+  var mergedSpec = mergeSpecs.apply(void 0, outfits.concat([spec])), preferCrown = harnessIsEffective(location2), _ref22 = preferCrown ? [$item(_templateObject1116 || (_templateObject1116 = _taggedTemplateLiteral22(["Crown of Thrones"]))), $item(_templateObject1214 || (_templateObject1214 = _taggedTemplateLiteral22(["Buddy Bjorn"])))] : [$item(_templateObject1314 || (_templateObject1314 = _taggedTemplateLiteral22(["Buddy Bjorn"]))), $item(_templateObject1414 || (_templateObject1414 = _taggedTemplateLiteral22(["Crown of Thrones"])))], _ref32 = _slicedToArray8(_ref22, 2), goodFammy = _ref32[0], lessGoodFammy = _ref32[1], lessGoodSlot = (0, import_kolmafia30.toSlot)(lessGoodFammy).toString();
+  if (!have(goodFammy) && have(lessGoodFammy) && !(lessGoodSlot in mergedSpec))
+    mergedSpec[lessGoodSlot] = lessGoodFammy;
   else {
     var _mergedSpec$avoid;
-    mergedSpec.avoid = [].concat(_toConsumableArray17((_mergedSpec$avoid = mergedSpec.avoid) !== null && _mergedSpec$avoid !== void 0 ? _mergedSpec$avoid : []), [$item(_templateObject1414 || (_templateObject1414 = _taggedTemplateLiteral22(["Buddy Bjorn"])))]);
+    mergedSpec.avoid = [].concat(_toConsumableArray17((_mergedSpec$avoid = mergedSpec.avoid) !== null && _mergedSpec$avoid !== void 0 ? _mergedSpec$avoid : []), [lessGoodFammy]);
   }
   return mergedSpec;
+}
+function harnessIsEffective(location2) {
+  return !1;
 }
 var equipmentFamiliars = /* @__PURE__ */ new Map([[$familiar(_templateObject1514 || (_templateObject1514 = _taggedTemplateLiteral22(["Reagnimated Gnome"]))), $item(_templateObject1613 || (_templateObject1613 = _taggedTemplateLiteral22(["gnomish housemaid's kgnee"])))], [$familiar(_templateObject1712 || (_templateObject1712 = _taggedTemplateLiteral22(["Shorter-Order Cook"]))), $item(_templateObject1812 || (_templateObject1812 = _taggedTemplateLiteral22(["blue plate"])))], [$familiar(_templateObject1912 || (_templateObject1912 = _taggedTemplateLiteral22(["Stocking Mimic"]))), $item(_templateObject2010 || (_templateObject2010 = _taggedTemplateLiteral22(["bag of many confections"])))]]);
 function luckyGoldRing() {
@@ -10348,17 +10351,17 @@ var accessories = /* @__PURE__ */ new Map([[$item(_templateObject3210 || (_templ
   return 220;
 }]]);
 function getBestAccessories(isFree) {
-  return Array.from(accessories.entries()).filter(function(_ref2) {
-    var _ref32 = _slicedToArray8(_ref2, 1), item5 = _ref32[0];
+  return Array.from(accessories.entries()).filter(function(_ref42) {
+    var _ref5 = _slicedToArray8(_ref42, 1), item5 = _ref5[0];
     return have(item5) && (0, import_kolmafia30.canEquip)(item5);
-  }).map(function(_ref42) {
-    var _ref5 = _slicedToArray8(_ref42, 2), item5 = _ref5[0], valueFunction = _ref5[1];
+  }).map(function(_ref6) {
+    var _ref7 = _slicedToArray8(_ref6, 2), item5 = _ref7[0], valueFunction = _ref7[1];
     return [item5, valueFunction(isFree)];
-  }).sort(function(_ref6, _ref7) {
-    var _ref8 = _slicedToArray8(_ref6, 2), a = _ref8[1], _ref9 = _slicedToArray8(_ref7, 2), b = _ref9[1];
+  }).sort(function(_ref8, _ref9) {
+    var _ref102 = _slicedToArray8(_ref8, 2), a = _ref102[1], _ref11 = _slicedToArray8(_ref9, 2), b = _ref11[1];
     return b - a;
-  }).map(function(_ref102) {
-    var _ref11 = _slicedToArray8(_ref102, 1), item5 = _ref11[0];
+  }).map(function(_ref12) {
+    var _ref13 = _slicedToArray8(_ref12, 1), item5 = _ref13[0];
     return item5;
   }).splice(0, 3);
 }
