@@ -49,6 +49,8 @@ export function chooseQuestOutfit(
     () => get("_voidFreeFights") < 5 && get("cursedMagnifyingGlassCount") < 13
   );
 
+  const useHarness = harnessIsEffective(location);
+
   const backs = mergeSpecs(
     ifHave(
       "back",
@@ -58,11 +60,12 @@ export function chooseQuestOutfit(
         get("nextParanormalActivity") <= totalTurnsPlayed() &&
         sober()
     ),
-    ifHave("back", $item`Trainbot harness`, () => harnessIsEffective(location))
+    ifHave("back", $item`Trainbot harness`, () => useHarness),
+    ifHave("back", $item`Buddy Bjorn`, () => !useHarness)
   );
 
   const spec = mergeSpecs(
-    ifHave("hat", $item`Crown of Thrones`),
+    ifHave("hat", $item`Crown of Thrones`, () => useHarness),
     weapons,
     offhands,
     backs,
@@ -91,9 +94,7 @@ export function chooseQuestOutfit(
   }
   const mergedSpec = mergeSpecs(...outfits, spec);
 
-  const preferCrown = harnessIsEffective(location);
-
-  const [goodFammy, lessGoodFammy] = preferCrown
+  const [goodFammy, lessGoodFammy] = useHarness
     ? [$item`Crown of Thrones`, $item`Buddy Bjorn`]
     : [$item`Buddy Bjorn`, $item`Crown of Thrones`];
   const lessGoodSlot = toSlot(lessGoodFammy).toString() as OutfitSlot;
