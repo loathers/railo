@@ -80,7 +80,9 @@ export function chooseQuestOutfit(
     ifHave(
       "pants",
       $item`Pantsgiving`,
-      () => get("_pantsgivingCount") < 50 || (get("_pantsgivingFullness") < 2 && getRemainingStomach() === 0)
+      () =>
+        get("_pantsgivingCount") < 50 ||
+        (get("_pantsgivingFullness") < 2 && getRemainingStomach() === 0)
     ),
     { modifier: "Familiar Weight" }
   );
@@ -95,7 +97,9 @@ export function chooseQuestOutfit(
 
   const preferCrown = harnessIsEffective(location);
 
-  const [goodFammy, lessGoodFammy] = preferCrown ? [$item`Crown of Thrones`, $item`Buddy Bjorn`] : [$item`Buddy Bjorn`, $item`Crown of Thrones`]
+  const [goodFammy, lessGoodFammy] = preferCrown
+    ? [$item`Crown of Thrones`, $item`Buddy Bjorn`]
+    : [$item`Buddy Bjorn`, $item`Crown of Thrones`];
   const lessGoodSlot = toSlot(lessGoodFammy).toString() as OutfitSlot;
   if (!have(goodFammy) && have(lessGoodFammy) && !(lessGoodSlot in mergedSpec)) {
     mergedSpec[lessGoodSlot] = lessGoodFammy;

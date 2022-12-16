@@ -18,10 +18,12 @@ import {
   $location,
   $monsters,
   $skill,
+  $slots,
   Counter,
   get,
   have,
   Session,
+  setDefaultMaximizeOptions,
   sinceKolmafiaRevision,
   withProperty,
 } from "libram";
@@ -45,6 +47,8 @@ export function main(command?: string) {
     Args.showHelp(args);
     return;
   }
+
+  setDefaultMaximizeOptions({ preventSlot: $slots`crown-of-thrones, buddy-bjorn` });
 
   sinceKolmafiaRevision(26834);
   const turncount = myTurncount();

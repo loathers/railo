@@ -3,10 +3,11 @@ import {
   bjornifyFamiliar,
   enthroneFamiliar,
   equippedAmount,
+  haveEquipped,
   Location,
   setAutoAttack,
 } from "kolmafia";
-import { $item, $slot, CrownOfThrones, get, JuneCleaver, PropertiesManager } from "libram";
+import { $item, CrownOfThrones, get, JuneCleaver, PropertiesManager } from "libram";
 
 import { bestJuneCleaverOption, shouldSkip } from "./juneCleaver";
 import { args, printd, sober, unsupportedChoices } from "./lib";
@@ -60,16 +61,15 @@ export class CrimboEngine extends Engine<never, CrimboTask> {
     manager.setChoice(1486, { parts: 1, elves: 2, pingpong: 3 }[priority]);
   }
 
-  createOutfit(task: CrimboTask): Outfit {
-    const outfit = super.createOutfit(task);
-    if (outfit.equips.get($slot`hat`) === $item`Crown of Thrones`) {
-      const choice = chooseRider();
-      if (choice) enthroneFamiliar(choice.familiar);
-    } else if (outfit.equips.get($slot`back`) === $item`Buddy Bjorn`) {
+  dress(task: CrimboTask, outfit: Outfit): void {
+    super.dress(task, outfit);
+    if (haveEquipped($item`Buddy Bjorn`)) {
       const choice = chooseRider();
       if (choice) bjornifyFamiliar(choice.familiar);
+    } else if (haveEquipped($item`Crown of Thrones`)) {
+      const choice = chooseRider();
+      if (choice) enthroneFamiliar(choice.familiar);
     }
-    return outfit;
   }
 
   execute(task: CrimboTask): void {
