@@ -1,4 +1,4 @@
-<img src="https://user-images.githubusercontent.com/1320480/208006246-64ca4b11-1525-4747-8985-27d690361198.jpeg" alt="railo logo" style="width: 25%;">
+<img src="https://cdn.discordapp.com/attachments/746156679485456416/1053135050708885524/SPOILER_image.png" alt="railo logo" style="width: 25%;">
 
 **Glupp Shitto's amtrac nasdaq festivus scripto** (also known as "railo") is a script meant to help [Kingdom of Loathing](https://www.kingdomofloathing.com/) players efficiently collect Elf Stuff from the Train Crimbo in KOL.
 
