@@ -8,7 +8,7 @@ import {
   Location,
   totalTurnsPlayed,
 } from "kolmafia";
-import { $familiar, $familiars, $item, get, have, sumNumbers } from "libram";
+import { $familiar, $familiars, $item, get, getRemainingStomach, have, sumNumbers } from "libram";
 
 import { freeFightFamiliar, MenuOptions } from "./familiar";
 import { garboValue } from "./garboValue";
@@ -79,7 +79,7 @@ export function chooseQuestOutfit(
     ifHave(
       "pants",
       $item`Pantsgiving`,
-      () => get("_pantsgivingCount") < 50
+      () => get("_pantsgivingCount") < 50 || (get("_pantsgivingFullness") < 2 && getRemainingStomach() === 0)
     ),
     { modifier: "Familiar Weight" }
   );
