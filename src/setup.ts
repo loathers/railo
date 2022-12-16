@@ -128,7 +128,7 @@ export const setup: Quest<CrimboTask> = {
       completed: () => AutumnAton.currentlyIn() !== null,
       do: () =>
         AutumnAton.sendTo(
-          $locations`Moonshiners' Woods, The Cave Before Time, The Sleazy Back Alley`
+          $locations`The Toxic Teacups, The Oasis, The Deep Dark Jungle, The Bubblin' Caldera, The Neverending Party, The Sleazy Back Alley`
         ),
       ready: () => AutumnAton.available(),
       sobriety: "either",
