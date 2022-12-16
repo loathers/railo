@@ -101,10 +101,12 @@ export function chooseQuestOutfit(
   return mergedSpec;
 }
 
+/* eslint-disable */
 function harnessIsEffective(location: Location) {
   // Eventually this should check that the location is one that applies the expected benefits from the harness.
   return false && args.priority === "elves";
 }
+/* eslit-enable */
 
 const equipmentFamiliars = new Map<Familiar, Item>([
   [$familiar`Reagnimated Gnome`, $item`gnomish housemaid's kgnee`],
