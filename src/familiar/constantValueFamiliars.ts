@@ -65,13 +65,18 @@ const standardFamiliars: ConstantValueFamiliar[] = [
   {
     familiar: $familiar`Red-Nosed Snapper`,
     value: ({ location }) =>
-      location === $location`Globe Theatre Main Stage` ? garboValue($item`human musk`) / 11 : 0,
+      location === $location`Crimbo Train (Caboose)`
+        ? garboValue($item`industrial lubricant`) / 11
+        : 0,
   },
   {
-    familiar: $familiar`Mosquito`,
-    // Acts as default familiar.
-    // Extra roses when using an attacking familiar and everyone has this one
-    value: () => 1,
+    familiar: $familiar`Cookbookbat`,
+    value: () =>
+      (3 *
+        garboAverageValue(
+          ...$items`Vegetable of Jarlsberg, Yeast of Boris, St. Sneaky Pete's Whey`
+        )) /
+      11,
   },
 ];
 
