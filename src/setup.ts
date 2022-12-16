@@ -118,8 +118,8 @@ export const setup: Quest<CrimboTask> = {
     },
     {
       name: "Snapper",
-      completed: () => Snapper.getTrackedPhylum() === $phylum`dude`,
-      do: () => Snapper.trackPhylum($phylum`dude`),
+      completed: () => Snapper.getTrackedPhylum() === $phylum`construct`,
+      do: () => Snapper.trackPhylum($phylum`construct`),
       ready: () => Snapper.have(),
       sobriety: "either",
     },
