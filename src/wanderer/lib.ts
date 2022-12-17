@@ -21,12 +21,6 @@ export const UnlockableZones: UnlockableZone[] = [
     noInv: false,
   },
   {
-    zone: "Wormwood",
-    available: () => have($effect`Absinthe-Minded`),
-    unlocker: $item`tiny bottle of absinthe`,
-    noInv: false,
-  },
-  {
     zone: "Rabbit Hole",
     available: () => have($effect`Down the Rabbit Hole`),
     unlocker: $item`"DRINK ME" potion`,
