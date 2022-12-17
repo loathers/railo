@@ -10597,7 +10597,7 @@ var import_kolmafia35 = require("kolmafia");
 // src/wanderer/lib.ts
 init_kolmafia_polyfill();
 var import_kolmafia34 = require("kolmafia");
-var _templateObject190, _templateObject281, _templateObject348, _templateObject431, _templateObject527, _templateObject626, _templateObject726, _templateObject825, _templateObject923, _templateObject1021, _templateObject1118, _templateObject1216, _templateObject1316, _templateObject1416, _templateObject1516, _templateObject1614, _templateObject1714, _templateObject1814, _templateObject1914, _templateObject2013, _templateObject2116, _templateObject2213;
+var _templateObject190, _templateObject281, _templateObject348, _templateObject431, _templateObject527, _templateObject626, _templateObject726, _templateObject825, _templateObject923, _templateObject1021, _templateObject1118, _templateObject1216, _templateObject1316, _templateObject1416, _templateObject1516, _templateObject1614, _templateObject1714, _templateObject1814, _templateObject1914, _templateObject2013;
 function _defineProperties15(target, props) {
   for (var i = 0; i < props.length; i++) {
     var descriptor = props[i];
@@ -10656,57 +10656,50 @@ var UnlockableZones = [{
   unlocker: $item(_templateObject281 || (_templateObject281 = _taggedTemplateLiteral25(["transporter transponder"]))),
   noInv: !1
 }, {
-  zone: "Wormwood",
-  available: function() {
-    return have($effect(_templateObject348 || (_templateObject348 = _taggedTemplateLiteral25(["Absinthe-Minded"]))));
-  },
-  unlocker: $item(_templateObject431 || (_templateObject431 = _taggedTemplateLiteral25(["tiny bottle of absinthe"]))),
-  noInv: !1
-}, {
   zone: "Rabbit Hole",
   available: function() {
-    return have($effect(_templateObject527 || (_templateObject527 = _taggedTemplateLiteral25(["Down the Rabbit Hole"]))));
+    return have($effect(_templateObject348 || (_templateObject348 = _taggedTemplateLiteral25(["Down the Rabbit Hole"]))));
   },
-  unlocker: $item(_templateObject626 || (_templateObject626 = _taggedTemplateLiteral25(['"DRINK ME" potion']))),
+  unlocker: $item(_templateObject431 || (_templateObject431 = _taggedTemplateLiteral25(['"DRINK ME" potion']))),
   noInv: !1
 }, {
   zone: "Conspiracy Island",
   available: function() {
     return realmAvailable("spooky");
   },
-  unlocker: $item(_templateObject726 || (_templateObject726 = _taggedTemplateLiteral25(["one-day ticket to Conspiracy Island"]))),
+  unlocker: $item(_templateObject527 || (_templateObject527 = _taggedTemplateLiteral25(["one-day ticket to Conspiracy Island"]))),
   noInv: !0
 }, {
   zone: "Dinseylandfill",
   available: function() {
     return realmAvailable("stench");
   },
-  unlocker: $item(_templateObject825 || (_templateObject825 = _taggedTemplateLiteral25(["one-day ticket to Dinseylandfill"]))),
+  unlocker: $item(_templateObject626 || (_templateObject626 = _taggedTemplateLiteral25(["one-day ticket to Dinseylandfill"]))),
   noInv: !0
 }, {
   zone: "The Glaciest",
   available: function() {
     return realmAvailable("cold");
   },
-  unlocker: $item(_templateObject923 || (_templateObject923 = _taggedTemplateLiteral25(["one-day ticket to The Glaciest"]))),
+  unlocker: $item(_templateObject726 || (_templateObject726 = _taggedTemplateLiteral25(["one-day ticket to The Glaciest"]))),
   noInv: !0
 }, {
   zone: "Spring Break Beach",
   available: function() {
     return realmAvailable("sleaze");
   },
-  unlocker: $item(_templateObject1021 || (_templateObject1021 = _taggedTemplateLiteral25(["one-day ticket to Spring Break Beach"]))),
+  unlocker: $item(_templateObject825 || (_templateObject825 = _taggedTemplateLiteral25(["one-day ticket to Spring Break Beach"]))),
   noInv: !0
 }];
 function underwater(location2) {
   return location2.environment === "underwater";
 }
-var canAdventureOrUnlockSkipList = [].concat(_toConsumableArray19($locations(_templateObject1118 || (_templateObject1118 = _taggedTemplateLiteral25(["The Oasis, The Bubblin' Caldera, Barrrney's Barrr, The F'c'le, The Poop Deck, Belowdecks, 8-Bit Realm, Madness Bakery, The Secret Government Laboratory, The Dire Warren, Inside the Palindome, The Haiku Dungeon, An Incredibly Strange Place (Bad Trip), An Incredibly Strange Place (Mediocre Trip), An Incredibly Strange Place (Great Trip)"])))), _toConsumableArray19(import_kolmafia34.Location.all().filter(function(l) {
+var canAdventureOrUnlockSkipList = [].concat(_toConsumableArray19($locations(_templateObject923 || (_templateObject923 = _taggedTemplateLiteral25(["The Oasis, The Bubblin' Caldera, Barrrney's Barrr, The F'c'le, The Poop Deck, Belowdecks, 8-Bit Realm, Madness Bakery, The Secret Government Laboratory, The Dire Warren, Inside the Palindome, The Haiku Dungeon, An Incredibly Strange Place (Bad Trip), An Incredibly Strange Place (Mediocre Trip), An Incredibly Strange Place (Great Trip), The Mouldering Mansion, The Rogue Windmill, The Stately Pleasure Dome"])))), _toConsumableArray19(import_kolmafia34.Location.all().filter(function(l) {
   return l.parent === "Clan Basement";
 })));
 function canAdventureOrUnlock(loc) {
   var skiplist = _toConsumableArray19(canAdventureOrUnlockSkipList);
-  !have($item(_templateObject1216 || (_templateObject1216 = _taggedTemplateLiteral25(["repaid diaper"])))) && have($item(_templateObject1316 || (_templateObject1316 = _taggedTemplateLiteral25(["Great Wolf's beastly trousers"])))) && skiplist.push($location(_templateObject1416 || (_templateObject1416 = _taggedTemplateLiteral25(["The Icy Peak"]))));
+  !have($item(_templateObject1021 || (_templateObject1021 = _taggedTemplateLiteral25(["repaid diaper"])))) && have($item(_templateObject1118 || (_templateObject1118 = _taggedTemplateLiteral25(["Great Wolf's beastly trousers"])))) && skiplist.push($location(_templateObject1216 || (_templateObject1216 = _taggedTemplateLiteral25(["The Icy Peak"]))));
   var canUnlock = UnlockableZones.some(function(z) {
     return loc.zone === z.zone && (z.available() || !z.noInv);
   });
@@ -10718,14 +10711,14 @@ function unlock(loc, value) {
   });
   return unlockableZone ? unlockableZone.available() ? !0 : (0, import_kolmafia34.buy)(1, unlockableZone.unlocker, value) === 0 ? !1 : (0, import_kolmafia34.use)(unlockableZone.unlocker) : (0, import_kolmafia34.canAdventure)(loc);
 }
-var backupSkiplist = $locations(_templateObject1516 || (_templateObject1516 = _taggedTemplateLiteral25(["The Overgrown Lot, The Skeleton Store, The Mansion of Dr. Weirdeaux"])));
+var backupSkiplist = $locations(_templateObject1316 || (_templateObject1316 = _taggedTemplateLiteral25(["The Overgrown Lot, The Skeleton Store, The Mansion of Dr. Weirdeaux"])));
 function canWanderTypeBackup(location2) {
   return !backupSkiplist.includes(location2) && location2.combatPercent >= 100;
 }
 function canWanderTypeYellowRay(location2) {
-  return location2 === $location(_templateObject1614 || (_templateObject1614 = _taggedTemplateLiteral25(["The Fun-Guy Mansion"]))) && get("funGuyMansionKills", 0) >= 100 ? !1 : canWanderTypeBackup(location2);
+  return location2 === $location(_templateObject1416 || (_templateObject1416 = _taggedTemplateLiteral25(["The Fun-Guy Mansion"]))) && get("funGuyMansionKills", 0) >= 100 ? !1 : canWanderTypeBackup(location2);
 }
-var wandererSkiplist = $locations(_templateObject1714 || (_templateObject1714 = _taggedTemplateLiteral25(["The Batrat and Ratbat Burrow, Guano Junction, The Beanbat Chamber, A-Boo Peak"])));
+var wandererSkiplist = $locations(_templateObject1516 || (_templateObject1516 = _taggedTemplateLiteral25(["The Batrat and Ratbat Burrow, Guano Junction, The Beanbat Chamber, A-Boo Peak"])));
 function canWanderTypeWander(location2) {
   return !wandererSkiplist.includes(location2) && location2.wanderers;
 }
@@ -10750,29 +10743,29 @@ var WandererTarget = /* @__PURE__ */ _createClass15(
   }
 );
 function defaultFactory() {
-  return [new WandererTarget("Default", $location(_templateObject1814 || (_templateObject1814 = _taggedTemplateLiteral25(["The Haunted Kitchen"]))), 0)];
+  return [new WandererTarget("Default", $location(_templateObject1614 || (_templateObject1614 = _taggedTemplateLiteral25(["The Haunted Kitchen"]))), 0)];
 }
 var WanderingSources = [{
   name: "CMG",
-  item: $item(_templateObject1914 || (_templateObject1914 = _taggedTemplateLiteral25(["cursed magnifying glass"]))),
+  item: $item(_templateObject1714 || (_templateObject1714 = _taggedTemplateLiteral25(["cursed magnifying glass"]))),
   max: 3,
   property: "_voidFreeFights",
   type: "wanderer"
 }, {
   name: "Voter",
-  item: $item(_templateObject2013 || (_templateObject2013 = _taggedTemplateLiteral25(['"I Voted!" sticker']))),
+  item: $item(_templateObject1814 || (_templateObject1814 = _taggedTemplateLiteral25(['"I Voted!" sticker']))),
   max: 3,
   property: "_voteFreeFights",
   type: "wanderer"
 }, {
   name: "Voter",
-  item: $item(_templateObject2116 || (_templateObject2116 = _taggedTemplateLiteral25(['"I Voted!" sticker']))),
+  item: $item(_templateObject1914 || (_templateObject1914 = _taggedTemplateLiteral25(['"I Voted!" sticker']))),
   max: 3,
   property: "_voteFreeFights",
   type: "wanderer"
 }, {
   name: "Backup",
-  item: $item(_templateObject2213 || (_templateObject2213 = _taggedTemplateLiteral25(["backup camera"]))),
+  item: $item(_templateObject2013 || (_templateObject2013 = _taggedTemplateLiteral25(["backup camera"]))),
   max: 11,
   property: "_backUpUses",
   type: "backup"
@@ -11125,7 +11118,7 @@ function drunkSafeWander(type) {
 }
 
 // src/main.ts
-var _templateObject300, _templateObject2100, _templateObject351, _templateObject436, _templateObject529, _templateObject628, _templateObject727, _templateObject826, _templateObject924, _templateObject1023, _templateObject1119, _templateObject1217, _templateObject1317, _templateObject1417, _templateObject1517, _templateObject1615, _templateObject1715, _templateObject1815, _templateObject1915, _templateObject2014, _templateObject2117, _templateObject2214, _templateObject2313, _templateObject2412, _templateObject2512, _templateObject2612, _templateObject2711, _templateObject2810, _templateObject2910, _templateObject3010;
+var _templateObject300, _templateObject2100, _templateObject351, _templateObject436, _templateObject529, _templateObject628, _templateObject727, _templateObject826, _templateObject924, _templateObject1023, _templateObject1119, _templateObject1217, _templateObject1317, _templateObject1417, _templateObject1517, _templateObject1615, _templateObject1715, _templateObject1815, _templateObject1915, _templateObject2014, _templateObject2116, _templateObject2213, _templateObject2313, _templateObject2412, _templateObject2512, _templateObject2612, _templateObject2711, _templateObject2810, _templateObject2910, _templateObject3010;
 function _slicedToArray9(arr, i) {
   return _arrayWithHoles9(arr) || _iterableToArrayLimit9(arr, i) || _unsupportedIterableToArray28(arr, i) || _nonIterableRest9();
 }
@@ -11371,14 +11364,14 @@ function main(command) {
         return have($effect(_templateObject1915 || (_templateObject1915 = _taggedTemplateLiteral29(["Everything Looks Yellow"]))));
       },
       ready: function() {
-        return have($item(_templateObject2014 || (_templateObject2014 = _taggedTemplateLiteral29(["Jurassic Parka"])))) && have($skill(_templateObject2117 || (_templateObject2117 = _taggedTemplateLiteral29(["Torso Awareness"]))));
+        return have($item(_templateObject2014 || (_templateObject2014 = _taggedTemplateLiteral29(["Jurassic Parka"])))) && have($skill(_templateObject2116 || (_templateObject2116 = _taggedTemplateLiteral29(["Torso Awareness"]))));
       },
       outfit: function() {
         return chooseQuestOutfit({
           location: drunkSafeWander("yellow ray"),
           isFree: !0
         }, {
-          shirt: $item(_templateObject2214 || (_templateObject2214 = _taggedTemplateLiteral29(["Jurassic Parka"])))
+          shirt: $item(_templateObject2213 || (_templateObject2213 = _taggedTemplateLiteral29(["Jurassic Parka"])))
         });
       },
       prepare: function() {
