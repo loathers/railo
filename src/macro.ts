@@ -1,7 +1,6 @@
 import { Item, myFamiliar, Skill } from "kolmafia";
 import {
   $familiar,
-  $item,
   $items,
   $monster,
   $skill,
@@ -61,8 +60,6 @@ export default class Macro extends StrictMacro {
           else steps.tryItem(...chunk);
         }
       }
-    } else {
-      steps.tryHaveItem($item`seal tooth`);
     }
     return this.step(steps);
   }
