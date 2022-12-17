@@ -21,12 +21,6 @@ export const UnlockableZones: UnlockableZone[] = [
     noInv: false,
   },
   {
-    zone: "Wormwood",
-    available: () => have($effect`Absinthe-Minded`),
-    unlocker: $item`tiny bottle of absinthe`,
-    noInv: false,
-  },
-  {
     zone: "Rabbit Hole",
     available: () => have($effect`Down the Rabbit Hole`),
     unlocker: $item`"DRINK ME" potion`,
@@ -62,7 +56,7 @@ export function underwater(location: Location): boolean {
   return location.environment === "underwater";
 }
 const canAdventureOrUnlockSkipList = [
-  ...$locations`The Oasis, The Bubblin' Caldera, Barrrney's Barrr, The F'c'le, The Poop Deck, Belowdecks, 8-Bit Realm, Madness Bakery, The Secret Government Laboratory, The Dire Warren, Inside the Palindome, The Haiku Dungeon, An Incredibly Strange Place (Bad Trip), An Incredibly Strange Place (Mediocre Trip), An Incredibly Strange Place (Great Trip)`,
+  ...$locations`The Oasis, The Bubblin' Caldera, Barrrney's Barrr, The F'c'le, The Poop Deck, Belowdecks, 8-Bit Realm, Madness Bakery, The Secret Government Laboratory, The Dire Warren, Inside the Palindome, The Haiku Dungeon, An Incredibly Strange Place (Bad Trip), An Incredibly Strange Place (Mediocre Trip), An Incredibly Strange Place (Great Trip), The Mouldering Mansion, The Rogue Windmill, The Stately Pleasure Dome`,
   ...Location.all().filter((l) => l.parent === "Clan Basement"),
 ];
 export function canAdventureOrUnlock(loc: Location): boolean {
