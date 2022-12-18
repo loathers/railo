@@ -7,7 +7,7 @@ import Macro from "./macro";
 import { chooseQuestOutfit } from "./outfit";
 
 const location = $location`Crimbo Train (Caboose)`;
-export const caboose: CrimboQuest = {
+const caboose: CrimboQuest = {
   name: "Caboose",
   location,
   tasks: [
@@ -26,3 +26,5 @@ export const caboose: CrimboQuest = {
     },
   ],
 };
+
+export default caboose;
