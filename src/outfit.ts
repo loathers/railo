@@ -157,7 +157,10 @@ const accessories = new Map<Item, (isFree?: boolean) => number>([
   [$item`Mr. Screege's spectacles`, () => 180],
   [$item`Mr. Cheeng's spectacles`, () => 220],
   [$item`Trainbot luggage hook`, () => (1 / 3) * garboValue($item`lost elf luggage`)],
-  [$item`Trainbot radar monocle`, () => (args.priority === "parts" ? 10000 : 0)],
+  [
+    $item`Trainbot radar monocle`,
+    () => (args.car === "caboose" ? garboValue($item`pile of Trainbot parts`) : 0),
+  ],
 ]);
 
 function getBestAccessories(isFree?: boolean) {
