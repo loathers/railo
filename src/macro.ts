@@ -1,6 +1,7 @@
 import { Item, myFamiliar, Skill } from "kolmafia";
 import {
   $familiar,
+  $item,
   $items,
   $monster,
   $skill,
@@ -68,11 +69,10 @@ export default class Macro extends StrictMacro {
     return this.externalIf(
       canOpenRedPresent() && myFamiliar() === $familiar`Crimbo Shrub`,
       Macro.trySkill($skill`Open a Big Red Present`)
-    )
-    .externalIf(
+    ).externalIf(
       timeToMeatify() && myFamiliar() === $familiar`Grey Goose`,
       Macro.trySkill($skill`Meatify Matter`)
-    )
+    );
   }
 
   static familiarActions(): Macro {
@@ -101,10 +101,14 @@ export default class Macro extends StrictMacro {
   }
 
   hardCombat(): this {
-    return this.tryHaveSkill($skill`Curse of Weaksauce`).familiarActions()
+    return this.tryHaveSkill($skill`Curse of Weaksauce`)
+      .familiarActions()
+      .tryItem([$item`jam band bootleg`, $item`Time-Spinner`])
+      .skill($skill`Lunging Thrust-Smack`)
+      .repeat();
   }
 
   static hardCombat(): Macro {
-    return new Macro().hardCombat()
+    return new Macro().hardCombat();
   }
 }
