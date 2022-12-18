@@ -64,16 +64,24 @@ export default class Macro extends StrictMacro {
     return this.step(steps);
   }
 
+  familiarActions(): this {
+    return this.externalIf(
+      canOpenRedPresent() && myFamiliar() === $familiar`Crimbo Shrub`,
+      Macro.trySkill($skill`Open a Big Red Present`)
+    )
+    .externalIf(
+      timeToMeatify() && myFamiliar() === $familiar`Grey Goose`,
+      Macro.trySkill($skill`Meatify Matter`)
+    )
+  }
+
+  static familiarActions(): Macro {
+    return new Macro().familiarActions();
+  }
+
   standardCombat(): this {
     return this.tryHaveSkill($skill`Curse of Weaksauce`)
-      .externalIf(
-        canOpenRedPresent() && myFamiliar() === $familiar`Crimbo Shrub`,
-        Macro.trySkill($skill`Open a Big Red Present`)
-      )
-      .externalIf(
-        timeToMeatify() && myFamiliar() === $familiar`Grey Goose`,
-        Macro.trySkill($skill`Meatify Matter`)
-      )
+      .familiarActions()
       .externalIf(
         SongBoom.song() === "Total Eclipse of Your Meat",
         Macro.tryHaveSkill($skill`Sing Along`)
@@ -90,5 +98,13 @@ export default class Macro extends StrictMacro {
 
   static standardCombat(): Macro {
     return new Macro().standardCombat();
+  }
+
+  hardCombat(): this {
+    return this.tryHaveSkill($skill`Curse of Weaksauce`).familiarActions()
+  }
+
+  static hardCombat(): Macro {
+    return new Macro().hardCombat()
   }
 }

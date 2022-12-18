@@ -9,7 +9,16 @@ import {
   toSlot,
   totalTurnsPlayed,
 } from "kolmafia";
-import { $familiar, $familiars, $item, get, getRemainingStomach, have, sumNumbers } from "libram";
+import {
+  $familiar,
+  $familiars,
+  $item,
+  $locations,
+  get,
+  getRemainingStomach,
+  have,
+  sumNumbers,
+} from "libram";
 
 import { freeFightFamiliar, MenuOptions } from "./familiar";
 import { garboValue } from "./garboValue";
@@ -107,12 +116,9 @@ export function chooseQuestOutfit(
   return mergedSpec;
 }
 
-/* eslint-disable */
 function harnessIsEffective(location: Location) {
-  // Eventually this should check that the location is one that applies the expected benefits from the harness.
-  return false && args.priority === "elves";
+  return $locations`Crimbo Train (Passenger Car)`.includes(location) && args.priority === "elves";
 }
-/* eslit-enable */
 
 const equipmentFamiliars = new Map<Familiar, Item>([
   [$familiar`Reagnimated Gnome`, $item`gnomish housemaid's kgnee`],
@@ -150,6 +156,8 @@ const accessories = new Map<Item, (isFree?: boolean) => number>([
   [$item`lucky gold ring`, luckyGoldRing],
   [$item`Mr. Screege's spectacles`, () => 180],
   [$item`Mr. Cheeng's spectacles`, () => 220],
+  [$item`Trainbot luggage hook`, () => (1 / 3) * garboValue($item`lost elf luggage`)],
+  [$item`Trainbot radar monocle`, () => (args.priority === "parts" ? 10000 : 0)],
 ]);
 
 function getBestAccessories(isFree?: boolean) {
