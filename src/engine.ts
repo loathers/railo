@@ -59,6 +59,7 @@ export class CrimboEngine extends Engine<never, CrimboTask> {
     for (const choices of unsupportedChoices.values()) manager.setChoices(choices);
     const priority = args.priority as "elves" | "parts" | "pingpong";
     manager.setChoice(1486, { parts: 1, elves: 2, pingpong: 3 }[priority]);
+    manager.setChoice(1487, 1);
   }
 
   dress(task: CrimboTask, outfit: Outfit): void {

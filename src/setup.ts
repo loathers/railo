@@ -6,7 +6,10 @@ import {
   myAdventures,
   myHp,
   myMaxhp,
+  myMaxmp,
+  myMp,
   putCloset,
+  restoreMp,
   runChoice,
   totalTurnsPlayed,
   useSkill,
@@ -91,6 +94,12 @@ export const setup: Quest<CrimboTask> = {
         throw "Unable to heal above 50% HP, heal yourself!";
       },
       sobriety: "either",
+    },
+    {
+      name: "Recover MP",
+      completed: () => myMp() >= Math.min(100, myMaxmp()),
+      do: () => restoreMp(150),
+      sobriety: "sober",
     },
     {
       name: "Kgnee",

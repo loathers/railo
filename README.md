@@ -20,7 +20,12 @@ You can specify the number of turns to run (use negative numbers for the number 
 
 `railo turns=10`
 
-You can specify which choice adventure is taken in the caboose.
+You can specify which car to adventure in, default is caboose.
+
+`railo car=caboose`
+`railo car=passenger`
+
+You can specify a priority which affects choice adventures and equipment.
 
 `railo priority=elves`
 `railo priority=parts`

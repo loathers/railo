@@ -6,9 +6,9 @@ import { sober } from "./lib";
 import Macro from "./macro";
 import { chooseQuestOutfit } from "./outfit";
 
-const location = $location`Crimbo Train (Caboose)`;
-const caboose: CrimboQuest = {
-  name: "Caboose",
+const location = $location`Crimbo Train (Passenger Car)`;
+const passenger: CrimboQuest = {
+  name: "Passenger Car",
   location,
   tasks: [
     {
@@ -20,13 +20,13 @@ const caboose: CrimboQuest = {
         return chooseQuestOutfit({ location, isFree: false }, drunkSpec);
       },
       effects: () =>
-        $effects`Blood Bond, Empathy, Leash of Linguini`.filter(
+        $effects`Blood Bubble, Blood Bond, Frenzied\, Bloody, Empathy, Leash of Linguini, Ruthlessly Efficient, Mathematically Precise`.filter(
           (effect) => have(toSkill(effect))
         ),
-      combat: new CrimboStrategy(() => Macro.standardCombat()),
+      combat: new CrimboStrategy(() => Macro.hardCombat()),
       sobriety: "either",
     },
   ],
 };
 
-export default caboose;
+export default passenger;
