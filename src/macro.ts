@@ -104,6 +104,7 @@ export default class Macro extends StrictMacro {
     return this.tryHaveSkill($skill`Curse of Weaksauce`)
       .familiarActions()
       .tryItem([$item`jam band bootleg`, $item`Time-Spinner`])
+      .tryHaveSkill($skill`Micrometeorite`)
       .skill($skill`Lunging Thrust-Smack`)
       .repeat();
   }

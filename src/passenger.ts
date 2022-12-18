@@ -20,8 +20,8 @@ const passenger: CrimboQuest = {
         return chooseQuestOutfit({ location, isFree: false }, drunkSpec);
       },
       effects: () =>
-        $effects`Blood Bubble, Blood Bond, Empathy, Leash of Linguini`.filter((effect) =>
-          have(toSkill(effect))
+        $effects`Blood Bubble, Blood Bond, Empathy, Leash of Linguini, Ruthlessly Efficient, Mathematically Precise`.filter(
+          (effect) => have(toSkill(effect))
         ),
       combat: new CrimboStrategy(() => Macro.hardCombat()),
       sobriety: "either",
