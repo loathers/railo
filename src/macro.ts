@@ -88,16 +88,28 @@ export default class Macro extends StrictMacro {
     return this.step(steps);
   }
 
+  static doItems(wanted: Item[]): Macro {
+    return new Macro().doItems(wanted);
+  }
+
   doStandardItems(): this {
     return this.doItems(
       $items`Rain-Doh blue balls, Time-Spinner, Rain-Doh indigo cup, porquoise-handled sixgun`
     );
   }
 
+  static doStandardItems(): Macro {
+    return new Macro().doStandardItems();
+  }
+
   doHardItems(): this {
     return this.doItems(
       $items`Time-Spinner, little red book, Rain-Doh indigo cup, porquoise-handled sixgun`
     );
+  }
+
+  static doHardItems(): Macro {
+    return new Macro().doHardItems();
   }
 
   familiarActions(): this {
@@ -152,6 +164,10 @@ export default class Macro extends StrictMacro {
     );
   }
 
+  static gooKill(): Macro {
+    return new Macro().gooKill();
+  }
+
   standardCombat(): this {
     return this.tryHaveSkill($skill`Curse of Weaksauce`)
       .familiarActions()
@@ -166,6 +182,10 @@ export default class Macro extends StrictMacro {
       .gooKill()
       .attack()
       .repeat();
+  }
+
+  static standardCombat(): Macro {
+    return new Macro().standardCombat();
   }
 
   hardCombat(): this {
