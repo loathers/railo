@@ -1,11 +1,22 @@
-import { haveSkill, Item, myBuffedstat, myClass, myFamiliar, Skill, visitUrl } from "kolmafia";
+import {
+  equippedItem,
+  haveSkill,
+  Item,
+  itemType,
+  myBuffedstat,
+  myClass,
+  myFamiliar,
+  myPrimestat,
+  Skill,
+  visitUrl,
+} from "kolmafia";
 import {
   $class,
   $familiar,
-  $item,
   $items,
   $monster,
   $skill,
+  $slot,
   $stat,
   get,
   have,
@@ -60,12 +71,9 @@ export default class Macro extends StrictMacro {
     return new Macro().redigitize();
   }
 
-  doItems(): this {
+  doItems(wanted: Item[]): this {
     const steps = new Macro();
-    const items =
-      $items`Rain-Doh blue balls, Time-Spinner, Rain-Doh indigo cup, porquoise-handled sixgun`.filter(
-        (i) => have(i)
-      );
+    const items = wanted.filter((i) => have(i));
     if (items.length) {
       if (!have($skill`Ambidextrous Funkslinging`)) {
         for (const item of items) steps.tryItem(item);
@@ -80,6 +88,18 @@ export default class Macro extends StrictMacro {
     return this.step(steps);
   }
 
+  doStandardItems(): this {
+    return this.doItems(
+      $items`Rain-Doh blue balls, Time-Spinner, Rain-Doh indigo cup, porquoise-handled sixgun`
+    );
+  }
+
+  doHardItems(): this {
+    return this.doItems(
+      $items`Time-Spinner, little red book, Rain-Doh indigo cup, porquoise-handled sixgun`
+    );
+  }
+
   familiarActions(): this {
     return this.externalIf(
       canOpenRedPresent() && myFamiliar() === $familiar`Crimbo Shrub`,
@@ -92,6 +112,27 @@ export default class Macro extends StrictMacro {
 
   static familiarActions(): Macro {
     return new Macro().familiarActions();
+  }
+
+  hardKill(): this {
+    if (myClass() === $class`Grey Goo`) return this;
+
+    return this.externalIf(
+      myPrimestat() === $stat`mysticality`,
+      Macro.tryHaveSkill($skill`Stuffed Mortar Shell`)
+        .trySkillRepeat($skill`Saucegeyser`)
+        .trySkillRepeat($skill`Weapon of the Pastalord`)
+    )
+      .externalIf(
+        haveSkill($skill`Shieldbutt`) && itemType(equippedItem($slot`offhand`)) === "shield",
+        Macro.trySkillRepeat($skill`Shieldbutt`)
+      )
+      .trySkillRepeat($skill`Lunging Thrust-Smack`)
+      .trySkillRepeat($skill`Kneebutt`);
+  }
+
+  static hardKill(): Macro {
+    return new Macro().hardKill();
   }
 
   gooKill(): this {
@@ -111,10 +152,6 @@ export default class Macro extends StrictMacro {
     );
   }
 
-  static gooKill(): Macro {
-    return new Macro().gooKill();
-  }
-
   standardCombat(): this {
     return this.tryHaveSkill($skill`Curse of Weaksauce`)
       .familiarActions()
@@ -124,27 +161,20 @@ export default class Macro extends StrictMacro {
       )
       .tryHaveSkill($skill`Extract`)
       .tryHaveSkill($skill`Micrometeorite`)
-      .doItems()
+      .doStandardItems()
       .gooKill()
       .attack()
       .repeat();
   }
 
-  static standardCombat(): Macro {
-    return new Macro().standardCombat();
-  }
-
   hardCombat(): this {
     return this.tryHaveSkill($skill`Curse of Weaksauce`)
       .familiarActions()
-      .tryHaveSkill($skill`shell up`)
-      .tryItem([$item`Time-Spinner`, $item`little red book`])
-      .tryHaveSkill($skill`Micrometeorite`)
-      .externalIf(
-        haveSkill($skill`Lunging Thrust-Smack`),
-        Macro.skill($skill`Lunging Thrust-Smack`).repeat()
-      )
+      .externalIf(have($skill`Meteor Lore`), Macro.skill($skill`Micrometeorite`))
+      .doHardItems()
+      .trySkill($skill`Bowl Sideways`)
       .gooKill()
+      .hardKill()
       .attack()
       .repeat();
   }
