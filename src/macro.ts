@@ -1,10 +1,12 @@
-import { Item, myFamiliar, Skill } from "kolmafia";
+import { haveSkill, Item, myBuffedstat, myClass, myFamiliar, Skill, visitUrl } from "kolmafia";
 import {
+  $class,
   $familiar,
   $item,
   $items,
   $monster,
   $skill,
+  $stat,
   get,
   have,
   SongBoom,
@@ -12,7 +14,20 @@ import {
 } from "libram";
 
 import { canOpenRedPresent, timeToMeatify } from "./familiar";
-import { shouldRedigitize } from "./lib";
+import { maxBy, shouldRedigitize } from "./lib";
+
+const gooKillSkills = [
+  { skill: $skill`Nantlers`, stat: $stat`muscle` },
+  { skill: $skill`Nanoshock`, stat: $stat`mysticality` },
+  { skill: $skill`Audioclasm`, stat: $stat`moxie` },
+];
+
+let monsterManuelCached: boolean | undefined = undefined;
+function monsterManuelAvailable(): boolean {
+  if (monsterManuelCached !== undefined) return Boolean(monsterManuelCached);
+  monsterManuelCached = visitUrl("questlog.php?which=3").includes("Monster Manuel");
+  return Boolean(monsterManuelCached);
+}
 
 export default class Macro extends StrictMacro {
   tryHaveSkill(skill: Skill): this {
@@ -79,6 +94,27 @@ export default class Macro extends StrictMacro {
     return new Macro().familiarActions();
   }
 
+  gooKill(): this {
+    if (myClass() !== $class`Grey Goo`) return this;
+
+    const gooKillSkill: Skill = maxBy(
+      gooKillSkills.filter((entry) => haveSkill(entry.skill)),
+      (s) => myBuffedstat(s.stat)
+    ).skill;
+
+    return this.externalIf(
+      monsterManuelAvailable() && haveSkill($skill`Infinite Loop`),
+      Macro.while_(`monsterhpabove ${myBuffedstat($stat`moxie`)}`, Macro.skill(gooKillSkill))
+        .skill($skill`Infinite Loop`)
+        .repeat(),
+      Macro.skill(gooKillSkill).repeat()
+    );
+  }
+
+  static gooKill(): Macro {
+    return new Macro().gooKill();
+  }
+
   standardCombat(): this {
     return this.tryHaveSkill($skill`Curse of Weaksauce`)
       .familiarActions()
@@ -89,9 +125,7 @@ export default class Macro extends StrictMacro {
       .tryHaveSkill($skill`Extract`)
       .tryHaveSkill($skill`Micrometeorite`)
       .doItems()
-      .tryHaveSkill($skill`Nantlers`)
-      .tryHaveSkill($skill`Nanoshock`)
-      .tryHaveSkill($skill`Audioclasm`)
+      .gooKill()
       .attack()
       .repeat();
   }
@@ -103,9 +137,15 @@ export default class Macro extends StrictMacro {
   hardCombat(): this {
     return this.tryHaveSkill($skill`Curse of Weaksauce`)
       .familiarActions()
-      .tryItem([$item`jam band bootleg`, $item`Time-Spinner`])
+      .tryHaveSkill($skill`shell up`)
+      .tryItem([$item`Time-Spinner`, $item`little red book`])
       .tryHaveSkill($skill`Micrometeorite`)
-      .skill($skill`Lunging Thrust-Smack`)
+      .externalIf(
+        haveSkill($skill`Lunging Thrust-Smack`),
+        Macro.skill($skill`Lunging Thrust-Smack`).repeat()
+      )
+      .gooKill()
+      .attack()
       .repeat();
   }
 
