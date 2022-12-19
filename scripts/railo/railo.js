@@ -10440,9 +10440,11 @@ var chooseFamiliar = function() {
 function chooseQuestOutfit(_ref2) {
   for (var _equipmentFamiliars$g, location3 = _ref2.location, isFree = _ref2.isFree, familiar3 = chooseFamiliar({
     location: location3
-  }), famEquip = (_equipmentFamiliars$g = equipmentFamiliars.get(familiar3)) !== null && _equipmentFamiliars$g !== void 0 ? _equipmentFamiliars$g : $item(_templateObject270 || (_templateObject270 = _taggedTemplateLiteral22(["tiny stillsuit"]))), weapons = mergeSpecs(ifHave("weapon", $item(_templateObject340 || (_templateObject340 = _taggedTemplateLiteral22(["June cleaver"])))), ifHave("weapon", $item(_templateObject429 || (_templateObject429 = _taggedTemplateLiteral22(["Fourth of May Cosplay Saber"]))))), offhands = ifHave("offhand", $item(_templateObject525 || (_templateObject525 = _taggedTemplateLiteral22(["cursed magnifying glass"]))), function() {
+  }), famEquip = (_equipmentFamiliars$g = equipmentFamiliars.get(familiar3)) !== null && _equipmentFamiliars$g !== void 0 ? _equipmentFamiliars$g : $item(_templateObject270 || (_templateObject270 = _taggedTemplateLiteral22(["tiny stillsuit"]))), weapons = mergeSpecs(ifHave("weapon", $item(_templateObject340 || (_templateObject340 = _taggedTemplateLiteral22(["June cleaver"])))), ifHave("weapon", $item(_templateObject429 || (_templateObject429 = _taggedTemplateLiteral22(["Fourth of May Cosplay Saber"]))))), offhands = mergeSpecs(ifHave("offhand", $item(_templateObject525 || (_templateObject525 = _taggedTemplateLiteral22(["cursed magnifying glass"]))), function() {
     return get("_voidFreeFights") < 5 && get("cursedMagnifyingGlassCount") < 13;
-  }), useHarness = harnessIsEffective(location3), backs = mergeSpecs(ifHave("back", $item(_templateObject624 || (_templateObject624 = _taggedTemplateLiteral22(["protonic accelerator pack"]))), function() {
+  }), ifHave("offhand", (0, import_kolmafia31.toItem)("Abuela Crimbo's special magnet"), function() {
+    return (0, import_kolmafia31.toItem)("Abuela Crimbo's special magnet") !== $item.none;
+  })), useHarness = harnessIsEffective(location3), backs = mergeSpecs(ifHave("back", $item(_templateObject624 || (_templateObject624 = _taggedTemplateLiteral22(["protonic accelerator pack"]))), function() {
     return get("questPAGhost") === "unstarted" && get("nextParanormalActivity") <= (0, import_kolmafia31.totalTurnsPlayed)() && sober();
   }), ifHave("back", $item(_templateObject724 || (_templateObject724 = _taggedTemplateLiteral22(["Trainbot harness"]))), function() {
     return useHarness;
