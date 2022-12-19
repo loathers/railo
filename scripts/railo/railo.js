@@ -10639,10 +10639,10 @@ var setup = {
   }, {
     name: "Recover MP",
     completed: function() {
-      return (0, import_kolmafia34.myMp)() >= Math.min(100, (0, import_kolmafia34.myMaxmp)());
+      return (0, import_kolmafia34.myMp)() >= Math.min(250, (0, import_kolmafia34.myMaxmp)());
     },
     do: function() {
-      return (0, import_kolmafia34.restoreMp)(150);
+      return (0, import_kolmafia34.restoreMp)(300);
     },
     sobriety: "sober"
   }, {
