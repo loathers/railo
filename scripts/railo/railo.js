@@ -10467,7 +10467,7 @@ var accessories = /* @__PURE__ */ new Map([[$item(_templateObject348 || (_templa
 }], [$item(_templateObject377 || (_templateObject377 = _taggedTemplateLiteral22(["Mr. Cheeng's spectacles"]))), function() {
   return 220;
 }], [$item(_templateObject386 || (_templateObject386 = _taggedTemplateLiteral22(["Trainbot luggage hook"]))), function() {
-  return 1 / 3 * garboValue($item(_templateObject396 || (_templateObject396 = _taggedTemplateLiteral22(["lost elf luggage"]))));
+  return args.car === "passenger" ? 1 / 3 * garboValue($item(_templateObject396 || (_templateObject396 = _taggedTemplateLiteral22(["lost elf luggage"])))) : 0;
 }], [$item(_templateObject405 || (_templateObject405 = _taggedTemplateLiteral22(["Trainbot radar monocle"]))), function() {
   return args.car === "caboose" ? garboValue($item(_templateObject4111 || (_templateObject4111 = _taggedTemplateLiteral22(["pile of Trainbot parts"])))) : 0;
 }]]);
