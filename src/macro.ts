@@ -16,6 +16,7 @@ import {
   $items,
   $monster,
   $skill,
+  $skills,
   $slot,
   $stat,
   get,
@@ -129,14 +130,20 @@ export default class Macro extends StrictMacro {
   hardKill(): this {
     if (myClass() === $class`Grey Goo`) return this;
 
+    const [bestKillSpell, otherKillSpell] =
+      myClass() === $class`Pastamancer`
+        ? $skills`Weapon of the Pastalord, Saucegeyser`
+        : $skills`Saucegeyser, Weapon of the Pastalord`;
     return this.externalIf(
       myPrimestat() === $stat`mysticality`,
       Macro.tryHaveSkill($skill`Stuffed Mortar Shell`)
-        .trySkillRepeat($skill`Saucegeyser`)
-        .trySkillRepeat($skill`Weapon of the Pastalord`)
+        .trySkillRepeat(bestKillSpell)
+        .trySkillRepeat(otherKillSpell)
     )
       .externalIf(
-        haveSkill($skill`Shieldbutt`) && itemType(equippedItem($slot`offhand`)) === "shield",
+        haveSkill($skill`Shieldbutt`) &&
+          itemType(equippedItem($slot`offhand`)) === "shield" &&
+          myClass() === $class`Turtle Tamer`,
         Macro.trySkillRepeat($skill`Shieldbutt`)
       )
       .trySkillRepeat($skill`Lunging Thrust-Smack`)
@@ -151,8 +158,8 @@ export default class Macro extends StrictMacro {
     if (myClass() !== $class`Grey Goo`) return this;
 
     const gooKillSkill: Skill = maxBy(
-      gooKillSkills.filter((entry) => haveSkill(entry.skill)),
-      (s) => myBuffedstat(s.stat)
+      gooKillSkills.filter(({ skill }) => have(skill)),
+      ({ stat }) => myBuffedstat(stat)
     ).skill;
 
     return this.externalIf(
@@ -191,8 +198,8 @@ export default class Macro extends StrictMacro {
   hardCombat(): this {
     return this.tryHaveSkill($skill`Curse of Weaksauce`)
       .familiarActions()
-      .externalIf(have($skill`Meteor Lore`), Macro.trySkill($skill`Micrometeorite`))
-      .trySkill($skill`Pocket Crumbs`)
+      .tryHaveSkill($skill`Micrometeorite`)
+      .tryHaveSkill($skill`Pocket Crumbs`)
       .doHardItems()
       .trySkill($skill`Bowl Sideways`)
       .gooKill()
