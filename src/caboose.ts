@@ -20,9 +20,7 @@ const caboose: CrimboQuest = {
         return chooseQuestOutfit({ location, isFree: false }, drunkSpec);
       },
       effects: () =>
-        $effects`Blood Bond, Empathy, Leash of Linguini`.filter(
-          (effect) => have(toSkill(effect))
-        ),
+        $effects`Blood Bond, Empathy, Leash of Linguini`.filter((effect) => have(toSkill(effect))),
       combat: new CrimboStrategy(() => Macro.standardCombat()),
       sobriety: "either",
     },

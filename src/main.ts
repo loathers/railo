@@ -38,7 +38,8 @@ import { setup } from "./setup";
 import { drunkSafeWander } from "./wanderer";
 
 const QUESTS = {
-  caboose, passenger
+  caboose,
+  passenger,
 } as const;
 
 export function main(command?: string) {

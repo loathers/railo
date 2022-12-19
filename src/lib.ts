@@ -80,7 +80,10 @@ export const args = Args.create("railo", "A script for farming elf stuff", {
     default: Infinity,
   }),
   car: Args.string({
-    options: [["caboose", "Kill robots in the Caboose"], ["passenger", "Kill robots in the Passenger Car"]],
+    options: [
+      ["caboose", "Kill robots in the Caboose"],
+      ["passenger", "Kill robots in the Passenger Car"],
+    ],
     default: "caboose",
   }),
   debug: Args.flag({

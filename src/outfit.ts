@@ -156,7 +156,10 @@ const accessories = new Map<Item, (isFree?: boolean) => number>([
   [$item`lucky gold ring`, luckyGoldRing],
   [$item`Mr. Screege's spectacles`, () => 180],
   [$item`Mr. Cheeng's spectacles`, () => 220],
-  [$item`Trainbot luggage hook`, () => (1 / 3) * garboValue($item`lost elf luggage`)],
+  [
+    $item`Trainbot luggage hook`,
+    () => (args.car === "passenger" ? (1 / 3) * garboValue($item`lost elf luggage`) : 0),
+  ],
   [
     $item`Trainbot radar monocle`,
     () => (args.car === "caboose" ? garboValue($item`pile of Trainbot parts`) : 0),
