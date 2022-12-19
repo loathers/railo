@@ -10000,7 +10000,7 @@ function freeFightFamiliar() {
 }
 
 // src/macro.ts
-var _templateObject170, _templateObject261, _templateObject338, _templateObject428, _templateObject524, _templateObject623, _templateObject723, _templateObject821, _templateObject919, _templateObject1018, _templateObject1115, _templateObject1213, _templateObject1313, _templateObject1413, _templateObject1513, _templateObject1612, _templateObject1712, _templateObject1812, _templateObject1912, _templateObject2011, _templateObject2114, _templateObject2211, _templateObject2311, _templateObject2410, _templateObject2510, _templateObject2610, _templateObject2710, _templateObject289, _templateObject299, _templateObject309, _templateObject3112, _templateObject3210, _templateObject339, _templateObject347, _templateObject357, _templateObject366, _templateObject376, _templateObject385, _templateObject395, _templateObject405;
+var _templateObject170, _templateObject261, _templateObject338, _templateObject428, _templateObject524, _templateObject623, _templateObject723, _templateObject821, _templateObject919, _templateObject1018, _templateObject1115, _templateObject1213, _templateObject1313, _templateObject1413, _templateObject1513, _templateObject1612, _templateObject1712, _templateObject1812, _templateObject1912, _templateObject2011, _templateObject2114, _templateObject2211, _templateObject2311, _templateObject2410, _templateObject2510, _templateObject2610, _templateObject2710, _templateObject289, _templateObject299, _templateObject309, _templateObject3112, _templateObject3210, _templateObject339, _templateObject347, _templateObject357, _templateObject366, _templateObject376, _templateObject385, _templateObject395, _templateObject405, _templateObject4111;
 function _slicedToArray8(arr, i) {
   return _arrayWithHoles8(arr) || _iterableToArrayLimit8(arr, i) || _unsupportedIterableToArray23(arr, i) || _nonIterableRest8();
 }
@@ -10268,7 +10268,7 @@ var Macro2 = /* @__PURE__ */ function(_StrictMacro) {
   }, {
     key: "hardCombat",
     value: function() {
-      return this.tryHaveSkill($skill(_templateObject376 || (_templateObject376 = _taggedTemplateLiteral21(["Curse of Weaksauce"])))).familiarActions().tryHaveSkill($skill(_templateObject385 || (_templateObject385 = _taggedTemplateLiteral21(["Micrometeorite"])))).tryHaveSkill($skill(_templateObject395 || (_templateObject395 = _taggedTemplateLiteral21(["Pocket Crumbs"])))).doHardItems().trySkill($skill(_templateObject405 || (_templateObject405 = _taggedTemplateLiteral21(["Bowl Sideways"])))).gooKill().hardKill().attack().repeat();
+      return this.tryHaveSkill($skill(_templateObject376 || (_templateObject376 = _taggedTemplateLiteral21(["Curse of Weaksauce"])))).familiarActions().externalIf(have($skill(_templateObject385 || (_templateObject385 = _taggedTemplateLiteral21(["Meteor Lore"])))), Macro3.skill($skill(_templateObject395 || (_templateObject395 = _taggedTemplateLiteral21(["Micrometeorite"]))))).tryHaveSkill($skill(_templateObject405 || (_templateObject405 = _taggedTemplateLiteral21(["Pocket Crumbs"])))).doHardItems().trySkill($skill(_templateObject4111 || (_templateObject4111 = _taggedTemplateLiteral21(["Bowl Sideways"])))).gooKill().hardKill().attack().repeat();
     }
   }], [{
     key: "tryHaveSkill",
@@ -10331,7 +10331,7 @@ var Macro2 = /* @__PURE__ */ function(_StrictMacro) {
 // src/outfit.ts
 init_kolmafia_polyfill();
 var import_kolmafia31 = require("kolmafia");
-var _templateObject171, _templateObject270, _templateObject340, _templateObject429, _templateObject525, _templateObject624, _templateObject724, _templateObject823, _templateObject920, _templateObject1019, _templateObject1116, _templateObject1214, _templateObject1314, _templateObject1414, _templateObject1514, _templateObject1613, _templateObject1713, _templateObject1813, _templateObject1913, _templateObject2012, _templateObject2115, _templateObject2212, _templateObject2312, _templateObject2411, _templateObject2511, _templateObject2611, _templateObject2711, _templateObject2810, _templateObject2910, _templateObject3010, _templateObject3113, _templateObject3211, _templateObject3310, _templateObject348, _templateObject358, _templateObject367, _templateObject377, _templateObject386, _templateObject396, _templateObject406, _templateObject4111;
+var _templateObject171, _templateObject270, _templateObject340, _templateObject429, _templateObject525, _templateObject624, _templateObject724, _templateObject823, _templateObject920, _templateObject1019, _templateObject1116, _templateObject1214, _templateObject1314, _templateObject1414, _templateObject1514, _templateObject1613, _templateObject1713, _templateObject1813, _templateObject1913, _templateObject2012, _templateObject2115, _templateObject2212, _templateObject2312, _templateObject2411, _templateObject2511, _templateObject2611, _templateObject2711, _templateObject2810, _templateObject2910, _templateObject3010, _templateObject3113, _templateObject3211, _templateObject3310, _templateObject348, _templateObject358, _templateObject367, _templateObject377, _templateObject386, _templateObject396, _templateObject406, _templateObject4112;
 function _toConsumableArray18(arr) {
   return _arrayWithoutHoles18(arr) || _iterableToArray18(arr) || _unsupportedIterableToArray24(arr) || _nonIterableSpread18();
 }
@@ -10506,7 +10506,7 @@ var accessories = /* @__PURE__ */ new Map([[$item(_templateObject348 || (_templa
 }], [$item(_templateObject386 || (_templateObject386 = _taggedTemplateLiteral22(["Trainbot luggage hook"]))), function() {
   return args.car === "passenger" ? 1 / 3 * garboValue($item(_templateObject396 || (_templateObject396 = _taggedTemplateLiteral22(["lost elf luggage"])))) : 0;
 }], [$item(_templateObject406 || (_templateObject406 = _taggedTemplateLiteral22(["Trainbot radar monocle"]))), function() {
-  return args.car === "caboose" ? garboValue($item(_templateObject4111 || (_templateObject4111 = _taggedTemplateLiteral22(["pile of Trainbot parts"])))) : 0;
+  return args.car === "caboose" ? garboValue($item(_templateObject4112 || (_templateObject4112 = _taggedTemplateLiteral22(["pile of Trainbot parts"])))) : 0;
 }]]);
 function getBestAccessories(isFree) {
   return Array.from(accessories.entries()).filter(function(_ref42) {
