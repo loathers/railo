@@ -198,7 +198,7 @@ export default class Macro extends StrictMacro {
   hardCombat(): this {
     return this.tryHaveSkill($skill`Curse of Weaksauce`)
       .familiarActions()
-      .tryHaveSkill($skill`Micrometeorite`)
+      .externalIf(have($skill`Meteor Lore`), Macro.skill($skill`Micrometeorite`))
       .tryHaveSkill($skill`Pocket Crumbs`)
       .doHardItems()
       .trySkill($skill`Bowl Sideways`)
