@@ -6,6 +6,7 @@ import {
   Item,
   itemAmount,
   Location,
+  toItem,
   toSlot,
   totalTurnsPlayed,
 } from "kolmafia";
@@ -52,10 +53,17 @@ export function chooseQuestOutfit(
     ifHave("weapon", $item`June cleaver`),
     ifHave("weapon", $item`Fourth of May Cosplay Saber`)
   );
-  const offhands = ifHave(
-    "offhand",
-    $item`cursed magnifying glass`,
-    () => get("_voidFreeFights") < 5 && get("cursedMagnifyingGlassCount") < 13
+  const offhands = mergeSpecs(
+    ifHave(
+      "offhand",
+      $item`cursed magnifying glass`,
+      () => get("_voidFreeFights") < 5 && get("cursedMagnifyingGlassCount") < 13
+    ),
+    ifHave(
+      "offhand",
+      toItem("Abuela Crimbo's special magnet"),
+      () => toItem("Abuela Crimbo's special magnet") !== $item.none
+    )
   );
 
   const useHarness = harnessIsEffective(location);
