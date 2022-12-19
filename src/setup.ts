@@ -97,8 +97,8 @@ export const setup: Quest<CrimboTask> = {
     },
     {
       name: "Recover MP",
-      completed: () => myMp() >= Math.min(100, myMaxmp()),
-      do: () => restoreMp(150),
+      completed: () => myMp() >= Math.min(250, myMaxmp()),
+      do: () => restoreMp(300),
       sobriety: "sober",
     },
     {
