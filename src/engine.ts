@@ -64,8 +64,8 @@ export class CrimboEngine extends Engine<never, CrimboTask> {
     manager.setChoice(1486, { parts: 1, elves: 2, pingpong: 3 }[priority]);
     // Passenger; only one option
     manager.setChoice(1487, 1);
-    // Dining: always pick option two
-    manager.setChoice(1488, 2);
+    // Dining: always pick option one (luggage)
+    manager.setChoice(1488, 1);
   }
 
   dress(task: CrimboTask, outfit: Outfit): void {
