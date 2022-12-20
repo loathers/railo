@@ -32,7 +32,6 @@ import {
   AutumnAton,
   get,
   have,
-  MummingTrunk,
   Snapper,
   SongBoom,
   uneffect,
@@ -127,8 +126,7 @@ export const setup: Quest<CrimboTask> = {
     },
     {
       name: "The Captain",
-      completed: () =>
-        Array.from(MummingTrunk.currentCostumes().values()).some(([mod]) => mod === "Meat Drop"),
+      completed: () => get("_mummeryMods").includes("Meat Drop"),
       ready: () =>
         have($item`mumming trunk`) && $familiars`Reagnimated Gnome, Temporal Riftlet`.some(have),
       sobriety: "either",
