@@ -6,7 +6,6 @@ import {
   Item,
   itemAmount,
   Location,
-  toItem,
   toSlot,
   totalTurnsPlayed,
 } from "kolmafia";
@@ -37,7 +36,7 @@ function mergeSpecs(...outfits: OutfitSpec[]): OutfitSpec {
 
 const chooseFamiliar = (options: MenuOptions = {}): Familiar =>
   canInteract() && sober()
-    ? $familiars`Reagnimated Gnome, Temporal Riftlet`.find((f) => have(f)) ??
+    ? $familiars`Temporal Riftlet, Reagnimated Gnome`.find((f) => have(f)) ??
       freeFightFamiliar(options)
     : freeFightFamiliar(options);
 
@@ -47,7 +46,13 @@ export function chooseQuestOutfit(
   ...outfits: OutfitSpec[]
 ): OutfitSpec {
   const familiar = chooseFamiliar({ location });
-  const famEquip = equipmentFamiliars.get(familiar) ?? $item`tiny stillsuit`;
+  const famEquip =
+    equipmentFamiliars.get(familiar) ??
+
+    equipmentFamiliars.get(familiar) ?? location.zone === "Crimbo22"
+      ? // eslint-disable-next-line libram/verify-constants
+        $item`white arm towel`
+      : $item`amulet coin`;
 
   const weapons = mergeSpecs(
     ifHave("weapon", $item`June cleaver`),
@@ -61,8 +66,8 @@ export function chooseQuestOutfit(
     ),
     ifHave(
       "offhand",
-      toItem("Abuela Crimbo's special magnet"),
-      () => toItem("Abuela Crimbo's special magnet") !== $item.none
+      // eslint-disable-next-line libram/verify-constants
+      $item`Abuela Crimbo's special magnet`
     )
   );
 
