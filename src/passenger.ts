@@ -21,7 +21,7 @@ const passenger: CrimboQuest = {
       },
       effects: () =>
         [
-          ...$effects`Blood Bubble, Blood Bond, Frenzied\, Bloody, Empathy, Leash of Linguini, Ruthlessly Efficient, Mathematically Precise, Psalm of Pointiness`,
+          ...$effects`Blood Bubble, Blood Bond, Frenzied\, Bloody, Empathy, Leash of Linguini, Ruthlessly Efficient, Mathematically Precise, Psalm of Pointiness, Paul's Passionate Pop Song, Cringle's Curative Carol`,
           toEffect($skill`Shield of the Pastalord`),
           myPrimestat() === $stat`mysticality`
             ? $effect`Carol of the Hells`

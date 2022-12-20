@@ -193,7 +193,9 @@ export default class Macro extends StrictMacro {
   }
 
   hardCombat(): this {
-    return this.tryHaveSkill($skill`Curse of Weaksauce`)
+    return this.tryHaveSkill(
+      myPrimestat() === $stat`Mysticality` ? $skill`Curse of Marinara` : $skill`Curse of Weaksauce`
+    )
       .familiarActions()
       .tryHaveSkill($skill`Micrometeorite`)
       .tryHaveSkill($skill`Pocket Crumbs`)
