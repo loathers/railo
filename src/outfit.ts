@@ -49,10 +49,11 @@ export function chooseQuestOutfit(
 ): OutfitSpec {
   const familiar = chooseFamiliar({ location });
   const famEquip =
-    equipmentFamiliars.get(familiar) ?? location.zone === "Crimbo22"
+    equipmentFamiliars.get(familiar) ??
+    (location.zone === "Crimbo22"
       ? // eslint-disable-next-line libram/verify-constants
         $item`white arm towel`
-      : $item`amulet coin`;
+      : $item`amulet coin`);
 
   const weapons = mergeSpecs(
     ifHave("weapon", $item`June cleaver`),
