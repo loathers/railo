@@ -6,6 +6,8 @@ import {
   Item,
   itemAmount,
   Location,
+  myMaxmp,
+  myMp,
   toItem,
   toSlot,
   totalTurnsPlayed,
@@ -54,6 +56,12 @@ export function chooseQuestOutfit(
     ifHave("weapon", $item`Fourth of May Cosplay Saber`)
   );
   const offhands = mergeSpecs(
+    ifHave(
+      "offhand",
+      // eslint-disable-next-line libram/verify-constants
+      $item`automatic wine thief`,
+      () => myMp() < 500 && myMaxmp() > 2000 && location.zone === "Crimbo22"
+    ),
     ifHave(
       "offhand",
       $item`cursed magnifying glass`,
