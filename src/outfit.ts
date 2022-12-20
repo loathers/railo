@@ -47,7 +47,13 @@ export function chooseQuestOutfit(
   ...outfits: OutfitSpec[]
 ): OutfitSpec {
   const familiar = chooseFamiliar({ location });
-  const famEquip = equipmentFamiliars.get(familiar) ?? $item`tiny stillsuit`;
+  const famEquip =
+    equipmentFamiliars.get(familiar) ??
+    // eslint-disable-next-line libram/verify-constants
+    $locations`Crimbo Train (caboose), Crimbo Train (dining car)`.includes(location)
+      ? // eslint-disable-next-line libram/verify-constants
+        $item`white arm towel`
+      : $item`amulet coin`;
 
   const weapons = mergeSpecs(
     ifHave("weapon", $item`June cleaver`),
