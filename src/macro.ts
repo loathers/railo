@@ -16,7 +16,6 @@ import {
   $items,
   $monster,
   $skill,
-  $skills,
   $slot,
   $stat,
   get,
@@ -130,15 +129,13 @@ export default class Macro extends StrictMacro {
   hardKill(): this {
     if (myClass() === $class`Grey Goo`) return this;
 
-    const [bestKillSpell, otherKillSpell] =
-      myClass() === $class`Pastamancer`
-        ? $skills`Weapon of the Pastalord, Saucegeyser`
-        : $skills`Saucegeyser, Weapon of the Pastalord`;
     return this.externalIf(
       myPrimestat() === $stat`mysticality`,
-      Macro.tryHaveSkill($skill`Stuffed Mortar Shell`)
-        .trySkillRepeat(bestKillSpell)
-        .trySkillRepeat(otherKillSpell)
+      Macro.externalIf(
+        myClass() === $class`Pastamancer` && have($skill`Fearful Fettucini`),
+        Macro.trySkillRepeat($skill`Fearful Fettucini`),
+        Macro.trySkillRepeat($skill`Saucegeyser`)
+      )
     )
       .externalIf(
         haveSkill($skill`Shieldbutt`) &&

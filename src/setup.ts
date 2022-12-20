@@ -1,5 +1,9 @@
 import { Quest } from "grimoire-kolmafia";
 import {
+  abort,
+  changeMcd,
+  cliExecute,
+  currentMcd,
   getWorkshed,
   Item,
   itemAmount,
@@ -12,6 +16,7 @@ import {
   restoreMp,
   runChoice,
   totalTurnsPlayed,
+  useFamiliar,
   useSkill,
   visitUrl,
 } from "kolmafia";
@@ -19,6 +24,7 @@ import {
   $effect,
   $effects,
   $familiar,
+  $familiars,
   $item,
   $locations,
   $phylum,
@@ -26,6 +32,7 @@ import {
   AutumnAton,
   get,
   have,
+  MummingTrunk,
   Snapper,
   SongBoom,
   uneffect,
@@ -111,6 +118,27 @@ export const setup: Quest<CrimboTask> = {
       },
       outfit: { familiar: $familiar`Reagnimated Gnome` },
       sobriety: "sober",
+    },
+    {
+      name: "MCD",
+      completed: () => !currentMcd(),
+      do: () => changeMcd(0),
+      sobriety: "either",
+    },
+    {
+      name: "The Captain",
+      completed: () =>
+        Array.from(MummingTrunk.currentCostumes().values()).some(([mod]) => mod === "Meat Drop"),
+      ready: () =>
+        have($item`mumming trunk`) && $familiars`Reagnimated Gnome, Temporal Riftlet`.some(have),
+      sobriety: "either",
+      do: () => {
+        const fam = $familiars`Reagnimated Gnome, Temporal Riftlet`.find(have);
+        if (fam) {
+          useFamiliar(fam);
+          cliExecute("mummery meat");
+        } else abort("Something went wrong with the mumming trunk");
+      },
     },
     {
       name: "Closet Sand Dollars",
