@@ -10743,7 +10743,7 @@ var setup = {
       return have($skill(_templateObject1020 || (_templateObject1020 = _taggedTemplateLiteral26(["Cannelloni Cocoon"]))));
     },
     completed: function() {
-      return (0, import_kolmafia35.myHp)() / (0, import_kolmafia35.myMaxhp)() >= 0.5;
+      return (0, import_kolmafia35.myHp)() / (0, import_kolmafia35.myMaxhp)() >= 0.75;
     },
     do: function() {
       (0, import_kolmafia35.useSkill)($skill(_templateObject1117 || (_templateObject1117 = _taggedTemplateLiteral26(["Cannelloni Cocoon"]))));
