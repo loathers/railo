@@ -8,7 +8,6 @@ import {
   Location,
   myMaxmp,
   myMp,
-  toItem,
   toSlot,
   totalTurnsPlayed,
 } from "kolmafia";
@@ -50,8 +49,6 @@ export function chooseQuestOutfit(
 ): OutfitSpec {
   const familiar = chooseFamiliar({ location });
   const famEquip =
-    equipmentFamiliars.get(familiar) ??
-
     equipmentFamiliars.get(familiar) ?? location.zone === "Crimbo22"
       ? // eslint-disable-next-line libram/verify-constants
         $item`white arm towel`
