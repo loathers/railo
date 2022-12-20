@@ -48,8 +48,8 @@ export function chooseQuestOutfit(
   const familiar = chooseFamiliar({ location });
   const famEquip =
     equipmentFamiliars.get(familiar) ??
-    // eslint-disable-next-line libram/verify-constants
-    $locations`Crimbo Train (caboose), Crimbo Train (dining car)`.includes(location)
+
+    equipmentFamiliars.get(familiar) ?? location.zone === "Crimbo22"
       ? // eslint-disable-next-line libram/verify-constants
         $item`white arm towel`
       : $item`amulet coin`;
