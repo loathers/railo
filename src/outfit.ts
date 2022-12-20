@@ -26,8 +26,12 @@ import { freeFightFamiliar, MenuOptions } from "./familiar";
 import { garboValue } from "./garboValue";
 import { args, realmAvailable, sober } from "./lib";
 
-export function ifHave(slot: OutfitSlot, item: Item, condition?: () => boolean): OutfitSpec {
-  return have(item) && canEquip(item) && (condition?.() ?? true)
+export function ifHave(
+  slot: OutfitSlot,
+  item: Item | undefined,
+  condition?: () => boolean
+): OutfitSpec {
+  return item && have(item) && canEquip(item) && (condition?.() ?? true)
     ? Object.fromEntries([[slot, item]])
     : {};
 }
@@ -48,12 +52,13 @@ export function chooseQuestOutfit(
   ...outfits: OutfitSpec[]
 ): OutfitSpec {
   const familiar = chooseFamiliar({ location });
-  const famEquip =
-    equipmentFamiliars.get(familiar) ??
-    (location.zone === "Crimbo22"
-      ? // eslint-disable-next-line libram/verify-constants
-        $item`white arm towel`
-      : $item`amulet coin`);
+  const famEquip = mergeSpecs(
+    ifHave("famequip", equipmentFamiliars.get(familiar)),
+    // eslint-disable-next-line libram/verify-constants
+    ifHave("famequip", $item`white arm towel`, () => location.zone === "Crimbo22"),
+    ifHave("famequip", $item`tiny stillsuit`),
+    ifHave("famequip", $item`amulet coin`)
+  );
 
   const weapons = mergeSpecs(
     ifHave("weapon", $item`June cleaver`),
@@ -99,7 +104,7 @@ export function chooseQuestOutfit(
     offhands,
     backs,
     { familiar },
-    ifHave("famequip", famEquip),
+    famEquip,
     ifHave(
       "pants",
       $item`designer sweatpants`,

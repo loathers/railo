@@ -2,12 +2,14 @@ import { CombatStrategy, Engine, Outfit, Quest, Task } from "grimoire-kolmafia";
 import {
   bjornifyFamiliar,
   enthroneFamiliar,
+  equip,
   equippedAmount,
   haveEquipped,
+  itemAmount,
   Location,
   setAutoAttack,
 } from "kolmafia";
-import { $item, CrownOfThrones, get, JuneCleaver, PropertiesManager } from "libram";
+import { $familiar, $item, CrownOfThrones, get, JuneCleaver, PropertiesManager } from "libram";
 
 import { bestJuneCleaverOption, shouldSkip } from "./juneCleaver";
 import { args, printd, sober, unsupportedChoices } from "./lib";
@@ -74,6 +76,9 @@ export class CrimboEngine extends Engine<never, CrimboTask> {
     } else if (haveEquipped($item`Crown of Thrones`)) {
       const choice = chooseRider();
       if (choice) enthroneFamiliar(choice.familiar);
+    }
+    if (itemAmount($item`tiny stillsuit`)) {
+      equip($familiar`Mosquito`, $item`tiny stillsuit`);
     }
   }
 
