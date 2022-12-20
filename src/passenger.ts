@@ -1,5 +1,5 @@
-import { toSkill } from "kolmafia";
-import { $effects, $item, $location, have } from "libram";
+import { myPrimestat, toEffect, toSkill } from "kolmafia";
+import { $effect, $effects, $item, $location, $skill, $stat, have } from "libram";
 
 import { CrimboQuest, CrimboStrategy } from "./engine";
 import { sober } from "./lib";
@@ -20,9 +20,13 @@ const passenger: CrimboQuest = {
         return chooseQuestOutfit({ location, isFree: false }, drunkSpec);
       },
       effects: () =>
-        $effects`Blood Bubble, Blood Bond, Frenzied\, Bloody, Empathy, Leash of Linguini, Ruthlessly Efficient, Mathematically Precise`.filter(
-          (effect) => have(toSkill(effect))
-        ),
+        [
+          ...$effects`Blood Bubble, Blood Bond, Frenzied\, Bloody, Empathy, Leash of Linguini, Ruthlessly Efficient, Mathematically Precise, Psalm of Pointiness`,
+          toEffect($skill`Shield of the Pastalord`),
+          myPrimestat() === $stat`mysticality`
+            ? $effect`Carol of the Hells`
+            : $effect`Carol of the Bulls`,
+        ].filter((effect) => have(toSkill(effect))),
       combat: new CrimboStrategy(() => Macro.hardCombat()),
       sobriety: "either",
     },
