@@ -10407,7 +10407,7 @@ var chooseFamiliar = function() {
 function chooseQuestOutfit(_ref2) {
   for (var _equipmentFamiliars$g, location4 = _ref2.location, isFree = _ref2.isFree, familiar3 = chooseFamiliar({
     location: location4
-  }), famEquip = ((_equipmentFamiliars$g = equipmentFamiliars.get(familiar3)) !== null && _equipmentFamiliars$g !== void 0 ? _equipmentFamiliars$g : location4.zone === "Crimbo22") ? $item(_templateObject270 || (_templateObject270 = _taggedTemplateLiteral22(["white arm towel"]))) : $item(_templateObject340 || (_templateObject340 = _taggedTemplateLiteral22(["amulet coin"]))), weapons = mergeSpecs(ifHave("weapon", $item(_templateObject429 || (_templateObject429 = _taggedTemplateLiteral22(["June cleaver"])))), ifHave("weapon", $item(_templateObject525 || (_templateObject525 = _taggedTemplateLiteral22(["Fourth of May Cosplay Saber"]))))), offhands = mergeSpecs(ifHave(
+  }), famEquip = (_equipmentFamiliars$g = equipmentFamiliars.get(familiar3)) !== null && _equipmentFamiliars$g !== void 0 ? _equipmentFamiliars$g : location4.zone === "Crimbo22" ? $item(_templateObject270 || (_templateObject270 = _taggedTemplateLiteral22(["white arm towel"]))) : $item(_templateObject340 || (_templateObject340 = _taggedTemplateLiteral22(["amulet coin"]))), weapons = mergeSpecs(ifHave("weapon", $item(_templateObject429 || (_templateObject429 = _taggedTemplateLiteral22(["June cleaver"])))), ifHave("weapon", $item(_templateObject525 || (_templateObject525 = _taggedTemplateLiteral22(["Fourth of May Cosplay Saber"]))))), offhands = mergeSpecs(ifHave(
     "offhand",
     $item(_templateObject624 || (_templateObject624 = _taggedTemplateLiteral22(["automatic wine thief"]))),
     function() {
