@@ -9533,7 +9533,7 @@ var chooseRider = function() {
         parts: 1,
         elves: 2,
         pingpong: 3
-      }[priority]), manager.setChoice(1487, 1), manager.setChoice(1488, 2);
+      }[priority]), manager.setChoice(1487, 1), manager.setChoice(1488, 1);
     }
   }, {
     key: "dress",
