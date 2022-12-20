@@ -83,6 +83,7 @@ export const args = Args.create("railo", "A script for farming elf stuff", {
     options: [
       ["caboose", "Kill robots in the Caboose"],
       ["passenger", "Kill robots in the Passenger Car"],
+      ["dining", "Kill robots in the Dining Car"],
     ],
     default: "caboose",
   }),

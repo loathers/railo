@@ -78,11 +78,11 @@ export function chooseQuestOutfit(
         sober()
     ),
     ifHave("back", $item`Trainbot harness`, () => useHarness),
-    ifHave("back", $item`Buddy Bjorn`, () => !useHarness)
+    ifHave("back", $item`Buddy Bjorn`)
   );
 
   const spec = mergeSpecs(
-    ifHave("hat", $item`Crown of Thrones`, () => useHarness),
+    ifHave("hat", $item`Crown of Thrones`, () => useHarness || !have($item`Buddy Bjorn`)),
     weapons,
     offhands,
     backs,
@@ -103,7 +103,7 @@ export function chooseQuestOutfit(
     { modifier: "Familiar Weight" }
   );
 
-  const bestAccessories = getBestAccessories(isFree);
+  const bestAccessories = getBestAccessories(location, isFree);
   for (let i = 0; i < 3; i++) {
     const accessory = bestAccessories[i];
     if (!accessory) break;
@@ -125,7 +125,11 @@ export function chooseQuestOutfit(
 }
 
 function harnessIsEffective(location: Location) {
-  return $locations`Crimbo Train (Passenger Car)`.includes(location) && args.priority === "elves";
+  return (
+    // eslint-disable-next-line libram/verify-constants
+    $locations`Crimbo Train (Passenger Car), Crimbo Train (Dining Car)`.includes(location) &&
+    args.priority === "elves"
+  );
 }
 
 const equipmentFamiliars = new Map<Familiar, Item>([
@@ -156,28 +160,35 @@ function luckyGoldRing() {
   return sumNumbers(dropValues) / dropValues.length / 10;
 }
 
-const accessories = new Map<Item, (isFree?: boolean) => number>([
+type AccessoryOptions = { isFree?: boolean; location: Location };
+const accessories = new Map<Item, (options: AccessoryOptions) => number>([
   [
     $item`mafia thumb ring`,
-    (isFree?: boolean) => (!isFree ? (1 / 0.96 - 1) * get("valueOfAdventure") : 0),
+    ({ isFree }) => (!isFree ? (1 / 0.96 - 1) * get("valueOfAdventure") : 0),
   ],
   [$item`lucky gold ring`, luckyGoldRing],
   [$item`Mr. Screege's spectacles`, () => 180],
   [$item`Mr. Cheeng's spectacles`, () => 220],
   [
     $item`Trainbot luggage hook`,
-    () => (args.car === "passenger" ? (1 / 3) * garboValue($item`lost elf luggage`) : 0),
+    ({ location }) =>
+      $locations`Crimbo Train (Passenger Car)`.includes(location)
+        ? (1 / 3) * garboValue($item`lost elf luggage`)
+        : 0,
   ],
   [
     $item`Trainbot radar monocle`,
-    () => (args.car === "caboose" ? garboValue($item`pile of Trainbot parts`) : 0),
+    ({ location }) =>
+      $locations`Crimbo Train (Caboose)`.includes(location)
+        ? garboValue($item`pile of Trainbot parts`)
+        : 0,
   ],
 ]);
 
-function getBestAccessories(isFree?: boolean) {
+function getBestAccessories(location: Location, isFree?: boolean) {
   return Array.from(accessories.entries())
     .filter(([item]) => have(item) && canEquip(item))
-    .map(([item, valueFunction]) => [item, valueFunction(isFree)] as [Item, number])
+    .map(([item, valueFunction]) => [item, valueFunction({ location, isFree })] as [Item, number])
     .sort(([, a], [, b]) => b - a)
     .map(([item]) => item)
     .splice(0, 3);

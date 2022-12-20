@@ -29,6 +29,7 @@ import {
 } from "libram";
 
 import caboose from "./caboose";
+import dining from "./dining";
 import { CrimboEngine, CrimboQuest, CrimboStrategy, CrimboTask } from "./engine";
 import { args, printh } from "./lib";
 import Macro from "./macro";
@@ -40,6 +41,7 @@ import { drunkSafeWander } from "./wanderer";
 const QUESTS = {
   caboose,
   passenger,
+  dining,
 } as const;
 
 export function main(command?: string) {
