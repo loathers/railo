@@ -24,6 +24,7 @@ You can specify which car to adventure in, default is caboose.
 
 `railo car=caboose`
 `railo car=passenger`
+`railo car=dining`
 
 You can specify a priority which affects choice adventures and equipment.
 
