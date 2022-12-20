@@ -6,7 +6,6 @@ import {
   Item,
   itemAmount,
   Location,
-  toItem,
   toSlot,
   totalTurnsPlayed,
 } from "kolmafia";
@@ -67,8 +66,8 @@ export function chooseQuestOutfit(
     ),
     ifHave(
       "offhand",
-      toItem("Abuela Crimbo's special magnet"),
-      () => toItem("Abuela Crimbo's special magnet") !== $item.none
+      // eslint-disable-next-line libram/verify-constants
+      $item`Abuela Crimbo's special magnet`,
     )
   );
 
