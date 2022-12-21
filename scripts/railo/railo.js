@@ -10471,41 +10471,62 @@ function luckyGoldRing() {
   })));
   return sumNumbers(dropValues) / dropValues.length / 10;
 }
-var accessories = /* @__PURE__ */ new Map([[$item(_templateObject386 || (_templateObject386 = _taggedTemplateLiteral22(["mafia thumb ring"]))), function(_ref42) {
-  var isFree = _ref42.isFree;
-  return isFree ? 0 : (1 / 0.96 - 1) * get("valueOfAdventure");
-}], [$item(_templateObject396 || (_templateObject396 = _taggedTemplateLiteral22(["lucky gold ring"]))), luckyGoldRing], [$item(_templateObject406 || (_templateObject406 = _taggedTemplateLiteral22(["Mr. Screege's spectacles"]))), function() {
-  return 180;
-}], [$item(_templateObject4112 || (_templateObject4112 = _taggedTemplateLiteral22(["Mr. Cheeng's spectacles"]))), function() {
-  return 220;
-}], [$item(_templateObject4210 || (_templateObject4210 = _taggedTemplateLiteral22(["Trainbot luggage hook"]))), function(_ref5) {
-  var location4 = _ref5.location;
-  return $locations(_templateObject435 || (_templateObject435 = _taggedTemplateLiteral22(["Crimbo Train (Passenger Car)"]))).includes(location4) ? 1 / 3 * garboValue($item(_templateObject445 || (_templateObject445 = _taggedTemplateLiteral22(["lost elf luggage"])))) : 0;
-}], [$item(_templateObject455 || (_templateObject455 = _taggedTemplateLiteral22(["Trainbot radar monocle"]))), function(_ref6) {
-  var location4 = _ref6.location;
-  return location4.zone === "Crimbo22" ? 1e3 : 0;
-}], [
-  $item(_templateObject464 || (_templateObject464 = _taggedTemplateLiteral22(["automatic wine thief"]))),
-  function(_ref7) {
+var accessories = [{
+  item: $item(_templateObject386 || (_templateObject386 = _taggedTemplateLiteral22(["mafia thumb ring"]))),
+  valueFunction: function(_ref42) {
+    var isFree = _ref42.isFree;
+    return isFree ? 0 : (1 / 0.96 - 1) * get("valueOfAdventure");
+  }
+}, {
+  item: $item(_templateObject396 || (_templateObject396 = _taggedTemplateLiteral22(["lucky gold ring"]))),
+  valueFunction: luckyGoldRing
+}, {
+  item: $item(_templateObject406 || (_templateObject406 = _taggedTemplateLiteral22(["Mr. Screege's spectacles"]))),
+  valueFunction: function() {
+    return 180;
+  }
+}, {
+  item: $item(_templateObject4112 || (_templateObject4112 = _taggedTemplateLiteral22(["Mr. Cheeng's spectacles"]))),
+  valueFunction: function() {
+    return 220;
+  }
+}, {
+  item: $item(_templateObject4210 || (_templateObject4210 = _taggedTemplateLiteral22(["Trainbot luggage hook"]))),
+  valueFunction: function(_ref5) {
+    var location4 = _ref5.location;
+    return $locations(_templateObject435 || (_templateObject435 = _taggedTemplateLiteral22(["Crimbo Train (Passenger Car)"]))).includes(location4) ? 1 / 3 * garboValue($item(_templateObject445 || (_templateObject445 = _taggedTemplateLiteral22(["lost elf luggage"])))) : 0;
+  }
+}, {
+  item: $item(_templateObject455 || (_templateObject455 = _taggedTemplateLiteral22(["Trainbot radar monocle"]))),
+  valueFunction: function(_ref6) {
+    var location4 = _ref6.location;
+    return location4.zone === "Crimbo22" ? 1e3 : 0;
+  }
+}, {
+  item: $item(_templateObject464 || (_templateObject464 = _taggedTemplateLiteral22(["automatic wine thief"]))),
+  valueFunction: function(_ref7) {
     var location4 = _ref7.location;
     return location4.zone === "Crimbo22" && (0, import_kolmafia31.myMaxmp)() >= 3e3 && (0, import_kolmafia31.myMp)() < 500 ? 15e3 : 0;
   }
-]]);
+}];
 function getBestAccessories(location4, isFree) {
-  return Array.from(accessories.entries()).filter(function(_ref8) {
-    var _ref9 = _slicedToArray8(_ref8, 1), item5 = _ref9[0];
+  return accessories.filter(function(_ref8) {
+    var item5 = _ref8.item;
     return have(item5) && (0, import_kolmafia31.canEquip)(item5);
-  }).map(function(_ref102) {
-    var _ref11 = _slicedToArray8(_ref102, 2), item5 = _ref11[0], valueFunction = _ref11[1];
-    return [item5, valueFunction({
-      location: location4,
-      isFree: isFree
-    })];
-  }).sort(function(_ref12, _ref13) {
-    var _ref142 = _slicedToArray8(_ref12, 2), a = _ref142[1], _ref152 = _slicedToArray8(_ref13, 2), b = _ref152[1];
+  }).map(function(_ref9) {
+    var item5 = _ref9.item, valueFunction = _ref9.valueFunction;
+    return {
+      item: item5,
+      value: valueFunction({
+        location: location4,
+        isFree: isFree
+      })
+    };
+  }).sort(function(_ref102, _ref11) {
+    var a = _ref102.value, b = _ref11.value;
     return b - a;
-  }).map(function(_ref16) {
-    var _ref172 = _slicedToArray8(_ref16, 1), item5 = _ref172[0];
+  }).map(function(_ref12) {
+    var item5 = _ref12.item;
     return item5;
   }).splice(0, 3);
 }
