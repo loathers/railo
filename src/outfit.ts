@@ -8,6 +8,7 @@ import {
   Location,
   myMaxmp,
   myMp,
+  print,
   toSlot,
   totalTurnsPlayed,
 } from "kolmafia";
@@ -52,6 +53,7 @@ export function chooseQuestOutfit(
   ...outfits: OutfitSpec[]
 ): OutfitSpec {
   const familiar = chooseFamiliar({ location });
+  print(`familiar: ${familiar}`);
   const famEquip = mergeSpecs(
     ifHave("famequip", equipmentFamiliars.get(familiar)),
     // eslint-disable-next-line libram/verify-constants
@@ -60,17 +62,14 @@ export function chooseQuestOutfit(
     ifHave("famequip", $item`amulet coin`)
   );
 
+  print(`famequip: ${famEquip.famequip}`);
+
   const weapons = mergeSpecs(
     ifHave("weapon", $item`June cleaver`),
     ifHave("weapon", $item`Fourth of May Cosplay Saber`)
   );
+  print(`weapon: ${weapons.weapon}`);
   const offhands = mergeSpecs(
-    ifHave(
-      "offhand",
-      // eslint-disable-next-line libram/verify-constants
-      $item`automatic wine thief`,
-      () => myMp() < 500 && myMaxmp() > 2000 && location.zone === "Crimbo22"
-    ),
     ifHave(
       "offhand",
       $item`cursed magnifying glass`,
@@ -82,6 +81,8 @@ export function chooseQuestOutfit(
       $item`Abuela Crimbo's special magnet`
     )
   );
+
+  print(`offhand: ${offhands.offhand}`);
 
   const useHarness = harnessIsEffective(location);
 
@@ -97,6 +98,7 @@ export function chooseQuestOutfit(
     ifHave("back", $item`Trainbot harness`, () => useHarness),
     ifHave("back", $item`Buddy Bjorn`)
   );
+  print(`back: ${backs.back}`);
 
   const spec = mergeSpecs(
     ifHave("hat", $item`Crown of Thrones`, () => useHarness || !have($item`Buddy Bjorn`)),
@@ -119,6 +121,8 @@ export function chooseQuestOutfit(
     ),
     { modifier: "Familiar Weight" }
   );
+
+  for (const item of Object.values(spec)) print(`${item.name}`);
 
   const bestAccessories = getBestAccessories(location, isFree);
   for (let i = 0; i < 3; i++) {
@@ -199,6 +203,11 @@ const accessories = new Map<Item, (options: AccessoryOptions) => number>([
       $locations`Crimbo Train (Caboose)`.includes(location)
         ? garboValue($item`pile of Trainbot parts`)
         : 0,
+  ],
+  [
+    // eslint-disable-next-line libram/verify-constants
+    $item`automatic wine thief`,
+    ({ location }) => (location.zone === "Crimbo22" && myMaxmp() >= 3000 && myMp() < 500 ? 150 : 0),
   ],
 ]);
 
