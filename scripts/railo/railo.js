@@ -10416,7 +10416,7 @@ function chooseQuestOutfit(_ref2) {
     ifHave("famequip", $item(_templateObject340 || (_templateObject340 = _taggedTemplateLiteral22(["tiny stillsuit"])))),
     ifHave("famequip", $item(_templateObject430 || (_templateObject430 = _taggedTemplateLiteral22(["amulet coin"]))))
   ), weapons = mergeSpecs(ifHave("weapon", $item(_templateObject526 || (_templateObject526 = _taggedTemplateLiteral22(["June cleaver"])))), ifHave("weapon", $item(_templateObject625 || (_templateObject625 = _taggedTemplateLiteral22(["Fourth of May Cosplay Saber"]))))), offhands = mergeSpecs(ifHave("offhand", $item(_templateObject724 || (_templateObject724 = _taggedTemplateLiteral22(["cursed magnifying glass"]))), function() {
-    return get("_voidFreeFights") < 5 && get("cursedMagnifyingGlassCount") < 13;
+    return !isFree && get("_voidFreeFights") < 5 && get("cursedMagnifyingGlassCount") < 13;
   }), ifHave(
     "offhand",
     $item(_templateObject823 || (_templateObject823 = _taggedTemplateLiteral22(["Abuela Crimbo's special magnet"])))
