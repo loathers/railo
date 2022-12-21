@@ -10299,7 +10299,7 @@ var Macro2 = /* @__PURE__ */ function(_StrictMacro) {
 // src/outfit.ts
 init_kolmafia_polyfill();
 var import_kolmafia31 = require("kolmafia");
-var _templateObject171, _templateObject270, _templateObject340, _templateObject430, _templateObject526, _templateObject625, _templateObject724, _templateObject823, _templateObject920, _templateObject1019, _templateObject1116, _templateObject1214, _templateObject1314, _templateObject1414, _templateObject1514, _templateObject1613, _templateObject1713, _templateObject1813, _templateObject1913, _templateObject2012, _templateObject2115, _templateObject2212, _templateObject2312, _templateObject2411, _templateObject2511, _templateObject2611, _templateObject2711, _templateObject2810, _templateObject2910, _templateObject3010, _templateObject3113, _templateObject3211, _templateObject3310, _templateObject348, _templateObject358, _templateObject367, _templateObject377, _templateObject386, _templateObject396, _templateObject406, _templateObject4112, _templateObject4210, _templateObject435, _templateObject445, _templateObject455, _templateObject464, _templateObject474, _templateObject484;
+var _templateObject171, _templateObject270, _templateObject340, _templateObject430, _templateObject526, _templateObject625, _templateObject724, _templateObject823, _templateObject920, _templateObject1019, _templateObject1116, _templateObject1214, _templateObject1314, _templateObject1414, _templateObject1514, _templateObject1613, _templateObject1713, _templateObject1813, _templateObject1913, _templateObject2012, _templateObject2115, _templateObject2212, _templateObject2312, _templateObject2411, _templateObject2511, _templateObject2611, _templateObject2711, _templateObject2810, _templateObject2910, _templateObject3010, _templateObject3113, _templateObject3211, _templateObject3310, _templateObject348, _templateObject358, _templateObject367, _templateObject377, _templateObject386, _templateObject396, _templateObject406, _templateObject4112, _templateObject4210, _templateObject435, _templateObject445, _templateObject455, _templateObject464;
 function _toConsumableArray18(arr) {
   return _arrayWithoutHoles18(arr) || _iterableToArray18(arr) || _unsupportedIterableToArray24(arr) || _nonIterableSpread18();
 }
@@ -10483,9 +10483,9 @@ var accessories = /* @__PURE__ */ new Map([[$item(_templateObject386 || (_templa
   return $locations(_templateObject435 || (_templateObject435 = _taggedTemplateLiteral22(["Crimbo Train (Passenger Car)"]))).includes(location4) ? 1 / 3 * garboValue($item(_templateObject445 || (_templateObject445 = _taggedTemplateLiteral22(["lost elf luggage"])))) : 0;
 }], [$item(_templateObject455 || (_templateObject455 = _taggedTemplateLiteral22(["Trainbot radar monocle"]))), function(_ref6) {
   var location4 = _ref6.location;
-  return $locations(_templateObject464 || (_templateObject464 = _taggedTemplateLiteral22(["Crimbo Train (Caboose)"]))).includes(location4) ? garboValue($item(_templateObject474 || (_templateObject474 = _taggedTemplateLiteral22(["pile of Trainbot parts"])))) : 0;
+  return location4.zone === "Crimbo22" ? 1e3 : 0;
 }], [
-  $item(_templateObject484 || (_templateObject484 = _taggedTemplateLiteral22(["automatic wine thief"]))),
+  $item(_templateObject464 || (_templateObject464 = _taggedTemplateLiteral22(["automatic wine thief"]))),
   function(_ref7) {
     var location4 = _ref7.location;
     return location4.zone === "Crimbo22" && (0, import_kolmafia31.myMaxmp)() >= 3e3 && (0, import_kolmafia31.myMp)() < 500 ? 15e3 : 0;
