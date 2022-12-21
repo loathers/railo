@@ -211,7 +211,7 @@ function getBestAccessories(location: Location, isFree?: boolean) {
   return accessories
     .filter(({ item }) => have(item) && canEquip(item))
     .map(({ item, valueFunction }) => ({ item, value: valueFunction({ location, isFree }) }))
-    .sort((a, b) => b.value - a.value)
+    .sort(({ value: a }, { value: b }) => b - a)
     .map(({ item }) => item)
     .splice(0, 3);
 }
