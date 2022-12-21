@@ -11570,9 +11570,22 @@ function main(command) {
       }),
       sobriety: "sober"
     }, {
+      name: "Grey You Attack Skill",
+      completed: function() {
+        return have($skill(_templateObject1517 || (_templateObject1517 = _taggedTemplateLiteral31(["Nantlers"])))) || have($skill(_templateObject1616 || (_templateObject1616 = _taggedTemplateLiteral31(["Nanoshock"])))) || have($skill(_templateObject1716 || (_templateObject1716 = _taggedTemplateLiteral31(["Audioclasm"]))));
+      },
+      do: $location(_templateObject1816 || (_templateObject1816 = _taggedTemplateLiteral31(["The Haunted Storage Room"]))),
+      ready: function() {
+        return (0, import_kolmafia39.myClass)() === $class(_templateObject1916 || (_templateObject1916 = _taggedTemplateLiteral31(["Grey Goo"]))) && (0, import_kolmafia39.canAdventure)($location(_templateObject2015 || (_templateObject2015 = _taggedTemplateLiteral31(["The Haunted Storage Room"]))));
+      },
+      combat: new CrimboStrategy(function() {
+        return Macro2.attack().repeat();
+      }),
+      sobriety: "sober"
+    }, {
       name: "Vote Wanderer",
       ready: function() {
-        return have($item(_templateObject1517 || (_templateObject1517 = _taggedTemplateLiteral31(['"I Voted!" sticker'])))) && (0, import_kolmafia39.totalTurnsPlayed)() % 11 === 1 && get("lastVoteMonsterTurn") < (0, import_kolmafia39.totalTurnsPlayed)() && get("_voteFreeFights") < 3;
+        return have($item(_templateObject2117 || (_templateObject2117 = _taggedTemplateLiteral31(['"I Voted!" sticker'])))) && (0, import_kolmafia39.totalTurnsPlayed)() % 11 === 1 && get("lastVoteMonsterTurn") < (0, import_kolmafia39.totalTurnsPlayed)() && get("_voteFreeFights") < 3;
       },
       do: function() {
         (0, import_kolmafia39.adv1)(drunkSafeWander("wanderer"), -1, "");
@@ -11582,7 +11595,7 @@ function main(command) {
           location: drunkSafeWander("wanderer"),
           isFree: !0
         }, {
-          acc3: $item(_templateObject1616 || (_templateObject1616 = _taggedTemplateLiteral31(['"I Voted!" sticker'])))
+          acc3: $item(_templateObject2214 || (_templateObject2214 = _taggedTemplateLiteral31(['"I Voted!" sticker'])))
         });
       },
       completed: function() {
@@ -11617,7 +11630,7 @@ function main(command) {
     }, {
       name: "Void Monster",
       ready: function() {
-        return have($item(_templateObject1716 || (_templateObject1716 = _taggedTemplateLiteral31(["cursed magnifying glass"])))) && get("cursedMagnifyingGlassCount") === 13;
+        return have($item(_templateObject2314 || (_templateObject2314 = _taggedTemplateLiteral31(["cursed magnifying glass"])))) && get("cursedMagnifyingGlassCount") === 13;
       },
       completed: function() {
         return get("_voidFreeFights") >= 5;
@@ -11627,7 +11640,7 @@ function main(command) {
           location: drunkSafeWander("wanderer"),
           isFree: !0
         }, {
-          offhand: $item(_templateObject1816 || (_templateObject1816 = _taggedTemplateLiteral31(["cursed magnifying glass"])))
+          offhand: $item(_templateObject2413 || (_templateObject2413 = _taggedTemplateLiteral31(["cursed magnifying glass"])))
         });
       },
       do: function() {
@@ -11640,17 +11653,17 @@ function main(command) {
     }, {
       name: "Spit Jurassic Acid",
       completed: function() {
-        return have($effect(_templateObject1916 || (_templateObject1916 = _taggedTemplateLiteral31(["Everything Looks Yellow"]))));
+        return have($effect(_templateObject2513 || (_templateObject2513 = _taggedTemplateLiteral31(["Everything Looks Yellow"]))));
       },
       ready: function() {
-        return have($item(_templateObject2015 || (_templateObject2015 = _taggedTemplateLiteral31(["Jurassic Parka"])))) && have($skill(_templateObject2117 || (_templateObject2117 = _taggedTemplateLiteral31(["Torso Awareness"]))));
+        return have($item(_templateObject2613 || (_templateObject2613 = _taggedTemplateLiteral31(["Jurassic Parka"])))) && have($skill(_templateObject2713 || (_templateObject2713 = _taggedTemplateLiteral31(["Torso Awareness"]))));
       },
       outfit: function() {
         return chooseQuestOutfit({
           location: drunkSafeWander("yellow ray"),
           isFree: !0
         }, {
-          shirt: $item(_templateObject2214 || (_templateObject2214 = _taggedTemplateLiteral31(["Jurassic Parka"])))
+          shirt: $item(_templateObject2812 || (_templateObject2812 = _taggedTemplateLiteral31(["Jurassic Parka"])))
         });
       },
       prepare: function() {
@@ -11660,21 +11673,8 @@ function main(command) {
         return (0, import_kolmafia39.adv1)(drunkSafeWander("yellow ray"), -1, "");
       },
       combat: new CrimboStrategy(function() {
-        var romance = get("romanticTarget"), freeMonsters = $monsters(_templateObject2314 || (_templateObject2314 = _taggedTemplateLiteral31(["sausage goblin"])));
-        return romance != null && romance.attributes.includes("FREE") && freeMonsters.push(romance), Macro2.if_(freeMonsters, Macro2.standardCombat()).skill($skill(_templateObject2413 || (_templateObject2413 = _taggedTemplateLiteral31(["Spit jurassic acid"])))).abort();
-      }),
-      sobriety: "sober"
-    }, {
-      name: "Grey You Attack Skill",
-      completed: function() {
-        return have($skill(_templateObject2513 || (_templateObject2513 = _taggedTemplateLiteral31(["Nantlers"])))) || have($skill(_templateObject2613 || (_templateObject2613 = _taggedTemplateLiteral31(["Nanoshock"])))) || have($skill(_templateObject2713 || (_templateObject2713 = _taggedTemplateLiteral31(["Audioclasm"]))));
-      },
-      do: $location(_templateObject2812 || (_templateObject2812 = _taggedTemplateLiteral31(["The Haunted Storage Room"]))),
-      ready: function() {
-        return (0, import_kolmafia39.myClass)() === $class(_templateObject2912 || (_templateObject2912 = _taggedTemplateLiteral31(["Grey Goo"]))) && (0, import_kolmafia39.canAdventure)($location(_templateObject3011 || (_templateObject3011 = _taggedTemplateLiteral31(["The Haunted Storage Room"]))));
-      },
-      combat: new CrimboStrategy(function() {
-        return Macro2.standardCombat();
+        var romance = get("romanticTarget"), freeMonsters = $monsters(_templateObject2912 || (_templateObject2912 = _taggedTemplateLiteral31(["sausage goblin"])));
+        return romance != null && romance.attributes.includes("FREE") && freeMonsters.push(romance), Macro2.if_(freeMonsters, Macro2.standardCombat()).skill($skill(_templateObject3011 || (_templateObject3011 = _taggedTemplateLiteral31(["Spit jurassic acid"])))).abort();
       }),
       sobriety: "sober"
     }]
