@@ -171,35 +171,47 @@ function luckyGoldRing() {
 }
 
 type AccessoryOptions = { isFree?: boolean; location: Location };
-const accessories = new Map<Item, (options: AccessoryOptions) => number>([
-  [
-    $item`mafia thumb ring`,
-    ({ isFree }) => (!isFree ? (1 / 0.96 - 1) * get("valueOfAdventure") : 0),
-  ],
-  [$item`lucky gold ring`, luckyGoldRing],
-  [$item`Mr. Screege's spectacles`, () => 180],
-  [$item`Mr. Cheeng's spectacles`, () => 220],
-  [
-    $item`Trainbot luggage hook`,
-    ({ location }) =>
+const accessories: { item: Item; valueFunction: (options: AccessoryOptions) => number }[] = [
+  {
+    item: $item`mafia thumb ring`,
+    valueFunction: ({ isFree }) => (!isFree ? (1 / 0.96 - 1) * get("valueOfAdventure") : 0),
+  },
+  {
+    item: $item`lucky gold ring`,
+    valueFunction: luckyGoldRing,
+  },
+  {
+    item: $item`Mr. Screege's spectacles`,
+    valueFunction: () => 180,
+  },
+  {
+    item: $item`Mr. Cheeng's spectacles`,
+    valueFunction: () => 220,
+  },
+  {
+    item: $item`Trainbot luggage hook`,
+    valueFunction: ({ location }) =>
       $locations`Crimbo Train (Passenger Car)`.includes(location)
         ? (1 / 3) * garboValue($item`lost elf luggage`)
         : 0,
-  ],
-  [$item`Trainbot radar monocle`, ({ location }) => (location.zone === "Crimbo22" ? 1000 : 0)],
-  [
+  },
+  {
+    item: $item`Trainbot radar monocle`,
+    valueFunction: ({ location }) => (location.zone === "Crimbo22" ? 1000 : 0),
+  },
+  {
     // eslint-disable-next-line libram/verify-constants
-    $item`automatic wine thief`,
-    ({ location }) =>
+    item: $item`automatic wine thief`,
+    valueFunction: ({ location }) =>
       location.zone === "Crimbo22" && myMaxmp() >= 3000 && myMp() < 500 ? 15000 : 0,
-  ],
-]);
+  },
+];
 
 function getBestAccessories(location: Location, isFree?: boolean) {
-  return Array.from(accessories.entries())
-    .filter(([item]) => have(item) && canEquip(item))
-    .map(([item, valueFunction]) => [item, valueFunction({ location, isFree })] as [Item, number])
-    .sort(([, a], [, b]) => b - a)
-    .map(([item]) => item)
+  return accessories
+    .filter(({ item }) => have(item) && canEquip(item))
+    .map(({ item, valueFunction }) => ({ item, value: valueFunction({ location, isFree }) }))
+    .sort((a, b) => b.value - a.value)
+    .map(({ item }) => item)
     .splice(0, 3);
 }
