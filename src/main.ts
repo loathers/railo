@@ -113,6 +113,16 @@ export function main(command?: string) {
         sobriety: "sober",
       },
       {
+        name: "Grey You Attack Skill",
+        completed: () =>
+          have($skill`Nantlers`) || have($skill`Nanoshock`) || have($skill`Audioclasm`),
+        do: $location`The Haunted Storage Room`,
+        ready: () =>
+          myClass() === $class`Grey Goo` && canAdventure($location`The Haunted Storage Room`),
+        combat: new CrimboStrategy(() => Macro.attack().repeat()),
+        sobriety: "sober",
+      },
+      {
         name: "Vote Wanderer",
         ready: () =>
           have($item`"I Voted!" sticker`) &&
@@ -180,16 +190,6 @@ export function main(command?: string) {
             .skill($skill`Spit jurassic acid`)
             .abort();
         }),
-        sobriety: "sober",
-      },
-      {
-        name: "Grey You Attack Skill",
-        completed: () =>
-          have($skill`Nantlers`) || have($skill`Nanoshock`) || have($skill`Audioclasm`),
-        do: $location`The Haunted Storage Room`,
-        ready: () =>
-          myClass() === $class`Grey Goo` && canAdventure($location`The Haunted Storage Room`),
-        combat: new CrimboStrategy(() => Macro.standardCombat()),
         sobriety: "sober",
       },
     ],
