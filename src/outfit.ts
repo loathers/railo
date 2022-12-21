@@ -67,12 +67,6 @@ export function chooseQuestOutfit(
   const offhands = mergeSpecs(
     ifHave(
       "offhand",
-      // eslint-disable-next-line libram/verify-constants
-      $item`automatic wine thief`,
-      () => myMp() < 500 && myMaxmp() > 2000 && location.zone === "Crimbo22"
-    ),
-    ifHave(
-      "offhand",
       $item`cursed magnifying glass`,
       () => get("_voidFreeFights") < 5 && get("cursedMagnifyingGlassCount") < 13
     ),
@@ -97,7 +91,6 @@ export function chooseQuestOutfit(
     ifHave("back", $item`Trainbot harness`, () => useHarness),
     ifHave("back", $item`Buddy Bjorn`)
   );
-
   const spec = mergeSpecs(
     ifHave("hat", $item`Crown of Thrones`, () => useHarness || !have($item`Buddy Bjorn`)),
     weapons,
@@ -199,6 +192,12 @@ const accessories = new Map<Item, (options: AccessoryOptions) => number>([
       $locations`Crimbo Train (Caboose)`.includes(location)
         ? garboValue($item`pile of Trainbot parts`)
         : 0,
+  ],
+  [
+    // eslint-disable-next-line libram/verify-constants
+    $item`automatic wine thief`,
+    ({ location }) =>
+      location.zone === "Crimbo22" && myMaxmp() >= 3000 && myMp() < 500 ? 15000 : 0,
   ],
 ]);
 
