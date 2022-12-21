@@ -186,13 +186,7 @@ const accessories = new Map<Item, (options: AccessoryOptions) => number>([
         ? (1 / 3) * garboValue($item`lost elf luggage`)
         : 0,
   ],
-  [
-    $item`Trainbot radar monocle`,
-    ({ location }) =>
-      $locations`Crimbo Train (Caboose)`.includes(location)
-        ? garboValue($item`pile of Trainbot parts`)
-        : 0,
-  ],
+  [$item`Trainbot radar monocle`, ({ location }) => (location.zone === "Crimbo22" ? 1000 : 0)],
   [
     // eslint-disable-next-line libram/verify-constants
     $item`automatic wine thief`,
