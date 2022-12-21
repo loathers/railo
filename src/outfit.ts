@@ -196,7 +196,8 @@ const accessories = new Map<Item, (options: AccessoryOptions) => number>([
   [
     // eslint-disable-next-line libram/verify-constants
     $item`automatic wine thief`,
-    ({ location }) => (location.zone === "Crimbo22" && myMaxmp() >= 3000 && myMp() < 500 ? 150 : 0),
+    ({ location }) =>
+      location.zone === "Crimbo22" && myMaxmp() >= 3000 && myMp() < 500 ? 15000 : 0,
   ],
 ]);
 
