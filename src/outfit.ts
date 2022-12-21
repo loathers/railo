@@ -68,7 +68,7 @@ export function chooseQuestOutfit(
     ifHave(
       "offhand",
       $item`cursed magnifying glass`,
-      () => get("_voidFreeFights") < 5 && get("cursedMagnifyingGlassCount") < 13
+      () => !isFree && get("_voidFreeFights") < 5 && get("cursedMagnifyingGlassCount") < 13
     ),
     ifHave(
       "offhand",
