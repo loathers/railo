@@ -1,15 +1,14 @@
 import { myPrimestat, toEffect, toSkill } from "kolmafia";
 import { $effect, $effects, $item, $location, $skill, $stat, have } from "libram";
 
-import { CrimboQuest, CrimboStrategy } from "./engine";
-import { sober } from "./lib";
-import Macro from "./macro";
-import { chooseQuestOutfit } from "./outfit";
+import { CrimboQuest, CrimboStrategy } from "../engine";
+import { sober } from "../lib";
+import Macro from "../macro";
+import { chooseQuestOutfit } from "../outfit";
 
-// eslint-disable-next-line libram/verify-constants
-const location = $location`Crimbo Train (Dining Car)`;
-const dining: CrimboQuest = {
-  name: "Dining Car",
+const location = $location`Crimbo Train (Passenger Car)`;
+const passenger: CrimboQuest = {
+  name: "Passenger Car",
   location,
   tasks: [
     {
@@ -34,4 +33,4 @@ const dining: CrimboQuest = {
   ],
 };
 
-export default dining;
+export default passenger;

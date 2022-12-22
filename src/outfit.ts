@@ -54,7 +54,6 @@ export function chooseQuestOutfit(
   const familiar = chooseFamiliar({ location });
   const famEquip = mergeSpecs(
     ifHave("famequip", equipmentFamiliars.get(familiar)),
-    // eslint-disable-next-line libram/verify-constants
     ifHave("famequip", $item`white arm towel`, () => location.zone === "Crimbo22"),
     ifHave("famequip", $item`tiny stillsuit`),
     ifHave("famequip", $item`amulet coin`)
@@ -70,11 +69,7 @@ export function chooseQuestOutfit(
       $item`cursed magnifying glass`,
       () => !isFree && get("_voidFreeFights") < 5 && get("cursedMagnifyingGlassCount") < 13
     ),
-    ifHave(
-      "offhand",
-      // eslint-disable-next-line libram/verify-constants
-      $item`Abuela Crimbo's special magnet`
-    )
+    ifHave("offhand", $item`Abuela Crimbo's special magnet`, () => location.zone === "Crimbo22")
   );
 
   const useHarness = harnessIsEffective(location);
@@ -136,7 +131,6 @@ export function chooseQuestOutfit(
 
 function harnessIsEffective(location: Location) {
   return (
-    // eslint-disable-next-line libram/verify-constants
     $locations`Crimbo Train (Passenger Car), Crimbo Train (Dining Car)`.includes(location) &&
     args.priority === "elves"
   );
