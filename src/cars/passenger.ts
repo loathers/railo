@@ -1,10 +1,10 @@
 import { myPrimestat, toEffect, toSkill } from "kolmafia";
 import { $effect, $effects, $item, $location, $skill, $stat, have } from "libram";
 
-import { CrimboQuest, CrimboStrategy } from "./engine";
-import { sober } from "./lib";
-import Macro from "./macro";
-import { chooseQuestOutfit } from "./outfit";
+import { CrimboQuest, CrimboStrategy } from "../engine";
+import { sober } from "../lib";
+import Macro from "../macro";
+import { chooseQuestOutfit } from "../outfit";
 
 const location = $location`Crimbo Train (Passenger Car)`;
 const passenger: CrimboQuest = {

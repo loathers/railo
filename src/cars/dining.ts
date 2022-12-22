@@ -4,7 +4,7 @@ import { $effect, $effects, $item, $location, $skill, $stat, have } from "libram
 import { CrimboQuest, CrimboStrategy } from "../engine";
 import { sober } from "../lib";
 import Macro from "../macro";
-import { chooseQuestOutfit } from "..cars/outfit";
+import { chooseQuestOutfit } from "../outfit";
 
 const location = $location`Crimbo Train (Dining Car)`;
 const dining: CrimboQuest = {

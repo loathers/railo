@@ -29,21 +29,13 @@ import {
   withProperty,
 } from "libram";
 
-import caboose from "../caboose";
-import dining from "../dining";
+import * as QUESTS from "./cars";
 import { CrimboEngine, CrimboQuest, CrimboStrategy, CrimboTask } from "./engine";
 import { args, printh } from "./lib";
 import Macro from "./macro";
 import { chooseQuestOutfit } from "./outfit";
-import passenger from "./passenger";
 import { setup } from "./setup";
 import { drunkSafeWander } from "./wanderer";
-
-const QUESTS = {
-  caboose,
-  passenger,
-  dining,
-} as const;
 
 export function main(command?: string) {
   Args.fill(args, command);

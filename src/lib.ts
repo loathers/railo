@@ -84,6 +84,7 @@ export const args = Args.create("railo", "A script for farming elf stuff", {
       ["caboose", "Kill robots in the Caboose"],
       ["passenger", "Kill robots in the Passenger Car"],
       ["dining", "Kill robots in the Dining Car"],
+      ["coal", "Kill robots in the Coal Car"],
     ],
     default: "caboose",
   }),
@@ -98,6 +99,14 @@ export const args = Args.create("railo", "A script for farming elf stuff", {
       ["pingpong", "pingpong"],
     ],
     default: "parts",
+  }),
+  tableware: Args.string({
+    options: [
+      ["food", "make platters"],
+      ["drink", "make goblets"],
+      ["both", "ensure an even number of foods and drinks"],
+    ],
+    default: "both",
   }),
 });
 
