@@ -29,8 +29,8 @@ import {
   withProperty,
 } from "libram";
 
-import caboose from "./caboose";
-import dining from "./dining";
+import caboose from "../caboose";
+import dining from "../dining";
 import { CrimboEngine, CrimboQuest, CrimboStrategy, CrimboTask } from "./engine";
 import { args, printh } from "./lib";
 import Macro from "./macro";
