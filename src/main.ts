@@ -21,6 +21,7 @@ import {
   $slots,
   Counter,
   get,
+  getKramcoWandererChance,
   have,
   Session,
   setDefaultMaximizeOptions,
@@ -168,7 +169,20 @@ export function main(command?: string) {
             { offhand: $item`cursed magnifying glass` }
           ),
         do: () => adv1(drunkSafeWander("wanderer"), -1, ""),
-        sobriety: "sober",
+        sobriety: "either",
+        combat: new CrimboStrategy(() => Macro.standardCombat()),
+      },
+      {
+        name: "Sausage Goblin",
+        ready: () => have($item`Kramco Sausage-o-Matic™`) && getKramcoWandererChance() >= 1,
+        completed: () => getKramcoWandererChance() < 1,
+        outfit: () =>
+          chooseQuestOutfit(
+            { location: drunkSafeWander("wanderer"), isFree: true },
+            { offhand: $item`Kramco Sausage-o-Matic™` }
+          ),
+        do: () => adv1(drunkSafeWander("wanderer"), -1, ""),
+        sobriety: "either",
         combat: new CrimboStrategy(() => Macro.standardCombat()),
       },
       {
