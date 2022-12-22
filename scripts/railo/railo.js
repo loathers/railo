@@ -3853,6 +3853,13 @@ var Wanderer;
   Wanderer2.Digitize = "Digitize Monster", Wanderer2.Enamorang = "Enamorang Monster", Wanderer2.Familiar = "Familiar", Wanderer2.Holiday = "Holiday Monster", Wanderer2.Kramco = "Kramco", Wanderer2.Nemesis = "Nemesis Assassin", Wanderer2.Portscan = "portscan.edu", Wanderer2.Romantic = "Romantic Monster", Wanderer2.Vote = "Vote Monster";
 })(Wanderer || (Wanderer = {}));
 var deterministicWanderers = [Wanderer.Digitize, Wanderer.Portscan];
+function getKramcoWandererChance() {
+  var fights = get("_sausageFights"), lastFight = get("_lastSausageMonsterTurn"), totalTurns = (0, import_kolmafia3.totalTurnsPlayed)();
+  if (fights < 1)
+    return lastFight === totalTurns && (0, import_kolmafia3.myTurncount)() < 1 ? 0.5 : 1;
+  var turnsSinceLastFight = totalTurns - lastFight;
+  return Math.min(1, (turnsSinceLastFight + 1) / (5 + fights * 3 + Math.max(0, fights - 5) ** 3));
+}
 function getFoldGroup(item5) {
   return Object.entries((0, import_kolmafia3.getRelated)(item5, "fold")).sort(function(_ref2, _ref22) {
     var _ref32 = _slicedToArray3(_ref2, 2), a = _ref32[1], _ref42 = _slicedToArray3(_ref22, 2), b = _ref42[1];
@@ -11416,7 +11423,7 @@ function drunkSafeWander(type) {
 }
 
 // src/main.ts
-var _templateObject368, _templateObject2102, _templateObject369, _templateObject440, _templateObject534, _templateObject631, _templateObject729, _templateObject826, _templateObject924, _templateObject1023, _templateObject1119, _templateObject1217, _templateObject1317, _templateObject1417, _templateObject1517, _templateObject1616, _templateObject1716, _templateObject1816, _templateObject1916, _templateObject2015, _templateObject2117, _templateObject2214, _templateObject2314, _templateObject2413, _templateObject2513, _templateObject2613, _templateObject2713, _templateObject2812, _templateObject2912, _templateObject3011;
+var _templateObject368, _templateObject2102, _templateObject369, _templateObject440, _templateObject534, _templateObject631, _templateObject729, _templateObject826, _templateObject924, _templateObject1023, _templateObject1119, _templateObject1217, _templateObject1317, _templateObject1417, _templateObject1517, _templateObject1616, _templateObject1716, _templateObject1816, _templateObject1916, _templateObject2015, _templateObject2117, _templateObject2214, _templateObject2314, _templateObject2413, _templateObject2513, _templateObject2613, _templateObject2713, _templateObject2812, _templateObject2912, _templateObject3011, _templateObject3114, _templateObject3212;
 function _slicedToArray9(arr, i) {
   return _arrayWithHoles9(arr) || _iterableToArrayLimit9(arr, i) || _unsupportedIterableToArray30(arr, i) || _nonIterableRest9();
 }
@@ -11667,24 +11674,47 @@ function main(command) {
       do: function() {
         return (0, import_kolmafia39.adv1)(drunkSafeWander("wanderer"), -1, "");
       },
-      sobriety: "sober",
+      sobriety: "either",
+      combat: new CrimboStrategy(function() {
+        return Macro2.standardCombat();
+      })
+    }, {
+      name: "Sausage Goblin",
+      ready: function() {
+        return have($item(_templateObject2513 || (_templateObject2513 = _taggedTemplateLiteral31(["Kramco Sausage-o-Matic\u2122"])))) && getKramcoWandererChance() >= 1;
+      },
+      completed: function() {
+        return getKramcoWandererChance() < 1;
+      },
+      outfit: function() {
+        return chooseQuestOutfit({
+          location: drunkSafeWander("wanderer"),
+          isFree: !0
+        }, {
+          offhand: $item(_templateObject2613 || (_templateObject2613 = _taggedTemplateLiteral31(["Kramco Sausage-o-Matic\u2122"])))
+        });
+      },
+      do: function() {
+        return (0, import_kolmafia39.adv1)(drunkSafeWander("wanderer"), -1, "");
+      },
+      sobriety: "either",
       combat: new CrimboStrategy(function() {
         return Macro2.standardCombat();
       })
     }, {
       name: "Spit Jurassic Acid",
       completed: function() {
-        return have($effect(_templateObject2513 || (_templateObject2513 = _taggedTemplateLiteral31(["Everything Looks Yellow"]))));
+        return have($effect(_templateObject2713 || (_templateObject2713 = _taggedTemplateLiteral31(["Everything Looks Yellow"]))));
       },
       ready: function() {
-        return have($item(_templateObject2613 || (_templateObject2613 = _taggedTemplateLiteral31(["Jurassic Parka"])))) && have($skill(_templateObject2713 || (_templateObject2713 = _taggedTemplateLiteral31(["Torso Awareness"]))));
+        return have($item(_templateObject2812 || (_templateObject2812 = _taggedTemplateLiteral31(["Jurassic Parka"])))) && have($skill(_templateObject2912 || (_templateObject2912 = _taggedTemplateLiteral31(["Torso Awareness"]))));
       },
       outfit: function() {
         return chooseQuestOutfit({
           location: drunkSafeWander("yellow ray"),
           isFree: !0
         }, {
-          shirt: $item(_templateObject2812 || (_templateObject2812 = _taggedTemplateLiteral31(["Jurassic Parka"])))
+          shirt: $item(_templateObject3011 || (_templateObject3011 = _taggedTemplateLiteral31(["Jurassic Parka"])))
         });
       },
       prepare: function() {
@@ -11694,8 +11724,8 @@ function main(command) {
         return (0, import_kolmafia39.adv1)(drunkSafeWander("yellow ray"), -1, "");
       },
       combat: new CrimboStrategy(function() {
-        var romance = get("romanticTarget"), freeMonsters = $monsters(_templateObject2912 || (_templateObject2912 = _taggedTemplateLiteral31(["sausage goblin"])));
-        return romance != null && romance.attributes.includes("FREE") && freeMonsters.push(romance), Macro2.if_(freeMonsters, Macro2.standardCombat()).skill($skill(_templateObject3011 || (_templateObject3011 = _taggedTemplateLiteral31(["Spit jurassic acid"])))).abort();
+        var romance = get("romanticTarget"), freeMonsters = $monsters(_templateObject3114 || (_templateObject3114 = _taggedTemplateLiteral31(["sausage goblin"])));
+        return romance != null && romance.attributes.includes("FREE") && freeMonsters.push(romance), Macro2.if_(freeMonsters, Macro2.standardCombat()).skill($skill(_templateObject3212 || (_templateObject3212 = _taggedTemplateLiteral31(["Spit jurassic acid"])))).abort();
       }),
       sobriety: "sober"
     }]
