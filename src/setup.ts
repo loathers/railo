@@ -42,17 +42,10 @@ import { args, CMCEnvironment, countEnvironment, tryGetCMCItem } from "./lib";
 
 const poisons = $effects`Hardly Poisoned at All, A Little Bit Poisoned, Somewhat Poisoned, Really Quite Poisoned, Majorly Poisoned`;
 function cmcTarget(): { item: Item; environment: CMCEnvironment } {
-  if (args.car === "caboose") {
-    return {
-      item: $item`Extrovermectin™`,
-      environment: "i",
-    };
-  } else {
-    return {
-      item: $item`Breathitin™`,
-      environment: "u",
-    };
-  }
+  return {
+    item: $item`Extrovermectin™`,
+    environment: "i",
+  };
 }
 
 export const setup: Quest<CrimboTask> = {
