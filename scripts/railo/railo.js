@@ -11633,7 +11633,7 @@ function main(command) {
   }
   setDefaultMaximizeOptions({
     preventSlot: $slots(_templateObject370 || (_templateObject370 = _taggedTemplateLiteral32(["crown-of-thrones, buddy-bjorn"])))
-  }), sinceKolmafiaRevision(26834);
+  }), sinceKolmafiaRevision(27022);
   var turncount = (0, import_kolmafia40.myTurncount)(), completed = args.turns > 0 ? function() {
     return (0, import_kolmafia40.myTurncount)() - turncount >= args.turns || (0, import_kolmafia40.myAdventures)() === 0;
   } : function() {
