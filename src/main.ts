@@ -47,7 +47,7 @@ export function main(command?: string) {
 
   setDefaultMaximizeOptions({ preventSlot: $slots`crown-of-thrones, buddy-bjorn` });
 
-  sinceKolmafiaRevision(26834);
+  sinceKolmafiaRevision(27022);
   const turncount = myTurncount();
   const completed =
     args.turns > 0
