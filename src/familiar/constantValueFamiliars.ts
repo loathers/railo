@@ -78,6 +78,18 @@ const standardFamiliars: ConstantValueFamiliar[] = [
         )) /
       11,
   },
+  {
+    familiar: $familiar`Mosquito`,
+    value: () => 0,
+  },
+  {
+    familiar: $familiar`Pet Rock`,
+    value: () => 0
+  },
+  {
+    familiar: $familiar`Leprechaun`,
+    value: () => 1
+  }
 ];
 
 export default function getConstantValueFamiliars(options: MenuOptions = {}): GeneralFamiliar[] {
