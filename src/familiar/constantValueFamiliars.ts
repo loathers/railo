@@ -12,6 +12,7 @@ import {
 } from "libram";
 
 import { garboAverageValue, garboValue } from "../garboValue";
+import { maxBy } from "../lib";
 
 import { GeneralFamiliar, MenuOptions } from "./lib";
 
@@ -77,6 +78,18 @@ const standardFamiliars: ConstantValueFamiliar[] = [
           ...$items`Vegetable of Jarlsberg, Yeast of Boris, St. Sneaky Pete's Whey`
         )) /
       11,
+  },
+  {
+    familiar: $familiar`Mosquito`,
+    value: () => 0,
+  },
+  {
+    familiar: $familiar`Pet Rock`,
+    value: () => 0,
+  },
+  {
+    familiar: maxBy(Familiar.all().filter(have), findLeprechaunMultiplier),
+    value: () => 1,
   },
 ];
 
