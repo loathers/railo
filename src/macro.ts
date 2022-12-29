@@ -104,7 +104,8 @@ export default class Macro extends StrictMacro {
 
   doHardItems(): this {
     return this.doItems(
-      $items`Time-Spinner, little red book, Rain-Doh indigo cup, porquoise-handled sixgun`
+      // eslint-disable-next-line libram/verify-constants
+      $items`train whistle, Time-Spinner, little red book, Rain-Doh indigo cup, porquoise-handled sixgun`
     );
   }
 
