@@ -28,17 +28,19 @@ const standardFamiliars: ConstantValueFamiliar[] = [
   },
   {
     familiar: $familiar`Stocking Mimic`,
-    value: () =>
-      garboAverageValue(...$items`Polka Pop, BitterSweetTarts, Piddles`) / 6 +
+    value: ({ allowEquipment }) =>
+      (allowEquipment
+        ? garboAverageValue(...$items`Polka Pop, BitterSweetTarts, Piddles`) / 6
+        : 0) +
       (1 / 3 + (have($effect`Jingle Jangle Jingle`) ? 0.1 : 0)) *
         (familiarWeight($familiar`Stocking Mimic`) + weightAdjustment()),
   },
   {
     familiar: $familiar`Shorter-Order Cook`,
-    value: () =>
+    value: ({ allowEquipment }) =>
       garboAverageValue(
         ...$items`short beer, short stack of pancakes, short stick of butter, short glass of water, short white`
-      ) / 11,
+      ) / (allowEquipment ? 9 : 11),
   },
   {
     familiar: $familiar`Robortender`,
@@ -78,14 +80,6 @@ const standardFamiliars: ConstantValueFamiliar[] = [
           ...$items`Vegetable of Jarlsberg, Yeast of Boris, St. Sneaky Pete's Whey`
         )) /
       11,
-  },
-  {
-    familiar: $familiar`Mosquito`,
-    value: () => 0,
-  },
-  {
-    familiar: $familiar`Pet Rock`,
-    value: () => 0,
   },
   {
     familiar: maxBy(Familiar.all().filter(have), findLeprechaunMultiplier),

@@ -2,7 +2,7 @@ import { availableAmount, myPrimestat, toEffect, toSkill } from "kolmafia";
 import { $effect, $effects, $item, $items, $location, $skill, $stat, have, sum } from "libram";
 
 import { CrimboQuest, CrimboStrategy } from "../engine";
-import { args, sober } from "../lib";
+import { args, sober, toasterGazeFor } from "../lib";
 import Macro from "../macro";
 import { chooseQuestOutfit } from "../outfit";
 
@@ -32,6 +32,7 @@ const dining: CrimboQuest = {
       choices: {
         [1489]: () => (have($item`Crimbo crystal shards`) ? pickGobletOption() : 3),
       },
+      prepare: toasterGazeFor(location),
     },
   ],
 };

@@ -16,6 +16,7 @@ import {
   $familiars,
   $item,
   $locations,
+  CrystalBall,
   get,
   getRemainingStomach,
   have,
@@ -24,7 +25,7 @@ import {
 
 import { freeFightFamiliar, MenuOptions } from "./familiar";
 import { garboValue } from "./garboValue";
-import { args, realmAvailable, sober } from "./lib";
+import { args, getOrbTarget, realmAvailable, sober } from "./lib";
 
 export function ifHave(
   slot: OutfitSlot,
@@ -40,19 +41,30 @@ function mergeSpecs(...outfits: OutfitSpec[]): OutfitSpec {
   return outfits.reduce((current, next) => ({ ...next, ...current }), {});
 }
 
+const adventuresFamiliars = () =>
+  getOrbTarget() ? $familiars`Temporal Riftlet, Reagnimated Gnome` : $familiars`Temporal Riftlet`;
 const chooseFamiliar = (options: MenuOptions = {}): Familiar =>
   canInteract() && sober()
-    ? $familiars`Temporal Riftlet, Reagnimated Gnome`.find((f) => have(f)) ??
-      freeFightFamiliar(options)
+    ? adventuresFamiliars().find((f) => have(f)) ?? freeFightFamiliar(options)
     : freeFightFamiliar(options);
+
+function useOrb(location: Location): boolean {
+  const prediction = CrystalBall.ponder().get(location);
+  if (location.zone === "Crimbo22") {
+    return !prediction || prediction === getOrbTarget();
+  }
+  return prediction !== getOrbTarget();
+}
 
 type TaskOptions = { location: Location; isFree?: boolean };
 export function chooseQuestOutfit(
   { location, isFree }: TaskOptions,
   ...outfits: OutfitSpec[]
 ): OutfitSpec {
-  const familiar = chooseFamiliar({ location });
+  const usingOrb = useOrb(location);
+  const familiar = chooseFamiliar({ location, allowEquipment: !usingOrb });
   const famEquip = mergeSpecs(
+    ifHave("famequip", $item`miniature crystal ball`, () => Boolean(getOrbTarget()) && usingOrb),
     ifHave("famequip", equipmentFamiliars.get(familiar)),
     ifHave("famequip", $item`white arm towel`, () => location.zone === "Crimbo22"),
     ifHave("famequip", $item`tiny stillsuit`),

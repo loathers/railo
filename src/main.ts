@@ -31,7 +31,7 @@ import {
 
 import * as QUESTS from "./cars";
 import { CrimboEngine, CrimboQuest, CrimboStrategy, CrimboTask } from "./engine";
-import { args, printh } from "./lib";
+import { args, printh, validateOrbArgument } from "./lib";
 import Macro from "./macro";
 import { chooseQuestOutfit } from "./outfit";
 import { setup } from "./setup";
@@ -45,6 +45,7 @@ export function main(command?: string) {
     return;
   }
 
+  validateOrbArgument(args.orb, args.car);
   setDefaultMaximizeOptions({ preventSlot: $slots`crown-of-thrones, buddy-bjorn` });
 
   sinceKolmafiaRevision(27022);
