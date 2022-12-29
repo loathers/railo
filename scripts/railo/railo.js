@@ -10246,7 +10246,9 @@ var Macro2 = /* @__PURE__ */ function(_StrictMacro) {
   }, {
     key: "doHardItems",
     value: function() {
-      return this.doItems($items(_templateObject1018 || (_templateObject1018 = _taggedTemplateLiteral21(["Time-Spinner, little red book, Rain-Doh indigo cup, porquoise-handled sixgun"]))));
+      return this.doItems(
+        $items(_templateObject1018 || (_templateObject1018 = _taggedTemplateLiteral21(["train whistle, Time-Spinner, little red book, Rain-Doh indigo cup, porquoise-handled sixgun"])))
+      );
     }
   }, {
     key: "familiarActions",
