@@ -16,7 +16,17 @@ import {
   toUrl,
   visitUrl,
 } from "kolmafia";
-import { $familiar, $item, $location, CrownOfThrones, CrystalBall, get, have, JuneCleaver, PropertiesManager } from "libram";
+import {
+  $familiar,
+  $item,
+  $location,
+  CrownOfThrones,
+  CrystalBall,
+  get,
+  have,
+  JuneCleaver,
+  PropertiesManager,
+} from "libram";
 
 import { bestJuneCleaverOption, shouldSkip } from "./juneCleaver";
 import { args, printd, printh, sober, unsupportedChoices } from "./lib";
@@ -25,7 +35,6 @@ import Macro from "./macro";
 export type CrimboTask = Task & {
   sobriety: "sober" | "drunk" | "either";
   forced?: boolean;
-  ponder?: boolean;
 };
 
 export type CrimboQuest = Quest<CrimboTask> & {
@@ -52,7 +61,6 @@ export function resetNcForced() {
 CrownOfThrones.createRiderMode("default", () => 0);
 const chooseRider = () => CrownOfThrones.pickRider("default");
 export class CrimboEngine extends Engine<never, CrimboTask> {
-
   private static currentPonder = CrystalBall.ponder();
   private static hasPondered = true;
 
