@@ -1,10 +1,10 @@
 import { toSkill } from "kolmafia";
-import { $effects, $item, $location, have } from "libram";
+import { $effects, $location, have } from "libram";
 
 import { CrimboQuest, CrimboStrategy } from "../engine";
-import { sober, toasterGazeIfNecessary } from "../lib";
+import { toasterGazeIfNecessary } from "../lib";
 import Macro from "../macro";
-import { chooseQuestOutfit } from "../outfit";
+import { chooseQuestOutfit, drunkSpec, orbSpec } from "../outfit";
 
 const location = $location`Crimbo Train (Caboose)`;
 const caboose: CrimboQuest = {
@@ -15,10 +15,7 @@ const caboose: CrimboQuest = {
       name: "Crimbo",
       completed: () => false,
       do: location,
-      outfit: () => {
-        const drunkSpec = sober() ? {} : { offhand: $item`Drunkula's wineglass` };
-        return chooseQuestOutfit({ location, isFree: false }, drunkSpec);
-      },
+      outfit: () => chooseQuestOutfit({ location, isFree: false }, drunkSpec, orbSpec(location)),
       effects: () =>
         $effects`Blood Bond, Empathy, Leash of Linguini`.filter((effect) => have(toSkill(effect))),
       combat: new CrimboStrategy(() => Macro.standardCombat()),

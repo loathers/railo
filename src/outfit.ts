@@ -16,6 +16,7 @@ import {
   $familiars,
   $item,
   $locations,
+  CrystalBall,
   get,
   getRemainingStomach,
   have,
@@ -37,34 +38,31 @@ export function ifHave(
     : {};
 }
 
+export const drunkSpec = sober() ? {} : { offhand: $item`Drunkula's wineglass` };
+export const orbSpec = (location: Location) => {
+  const prediction = CrimboEngine.ponder.get(location);
+  return !prediction || prediction === getOrbTarget() ? { famequip: CrystalBall.orb } : {};
+};
+
 function mergeSpecs(...outfits: OutfitSpec[]): OutfitSpec {
   return outfits.reduce((current, next) => ({ ...next, ...current }), {});
 }
 
-const adventuresFamiliars = () =>
-  getOrbTarget() ? $familiars`Temporal Riftlet, Reagnimated Gnome` : $familiars`Temporal Riftlet`;
+const adventuresFamiliars = (allowEquipment?: boolean) =>
+  allowEquipment ? $familiars`Temporal Riftlet, Reagnimated Gnome` : $familiars`Temporal Riftlet`;
 const chooseFamiliar = (options: MenuOptions = {}): Familiar =>
-  canInteract() && sober()
-    ? adventuresFamiliars().find((f) => have(f)) ?? freeFightFamiliar(options)
-    : freeFightFamiliar(options);
-
-function useOrb(location: Location): boolean {
-  if (location.zone === "Crimbo22") {
-    const prediction = CrimboEngine.ponder.get(location);
-    return !prediction || prediction === getOrbTarget();
-  }
-  return false;
-}
+  (canInteract() && sober() ? adventuresFamiliars(options.allowEquipment) : []).find((f) =>
+    have(f)
+  ) ?? freeFightFamiliar(options);
 
 type TaskOptions = { location: Location; isFree?: boolean };
 export function chooseQuestOutfit(
   { location, isFree }: TaskOptions,
   ...outfits: OutfitSpec[]
 ): OutfitSpec {
-  const usingOrb = useOrb(location);
-  const familiar = chooseFamiliar({ location, allowEquipment: !usingOrb });
+  const mergedOutfits = mergeSpecs(...outfits);
+  const familiar = chooseFamiliar({ location, allowEquipment: !("famequip" in mergedOutfits) });
   const famEquip = mergeSpecs(
-    ifHave("famequip", $item`miniature crystal ball`, () => Boolean(getOrbTarget()) && usingOrb),
     ifHave("famequip", equipmentFamiliars.get(familiar)),
     ifHave("famequip", $item`white arm towel`, () => location.zone === "Crimbo22"),
     ifHave("famequip", $item`tiny stillsuit`),
@@ -206,7 +204,6 @@ const accessories: { item: Item; valueFunction: (options: AccessoryOptions) => n
     valueFunction: ({ location }) => (location.zone === "Crimbo22" ? 1000 : 0),
   },
   {
-    // eslint-disable-next-line libram/verify-constants
     item: $item`automatic wine thief`,
     valueFunction: ({ location }) =>
       location.zone === "Crimbo22" && myMaxmp() >= 3000 && myMp() < 500 ? 15000 : 0,
