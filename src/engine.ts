@@ -1,23 +1,31 @@
 import { CombatStrategy, Engine, Outfit, Quest, Task } from "grimoire-kolmafia";
 import {
   bjornifyFamiliar,
+  canAdventure,
   enthroneFamiliar,
   equip,
   equippedAmount,
   haveEquipped,
   itemAmount,
   Location,
+  Monster,
+  print,
+  retrieveItem,
+  runChoice,
   setAutoAttack,
+  toUrl,
+  visitUrl,
 } from "kolmafia";
-import { $familiar, $item, CrownOfThrones, get, JuneCleaver, PropertiesManager } from "libram";
+import { $familiar, $item, $location, CrownOfThrones, CrystalBall, get, have, JuneCleaver, PropertiesManager } from "libram";
 
 import { bestJuneCleaverOption, shouldSkip } from "./juneCleaver";
-import { args, printd, sober, unsupportedChoices } from "./lib";
+import { args, printd, printh, sober, unsupportedChoices } from "./lib";
 import Macro from "./macro";
 
 export type CrimboTask = Task & {
   sobriety: "sober" | "drunk" | "either";
   forced?: boolean;
+  ponder?: boolean;
 };
 
 export type CrimboQuest = Quest<CrimboTask> & {
@@ -44,6 +52,45 @@ export function resetNcForced() {
 CrownOfThrones.createRiderMode("default", () => 0);
 const chooseRider = () => CrownOfThrones.pickRider("default");
 export class CrimboEngine extends Engine<never, CrimboTask> {
+
+  private static currentPonder = CrystalBall.ponder();
+  private static hasPondered = true;
+
+  private static updatePonder(): void {
+    CrimboEngine.currentPonder = CrystalBall.ponder();
+    CrimboEngine.hasPondered = true;
+  }
+
+  static get ponder(): Map<Location, Monster> {
+    if (!CrimboEngine.hasPondered) CrimboEngine.updatePonder();
+    return CrimboEngine.currentPonder;
+  }
+
+  static toasterGaze(): void {
+    const shore = $location`The Shore, Inc. Travel Agency`;
+    const pass = $item`Desert Bus pass`;
+    if (!canAdventure(shore) && !have(pass)) {
+      retrieveItem(pass);
+    }
+    try {
+      const store = visitUrl(toUrl(shore));
+      if (!store.includes("Check out the gift shop")) {
+        print("Unable to stare longingly at toast");
+      }
+      runChoice(4);
+    } catch (e) {
+      printh(`We ran into an issue when gazing at toast: ${e}.`);
+    } finally {
+      visitUrl("main.php");
+    }
+    CrimboEngine.updatePonder();
+  }
+
+  do(task: CrimboTask): void {
+    super.do(task);
+    CrimboEngine.hasPondered = false;
+  }
+
   available(task: CrimboTask): boolean {
     const sobriety =
       task.sobriety === "either" ||

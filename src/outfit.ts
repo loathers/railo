@@ -16,13 +16,13 @@ import {
   $familiars,
   $item,
   $locations,
-  CrystalBall,
   get,
   getRemainingStomach,
   have,
   sumNumbers,
 } from "libram";
 
+import { CrimboEngine } from "./engine";
 import { freeFightFamiliar, MenuOptions } from "./familiar";
 import { garboValue } from "./garboValue";
 import { args, getOrbTarget, realmAvailable, sober } from "./lib";
@@ -49,11 +49,11 @@ const chooseFamiliar = (options: MenuOptions = {}): Familiar =>
     : freeFightFamiliar(options);
 
 function useOrb(location: Location): boolean {
-  const prediction = CrystalBall.ponder().get(location);
   if (location.zone === "Crimbo22") {
+    const prediction = CrimboEngine.ponder.get(location);
     return !prediction || prediction === getOrbTarget();
   }
-  return prediction !== getOrbTarget();
+  return false;
 }
 
 type TaskOptions = { location: Location; isFree?: boolean };

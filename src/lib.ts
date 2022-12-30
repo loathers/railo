@@ -1,6 +1,5 @@
 import { Args } from "grimoire-kolmafia";
 import {
-  canAdventure,
   descToItem,
   inebrietyLimit,
   isDarkMode,
@@ -11,9 +10,7 @@ import {
   myFamiliar,
   myInebriety,
   print,
-  retrieveItem,
   runChoice,
-  toUrl,
   visitUrl,
 } from "kolmafia";
 import {
@@ -22,11 +19,11 @@ import {
   $location,
   $monster,
   Counter,
-  CrystalBall,
   get,
   have,
   SourceTerminal,
 } from "libram";
+import { CrimboEngine } from "./engine";
 
 /**
  * Find the best element of an array, where "best" is defined by some given criteria.
@@ -277,25 +274,8 @@ export function toasterGazeFor(location: Location): () => void {
   return () => {
     const target = getOrbTarget();
     if (target) {
-      const prediction = CrystalBall.ponder().get(location);
-      if (prediction && prediction !== target) {
-        const shore = $location`The Shore, Inc. Travel Agency`;
-        const pass = $item`Desert Bus pass`;
-        if (!canAdventure(shore) && !have(pass)) {
-          retrieveItem(pass);
-        }
-        try {
-          const store = visitUrl(toUrl(shore));
-          if (!store.includes("Check out the gift shop")) {
-            print("Unable to stare longingly at toast");
-          }
-          runChoice(4);
-        } catch (e) {
-          printh(`We ran into an issue when gazing at toast: ${e}.`);
-        } finally {
-          visitUrl("main.php");
-        }
-      }
+      const prediction = CrimboEngine.ponder.get(location);
+      if (prediction && prediction !== target) CrimboEngine.toasterGaze()
     }
   };
 }
