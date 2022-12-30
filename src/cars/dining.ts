@@ -2,7 +2,7 @@ import { myPrimestat, toEffect, toSkill } from "kolmafia";
 import { $effect, $effects, $item, $location, $skill, $stat, have } from "libram";
 
 import { CrimboQuest, CrimboStrategy } from "../engine";
-import { sober, toasterGazeFor } from "../lib";
+import { sober, toasterGazeIfNecessary } from "../lib";
 import Macro from "../macro";
 import { chooseQuestOutfit } from "../outfit";
 
@@ -29,7 +29,7 @@ const dining: CrimboQuest = {
         ].filter((effect) => have(toSkill(effect))),
       combat: new CrimboStrategy(() => Macro.hardCombat()),
       sobriety: "either",
-      prepare: toasterGazeFor(location),
+      post: toasterGazeIfNecessary,
     },
   ],
 };

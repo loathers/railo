@@ -2,7 +2,7 @@ import { toSkill } from "kolmafia";
 import { $effects, $item, $location, have } from "libram";
 
 import { CrimboQuest, CrimboStrategy } from "../engine";
-import { sober, toasterGazeFor } from "../lib";
+import { sober, toasterGazeIfNecessary } from "../lib";
 import Macro from "../macro";
 import { chooseQuestOutfit } from "../outfit";
 
@@ -23,7 +23,7 @@ const caboose: CrimboQuest = {
         $effects`Blood Bond, Empathy, Leash of Linguini`.filter((effect) => have(toSkill(effect))),
       combat: new CrimboStrategy(() => Macro.standardCombat()),
       sobriety: "either",
-      prepare: toasterGazeFor(location),
+      post: toasterGazeIfNecessary,
     },
   ],
 };

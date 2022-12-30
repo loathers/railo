@@ -1,6 +1,7 @@
 import { Args } from "grimoire-kolmafia";
 import {
   descToItem,
+  haveEquipped,
   inebrietyLimit,
   isDarkMode,
   Item,
@@ -13,7 +14,17 @@ import {
   runChoice,
   visitUrl,
 } from "kolmafia";
-import { $familiar, $item, $location, $monster, Counter, get, have, SourceTerminal } from "libram";
+import {
+  $familiar,
+  $item,
+  $location,
+  $monster,
+  Counter,
+  CrystalBall,
+  get,
+  have,
+  SourceTerminal,
+} from "libram";
 
 import { CrimboEngine } from "./engine";
 
@@ -262,12 +273,6 @@ export function digitizedMonstersRemaining(): number {
   );
 }
 
-export function toasterGazeFor(location: Location): () => void {
-  return () => {
-    const target = getOrbTarget();
-    if (target) {
-      const prediction = CrimboEngine.ponder.get(location);
-      if (prediction && prediction !== target) CrimboEngine.toasterGaze();
-    }
-  };
+export function toasterGazeIfNecessary(): void {
+  if (getOrbTarget() && haveEquipped(CrystalBall.orb)) CrimboEngine.toasterGaze();
 }

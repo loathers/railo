@@ -90,7 +90,6 @@ export class CrimboEngine extends Engine<never, CrimboTask> {
     } finally {
       visitUrl("main.php");
     }
-    CrimboEngine.updatePonder();
   }
 
   do(task: CrimboTask): void {
@@ -170,6 +169,8 @@ export class CrimboEngine extends Engine<never, CrimboTask> {
       printd(`Hit Intro adventure ${get("lastEncounter")} which is a free NC`);
       return true;
     }
+    // We have a dedicated June Cleaver task
+    // Keeping the special casing for poetic justice/lost and found around for future forks
     if (task.name.includes("June Cleaver")) return false;
     return super.shouldRepeatAdv(task);
   }
