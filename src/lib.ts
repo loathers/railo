@@ -13,16 +13,8 @@ import {
   runChoice,
   visitUrl,
 } from "kolmafia";
-import {
-  $familiar,
-  $item,
-  $location,
-  $monster,
-  Counter,
-  get,
-  have,
-  SourceTerminal,
-} from "libram";
+import { $familiar, $item, $location, $monster, Counter, get, have, SourceTerminal } from "libram";
+
 import { CrimboEngine } from "./engine";
 
 /**
@@ -155,7 +147,7 @@ export const args = Args.create("railo", "A script for farming elf stuff", {
 });
 
 let orbTarget: Monster | null = null;
-export function validateOrbArgument(target: string, car: string) {
+export function validateAndSetOrbTarget(target: string, car: string) {
   if (target === "none") return;
   if (!have($item`miniature crystal ball`)) return;
   if (!(car in trainbots)) throw new Error("Invalid car specified!");
@@ -275,7 +267,7 @@ export function toasterGazeFor(location: Location): () => void {
     const target = getOrbTarget();
     if (target) {
       const prediction = CrimboEngine.ponder.get(location);
-      if (prediction && prediction !== target) CrimboEngine.toasterGaze()
+      if (prediction && prediction !== target) CrimboEngine.toasterGaze();
     }
   };
 }
