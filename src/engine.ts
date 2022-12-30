@@ -9,7 +9,6 @@ import {
   itemAmount,
   Location,
   Monster,
-  print,
   retrieveItem,
   runChoice,
   setAutoAttack,
@@ -83,11 +82,11 @@ export class CrimboEngine extends Engine<never, CrimboTask> {
     try {
       const store = visitUrl(toUrl(shore));
       if (!store.includes("Check out the gift shop")) {
-        print("Unable to stare longingly at toast");
+        printh("Unable to stare longingly at toast");
       }
       runChoice(4);
     } catch (e) {
-      printh(`We ran into an issue when gazing at toast: ${e}.`);
+      printd(`We ran into an issue when gazing at toast: ${e}.`);
     } finally {
       visitUrl("main.php");
     }
