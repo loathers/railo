@@ -23,10 +23,10 @@ import {
   sumNumbers,
 } from "libram";
 
-import { CrimboEngine } from "./engine";
 import { freeFightFamiliar, MenuOptions } from "./familiar";
 import { garboValue } from "./garboValue";
 import { args, getOrbTarget, realmAvailable, sober } from "./lib";
+import * as OrbManager from "./orbmanager";
 
 export function ifHave(
   slot: OutfitSlot,
@@ -40,7 +40,7 @@ export function ifHave(
 
 export const drunkSpec = sober() ? {} : { offhand: $item`Drunkula's wineglass` };
 export const orbSpec = (location: Location) => {
-  const prediction = CrimboEngine.ponder.get(location);
+  const prediction = OrbManager.ponder().get(location);
   return !prediction || prediction === getOrbTarget() ? { famequip: CrystalBall.orb } : {};
 };
 

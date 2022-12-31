@@ -1,34 +1,25 @@
 import { CombatStrategy, Engine, Outfit, Quest, Task } from "grimoire-kolmafia";
 import {
   bjornifyFamiliar,
-  canAdventure,
   enthroneFamiliar,
   equip,
   equippedAmount,
   haveEquipped,
   itemAmount,
   Location,
-  Monster,
-  retrieveItem,
-  runChoice,
   setAutoAttack,
-  toUrl,
-  visitUrl,
 } from "kolmafia";
 import {
   $familiar,
   $item,
-  $location,
   CrownOfThrones,
-  CrystalBall,
   get,
-  have,
   JuneCleaver,
   PropertiesManager,
 } from "libram";
 
 import { bestJuneCleaverOption, shouldSkip } from "./juneCleaver";
-import { args, printd, printh, sober, unsupportedChoices } from "./lib";
+import { args, printd, sober, unsupportedChoices } from "./lib";
 import Macro from "./macro";
 
 export type CrimboTask = Task & {
@@ -60,41 +51,10 @@ export function resetNcForced() {
 CrownOfThrones.createRiderMode("default", () => 0);
 const chooseRider = () => CrownOfThrones.pickRider("default");
 export class CrimboEngine extends Engine<never, CrimboTask> {
-  private static currentPonder = CrystalBall.ponder();
-  private static hasPondered = true;
-
-  private static updatePonder(): void {
-    CrimboEngine.currentPonder = CrystalBall.ponder();
-    CrimboEngine.hasPondered = true;
-  }
-
-  static get ponder(): Map<Location, Monster> {
-    if (!CrimboEngine.hasPondered) CrimboEngine.updatePonder();
-    return CrimboEngine.currentPonder;
-  }
-
-  static toasterGaze(): void {
-    const shore = $location`The Shore, Inc. Travel Agency`;
-    const pass = $item`Desert Bus pass`;
-    if (!canAdventure(shore) && !have(pass)) {
-      retrieveItem(pass);
-    }
-    try {
-      const store = visitUrl(toUrl(shore));
-      if (!store.includes("Check out the gift shop")) {
-        printh("Unable to stare longingly at toast");
-      }
-      runChoice(4);
-    } catch (e) {
-      printd(`We ran into an issue when gazing at toast: ${e}.`);
-    } finally {
-      visitUrl("main.php");
-    }
-  }
 
   do(task: CrimboTask): void {
     super.do(task);
-    CrimboEngine.hasPondered = false;
+    CrimboEngine.ponderIsValid = false;
   }
 
   available(task: CrimboTask): boolean {

@@ -26,7 +26,7 @@ import {
   SourceTerminal,
 } from "libram";
 
-import { CrimboEngine } from "./engine";
+import * as OrbManager from "./orbmanager";
 
 /**
  * Find the best element of an array, where "best" is defined by some given criteria.
@@ -274,5 +274,5 @@ export function digitizedMonstersRemaining(): number {
 }
 
 export function toasterGazeIfNecessary(): void {
-  if (getOrbTarget() && haveEquipped(CrystalBall.orb)) CrimboEngine.toasterGaze();
+  if (getOrbTarget() && haveEquipped(CrystalBall.orb)) OrbManager.toasterGaze();
 }
