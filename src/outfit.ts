@@ -41,7 +41,9 @@ export function ifHave(
 export const drunkSpec = sober() ? {} : { offhand: $item`Drunkula's wineglass` };
 export const orbSpec = (location: Location) => {
   const prediction = OrbManager.ponder().get(location);
-  return !prediction || prediction === getOrbTarget() ? { famequip: CrystalBall.orb } : {};
+  return !!getOrbTarget() && (!prediction || prediction === getOrbTarget())
+    ? { famequip: CrystalBall.orb }
+    : {};
 };
 
 function mergeSpecs(...outfits: OutfitSpec[]): OutfitSpec {
