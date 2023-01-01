@@ -2,9 +2,9 @@ import { availableAmount, myPrimestat, toEffect, toSkill } from "kolmafia";
 import { $effect, $effects, $item, $items, $location, $skill, $stat, have, sum } from "libram";
 
 import { CrimboQuest, CrimboStrategy } from "../engine";
-import { args, sober } from "../lib";
+import { args, toasterGazeIfNecessary } from "../lib";
 import Macro from "../macro";
-import { chooseQuestOutfit } from "../outfit";
+import { chooseQuestOutfit, drunkSpec, orbSpec } from "../outfit";
 
 const location = $location`Crimbo Train (Coal Car)`;
 const dining: CrimboQuest = {
@@ -15,10 +15,7 @@ const dining: CrimboQuest = {
       name: "Crimbo",
       completed: () => false,
       do: location,
-      outfit: () => {
-        const drunkSpec = sober() ? {} : { offhand: $item`Drunkula's wineglass` };
-        return chooseQuestOutfit({ location, isFree: false }, drunkSpec);
-      },
+      outfit: () => chooseQuestOutfit({ location, isFree: false }, drunkSpec, orbSpec(location)),
       effects: () =>
         [
           ...$effects`Blood Bubble, Blood Bond, Frenzied\, Bloody, Empathy, Leash of Linguini, Ruthlessly Efficient, Mathematically Precise, Psalm of Pointiness, Paul's Passionate Pop Song, Cringle's Curative Carol`,
@@ -32,6 +29,7 @@ const dining: CrimboQuest = {
       choices: {
         [1489]: () => (have($item`Crimbo crystal shards`) ? pickGobletOption() : 3),
       },
+      post: toasterGazeIfNecessary,
     },
   ],
 };

@@ -16,20 +16,23 @@ const DEFAULT_MENU_OPTIONS = {
   extraFamiliars: [],
   includeExperienceFamiliars: true,
   allowAttackFamiliars: true,
+  allowEquipment: true,
 };
 export function menu(options: MenuOptions = {}): GeneralFamiliar[] {
+  const fullOptions = {
+    ...DEFAULT_MENU_OPTIONS,
+    ...options,
+  };
+
   const {
     includeExperienceFamiliars,
     canChooseMacro,
     location,
     extraFamiliars,
     allowAttackFamiliars,
-  } = {
-    ...DEFAULT_MENU_OPTIONS,
-    ...options,
-  };
+  } = fullOptions;
   const familiarMenu: GeneralFamiliar[] = [
-    ...getConstantValueFamiliars(),
+    ...getConstantValueFamiliars(fullOptions),
     ...getDropFamiliars(),
     ...(includeExperienceFamiliars ? getExperienceFamiliars() : []),
     ...extraFamiliars,

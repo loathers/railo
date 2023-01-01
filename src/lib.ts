@@ -1,10 +1,12 @@
 import { Args } from "grimoire-kolmafia";
 import {
   descToItem,
+  haveEquipped,
   inebrietyLimit,
   isDarkMode,
   Item,
   Location,
+  Monster,
   myAdventures,
   myFamiliar,
   myInebriety,
@@ -12,7 +14,19 @@ import {
   runChoice,
   visitUrl,
 } from "kolmafia";
-import { $familiar, $location, Counter, get, SourceTerminal } from "libram";
+import {
+  $familiar,
+  $item,
+  $location,
+  $monster,
+  Counter,
+  CrystalBall,
+  get,
+  have,
+  SourceTerminal,
+} from "libram";
+
+import * as OrbManager from "./orbmanager";
 
 /**
  * Find the best element of an array, where "best" is defined by some given criteria.
@@ -74,6 +88,29 @@ export function sober() {
   return myInebriety() <= inebrietyLimit() + (myFamiliar() === $familiar`Stooper` ? -1 : 0);
 }
 
+const trainbots = {
+  caboose: {
+    brake: $monster`Brake-Operating Trainbot`,
+    pingpong: $monster`Ping-Pong-Playing Trainbot`,
+    track: $monster`Track-Switching Trainbot`,
+  },
+  passenger: {
+    drink: $monster`Drink-Delivery Trainbot`,
+    luggage: $monster`Luggage-Handling Trainbot`,
+    ticket: $monster`Ticket-Checking Trainbot`,
+  },
+  dining: {
+    bussy: $monster`Table-Bussing Trainbot`,
+    waiter: $monster`Table-Waiting Trainbot`,
+    wine: $monster`Wine-Pairing Trainbot`,
+  },
+  coal: {
+    coal: $monster`Coal-Shoveling Trainbot`,
+    slag: $monster`Slag-Processing Trainbot`,
+    steam: $monster`Steam-Routing Trainbot`,
+  },
+} as const;
+
 export const args = Args.create("railo", "A script for farming elf stuff", {
   turns: Args.number({
     help: "The number of turns to run (use negative numbers for the number of turns remaining)",
@@ -108,7 +145,30 @@ export const args = Args.create("railo", "A script for farming elf stuff", {
     ],
     default: "both",
   }),
+  orb: Args.string({
+    options: [
+      ...[...Object.values(trainbots)]
+        .map((o) => Object.keys(o))
+        .flat()
+        .map((key) => [key, `Target the ${key} trainbot with the orb.`] as [string, string]),
+      ["none", "Don't use it!"],
+    ],
+    default: "none",
+  }),
 });
+
+let orbTarget: Monster | null = null;
+export function validateAndSetOrbTarget(target: string, car: string) {
+  if (target === "none") return;
+  if (!have($item`miniature crystal ball`)) return;
+  if (!(car in trainbots)) throw new Error("Invalid car specified!");
+  const carTargets = trainbots[car as keyof typeof trainbots];
+  if (!(target in carTargets)) throw new Error("Invalid target specified");
+  orbTarget = carTargets[target as keyof typeof carTargets];
+}
+export function getOrbTarget(): Monster | null {
+  return orbTarget;
+}
 
 function getCMCChoices(): { [choice: string]: number } {
   const options = visitUrl("campground.php?action=workshed");
@@ -211,4 +271,8 @@ export function digitizedMonstersRemaining(): number {
     untangleDigitizes(turnsAtLastDigitize, digitizesLeft + 1) -
     SourceTerminal.getDigitizeMonsterCount()
   );
+}
+
+export function toasterGazeIfNecessary(): void {
+  if (getOrbTarget() && haveEquipped(CrystalBall.orb)) OrbManager.toasterGaze();
 }

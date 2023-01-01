@@ -16,6 +16,7 @@ import {
   $familiars,
   $item,
   $locations,
+  CrystalBall,
   get,
   getRemainingStomach,
   have,
@@ -24,7 +25,8 @@ import {
 
 import { freeFightFamiliar, MenuOptions } from "./familiar";
 import { garboValue } from "./garboValue";
-import { args, realmAvailable, sober } from "./lib";
+import { args, getOrbTarget, realmAvailable, sober } from "./lib";
+import * as OrbManager from "./orbmanager";
 
 export function ifHave(
   slot: OutfitSlot,
@@ -36,22 +38,30 @@ export function ifHave(
     : {};
 }
 
+export const drunkSpec = sober() ? {} : { offhand: $item`Drunkula's wineglass` };
+export const orbSpec = (location: Location) => {
+  const prediction = OrbManager.ponder().get(location);
+  return !prediction || prediction === getOrbTarget() ? { famequip: CrystalBall.orb } : {};
+};
+
 function mergeSpecs(...outfits: OutfitSpec[]): OutfitSpec {
   return outfits.reduce((current, next) => ({ ...next, ...current }), {});
 }
 
+const adventuresFamiliars = (allowEquipment?: boolean) =>
+  allowEquipment ? $familiars`Temporal Riftlet, Reagnimated Gnome` : $familiars`Temporal Riftlet`;
 const chooseFamiliar = (options: MenuOptions = {}): Familiar =>
-  canInteract() && sober()
-    ? $familiars`Temporal Riftlet, Reagnimated Gnome`.find((f) => have(f)) ??
-      freeFightFamiliar(options)
-    : freeFightFamiliar(options);
+  (canInteract() && sober() ? adventuresFamiliars(options.allowEquipment) : []).find((f) =>
+    have(f)
+  ) ?? freeFightFamiliar(options);
 
 type TaskOptions = { location: Location; isFree?: boolean };
 export function chooseQuestOutfit(
   { location, isFree }: TaskOptions,
   ...outfits: OutfitSpec[]
 ): OutfitSpec {
-  const familiar = chooseFamiliar({ location });
+  const mergedOutfits = mergeSpecs(...outfits);
+  const familiar = chooseFamiliar({ location, allowEquipment: !("famequip" in mergedOutfits) });
   const famEquip = mergeSpecs(
     ifHave("famequip", equipmentFamiliars.get(familiar)),
     ifHave("famequip", $item`white arm towel`, () => location.zone === "Crimbo22"),
@@ -194,7 +204,6 @@ const accessories: { item: Item; valueFunction: (options: AccessoryOptions) => n
     valueFunction: ({ location }) => (location.zone === "Crimbo22" ? 1000 : 0),
   },
   {
-    // eslint-disable-next-line libram/verify-constants
     item: $item`automatic wine thief`,
     valueFunction: ({ location }) =>
       location.zone === "Crimbo22" && myMaxmp() >= 3000 && myMp() < 500 ? 15000 : 0,

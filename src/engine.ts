@@ -9,7 +9,14 @@ import {
   Location,
   setAutoAttack,
 } from "kolmafia";
-import { $familiar, $item, CrownOfThrones, get, JuneCleaver, PropertiesManager } from "libram";
+import {
+  $familiar,
+  $item,
+  CrownOfThrones,
+  get,
+  JuneCleaver,
+  PropertiesManager,
+} from "libram";
 
 import { bestJuneCleaverOption, shouldSkip } from "./juneCleaver";
 import { args, printd, sober, unsupportedChoices } from "./lib";
@@ -44,6 +51,12 @@ export function resetNcForced() {
 CrownOfThrones.createRiderMode("default", () => 0);
 const chooseRider = () => CrownOfThrones.pickRider("default");
 export class CrimboEngine extends Engine<never, CrimboTask> {
+
+  do(task: CrimboTask): void {
+    super.do(task);
+    CrimboEngine.ponderIsValid = false;
+  }
+
   available(task: CrimboTask): boolean {
     const sobriety =
       task.sobriety === "either" ||
@@ -116,6 +129,8 @@ export class CrimboEngine extends Engine<never, CrimboTask> {
       printd(`Hit Intro adventure ${get("lastEncounter")} which is a free NC`);
       return true;
     }
+    // We have a dedicated June Cleaver task
+    // Keeping the special casing for poetic justice/lost and found around for future forks
     if (task.name.includes("June Cleaver")) return false;
     return super.shouldRepeatAdv(task);
   }

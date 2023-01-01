@@ -82,4 +82,5 @@ export type MenuOptions = {
   extraFamiliars?: GeneralFamiliar[];
   includeExperienceFamiliars?: boolean;
   allowAttackFamiliars?: boolean;
+  allowEquipment?: boolean;
 };
