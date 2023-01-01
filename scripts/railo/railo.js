@@ -10629,7 +10629,7 @@ var drunkSpec = sober() ? {} : {
   offhand: $item(_templateObject180 || (_templateObject180 = _taggedTemplateLiteral23(["Drunkula's wineglass"])))
 }, orbSpec = function(location5) {
   var prediction = ponder2().get(location5);
-  return !prediction || prediction === getOrbTarget() ? {
+  return !!getOrbTarget() && (!prediction || prediction === getOrbTarget()) ? {
     famequip: CrystalBall_exports.orb
   } : {};
 };
