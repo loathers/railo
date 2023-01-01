@@ -9285,6 +9285,9 @@ function updatePonder() {
 function ponder2() {
   return ponderIsValid || updatePonder(), currentPonder;
 }
+function invalidate() {
+  ponderIsValid = !1;
+}
 function toasterGaze() {
   var shore = $location(_templateObject130 || (_templateObject130 = _taggedTemplateLiteral13(["The Shore, Inc. Travel Agency"]))), pass = $item(_templateObject230 || (_templateObject230 = _taggedTemplateLiteral13(["Desert Bus pass"])));
   !(0, import_kolmafia24.canAdventure)(shore) && !have(pass) && (0, import_kolmafia24.retrieveItem)(pass);
@@ -9725,7 +9728,7 @@ var chooseRider = function() {
   return _createClass13(CrimboEngine2, [{
     key: "do",
     value: function(task) {
-      _get2(_getPrototypeOf5(CrimboEngine2.prototype), "do", this).call(this, task), CrimboEngine2.ponderIsValid = !1;
+      _get2(_getPrototypeOf5(CrimboEngine2.prototype), "do", this).call(this, task), invalidate();
     }
   }, {
     key: "available",
