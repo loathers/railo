@@ -9,18 +9,12 @@ import {
   Location,
   setAutoAttack,
 } from "kolmafia";
-import {
-  $familiar,
-  $item,
-  CrownOfThrones,
-  get,
-  JuneCleaver,
-  PropertiesManager,
-} from "libram";
+import { $familiar, $item, CrownOfThrones, get, JuneCleaver, PropertiesManager } from "libram";
 
 import { bestJuneCleaverOption, shouldSkip } from "./juneCleaver";
 import { args, printd, sober, unsupportedChoices } from "./lib";
 import Macro from "./macro";
+import * as OrbManager from "./orbmanager";
 
 export type CrimboTask = Task & {
   sobriety: "sober" | "drunk" | "either";
@@ -51,10 +45,9 @@ export function resetNcForced() {
 CrownOfThrones.createRiderMode("default", () => 0);
 const chooseRider = () => CrownOfThrones.pickRider("default");
 export class CrimboEngine extends Engine<never, CrimboTask> {
-
   do(task: CrimboTask): void {
     super.do(task);
-    CrimboEngine.ponderIsValid = false;
+    OrbManager.invalidate();
   }
 
   available(task: CrimboTask): boolean {
