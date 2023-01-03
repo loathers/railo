@@ -132,11 +132,7 @@ export default class Macro extends StrictMacro {
 
     return this.externalIf(
       myPrimestat() === $stat`mysticality`,
-      Macro.externalIf(
-        myClass() === $class`Pastamancer` && have($skill`Fearful Fettucini`),
-        Macro.trySkillRepeat($skill`Fearful Fettucini`),
-        Macro.trySkillRepeat($skill`Saucegeyser`)
-      )
+      Macro.trySkillRepeat($skill`Saucegeyser`)
     )
       .externalIf(
         haveSkill($skill`Shieldbutt`) &&
