@@ -55,7 +55,7 @@ export function main(command?: string) {
       ? () => myTurncount() - turncount >= args.turns || myAdventures() === 0
       : () => myAdventures() === -args.turns;
 
-  let digitizes = -1;
+  let digitizes = get("_sourceTerminalDigitizeMonsterCount");
 
   const quest: CrimboQuest = { ...QUESTS[args.car as keyof typeof QUESTS], completed };
   const global: Quest<CrimboTask> = {
