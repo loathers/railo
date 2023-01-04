@@ -11845,7 +11845,7 @@ function main(command) {
     return (0, import_kolmafia42.myTurncount)() - turncount >= args.turns || (0, import_kolmafia42.myAdventures)() === 0;
   } : function() {
     return (0, import_kolmafia42.myAdventures)() === -args.turns;
-  }, digitizes = -1, quest = _objectSpread8(_objectSpread8({}, cars_exports[args.car]), {}, {
+  }, digitizes = get("_sourceTerminalDigitizeMonsterCount"), quest = _objectSpread8(_objectSpread8({}, cars_exports[args.car]), {}, {
     completed: completed
   }), global2 = {
     name: "Global",
